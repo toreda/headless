@@ -1,0 +1,25 @@
+{
+  "name": "@armorjs/headless-browser",
+  "version": "0.0.0",
+  "description": "",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/armorjs/headless-browser.git"
+  },
+  "keywords": [
+    "typescript",
+    "headless",
+    "browser",
+    "testing"
+  ],
+  "author": "Michael Brich",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/armorjs/headless-browser/issues"
+  },
+  "homepage": "https://github.com/armorjs/headless-browser#readme"
+}
