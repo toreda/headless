@@ -3,8 +3,11 @@
   "version": "0.0.0",
   "description": "",
   "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "scripts": {
-    "test": "jest --coverage"
+    "lint": "tslint --project .",
+    "test": "jest --coverage",
+    "build": "yarn lint && yarn tsc"
   },
   "repository": {
     "type": "git",
@@ -21,5 +24,16 @@
   "bugs": {
     "url": "https://github.com/armorjs/headless-browser/issues"
   },
-  "homepage": "https://github.com/armorjs/headless-browser#readme"
+  "homepage": "https://github.com/armorjs/headless-browser#readme",
+  "dependencies": {
+    "axios": "^0.19.2"
+  },
+  "devDependencies": {
+    "@types/node": "^13.9.0",
+    "axios-mock-adapter": "^1.17.0",
+    "jest": "^25.1.0",
+    "ts-jest": "^25.2.1",
+    "ts-lint": "^4.5.1",
+    "typescript": "^3.8.3"
+  }
 }
