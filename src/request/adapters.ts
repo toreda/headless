@@ -19,7 +19,6 @@ export class ArmorHBAdapters {
 			return false;
 		}
 
-
 		return !!this.adapters[id.toLowerCase()];
 	}
 

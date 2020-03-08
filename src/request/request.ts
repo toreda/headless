@@ -1,4 +1,4 @@
-import { ArmorHBRequestAdapter } from './adapter';
+import {ArmorHBRequestAdapter} from './adapter';
 import {ArmorHBRequestAdapterHttp} from './adapter-http';
 import {ArmorHBRequestAdapterMock} from './adapter-mock';
 import {ArmorHBRequestOptions} from './options';
@@ -39,17 +39,16 @@ export class ArmorHBRequest {
 			throw new Error(```Request init failed - options.adapter cannot be an empty string.```);
 		}
 
-		if (!this.adapters.registered(adapter)) {
-			throw new Error(
-				```Request init failed - options.adapter '${adapter}' is not a registered adapter.```
-			);
+		if (!this.adapters.isRegistered(adapter)) {
+			throw new Error(```Request init failed - options.adapter '${adapter}' is not a registered adapter.```);
 		}
-
 	}
 
 	public async load(): Promise<any> {
 		if (this.loaded) {
-			console.warn('headless browser request.load already called - ignoring additional load calls for this request.');
+			console.warn(
+				'headless browser request.load already called - ignoring additional load calls for this request.'
+			);
 			return;
 		}
 
@@ -58,11 +57,7 @@ export class ArmorHBRequest {
 		this.loaded = true;
 	}
 
-	public async loadAdapter(adapters: ArmorHBRequestAdapters, id: string): Promise<any> {
+	public async loadAdapter(adapters: ArmorHBRequestAdapters, id: string): Promise<any> {}
 
-	}
-
-	public async execute(): Promise<ArmorHBRequest> {
-
-	}
+	public async execute(): Promise<ArmorHBRequest> {}
 }
