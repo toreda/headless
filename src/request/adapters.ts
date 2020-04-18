@@ -1,8 +1,9 @@
-import {ArmorHBAdapterInfo} from './adapter-info';
 import {EventEmitter} from 'events';
+import {RequestAdapter} from './adapter';
+import {RequestAdapterInfo} from './adapter/info';
 
-export class ArmorHBAdapters {
-	public readonly adapters: {[k: string]: ArmorHBAdapterInfo};
+export class RequestAdapters {
+	public readonly adapters: {[k: string]: RequestAdapterInfo};
 	public readonly events: EventEmitter;
 
 	constructor(events: EventEmitter) {
@@ -22,7 +23,7 @@ export class ArmorHBAdapters {
 		return !!this.adapters[id.toLowerCase()];
 	}
 
-	public async register(id: string, filePath: string): Promise<ArmorHBAdapters> {
+	public async register(id: string, filePath: string): Promise<RequestAdapters> {
 		if (typeof id !== 'string') {
 			throw new Error(
 				'Headless Browser adapter registration failed - id argument missing or not a valid string.'
@@ -53,13 +54,13 @@ export class ArmorHBAdapters {
 			throw new Error(`Headless Browser adapter registration failed - adapter with id '${id}' already exists.`);
 		}
 
-		const adapter = new ArmorHBAdapterInfo(id, filePath);
+		const adapter = new RequestAdapterInfo(id, filePath);
 		await adapter.load();
 		this.adapters[id] = adapter;
 		return this;
 	}
 
-	public unregister(id: string): ArmorHBAdapters {
+	public unregister(id: string): RequestAdapters {
 		return this;
 	}
 }

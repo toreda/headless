@@ -1,4 +1,4 @@
-export class ArmorHBAdapterInfo {
+export class RequestAdapterInfo {
 	public readonly id: string;
 	public readonly filePath: string;
 	public loadedClass: any;
@@ -10,7 +10,5 @@ export class ArmorHBAdapterInfo {
 
 	public async load(): Promise<any> {
 		this.loadedClass = await import(this.filePath);
-
 	}
-
 }

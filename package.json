@@ -1,38 +1,43 @@
 {
-  "name": "@armorjs/headless-browser",
+  "name": "@armorjs/browser",
   "version": "0.0.0",
   "description": "",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "scripts": {
-    "lint": "tslint --project .",
+    "build:nolint": "yarn tsc",
     "test": "jest --coverage",
-    "build": "yarn lint && yarn tsc"
+    "build": "yarn gulp"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/armorjs/headless-browser.git"
+    "url": "git+https://github.com/armorjs/browser.git"
   },
   "keywords": [
     "typescript",
     "headless",
-    "browser",
+    "headless browser",
     "testing"
   ],
   "author": "Michael Brich",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/armorjs/headless-browser/issues"
+    "url": "https://github.com/armorjs/browser/issues"
   },
-  "homepage": "https://github.com/armorjs/headless-browser#readme",
+  "homepage": "https://github.com/armorjs/browser#readme",
   "dependencies": {
+    "@armorjs/config": "^0.0.2",
     "axios": "^0.19.2"
   },
   "devDependencies": {
-    "@types/node": "^13.9.0",
+    "@armorjs/build": "^0.0.2",
+    "@types/jest": "^25.2.1",
+    "@types/node": "^13.11.1",
     "axios-mock-adapter": "^1.17.0",
-    "jest": "^25.1.0",
-    "ts-jest": "^25.2.1",
+    "gulp": "^4.0.2",
+    "jest": "^25.3.0",
+    "jest-sonar-reporter": "^2.0.0",
+    "ts-jest": "^25.3.1",
     "ts-lint": "^4.5.1",
     "typescript": "^3.8.3"
   }

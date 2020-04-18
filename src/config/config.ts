@@ -1,9 +1,9 @@
-import {ArmorHBConfigGroupGeneral} from './config/group';
+import {ArmorBrowserConfigGeneral} from './group';
 
-export class ArmorHBConfig {
-	public readonly general: ArmorHBConfigGroupGeneral;
+export class ArmorBrowserConfig {
+	public readonly general: ArmorBrowserConfigGeneral;
 
 	constructor() {
-		this.general = new ArmorHBConfigGroupGeneral();
+		this.general = new ArmorBrowserConfigGeneral();
 	}
 }

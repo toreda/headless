@@ -2,11 +2,6 @@ module.exports = {
 	"roots": [
 		"./"
 	],
-	globals: {
-		"ts-jest": {
-			diagnostics: false
-		}
-	},
 	"coverageDirectory": "./coverage",
 	"coveragePathIgnorePatterns": [
 		"tests/",

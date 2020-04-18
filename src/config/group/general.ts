@@ -1,6 +1,6 @@
-import {ArmorConfigGroup} from '../../../config';
+import {ArmorConfigGroup} from '@armorjs/config';
 
-export class ArmorHBConfigGroupGeneral extends ArmorConfigGroup {
+export class ArmorBrowserConfigGeneral extends ArmorConfigGroup {
 	constructor() {
 		super();
 	}

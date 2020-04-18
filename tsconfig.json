@@ -5,11 +5,14 @@
 		"tests",
 		"dist/**"
 	],
+	"include": [
+		"**/src/index.ts"
+	],
 	"filesGlob": [
 		"./src/**/*.ts",
 		"!./node_modules/**"
 	],
-	"rootDir": "./src/ad",
+	"rootDir": ".",
 	"compilerOptions": {
 		"preserveConstEnums": true,
 		"module": "commonjs",

@@ -1,4 +1,4 @@
-export interface ArmorHBRequestHeader {
+export interface RequestHeaders {
 	Origin: string;
 	Host: string;
 	'User-Agent': string;
