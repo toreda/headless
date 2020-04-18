@@ -5,12 +5,24 @@
 		"interface-name": [false],
 		"max-line-length": {
 			"options": [
-				120
+				90
 			]
 		},
 		"member-ordering": {
-			"severity": "error",
-			"options": [true, "variables-before-functions", "static-before-instance"]
+			"severity": "warning",
+			"options": [
+				{
+					"order": [
+						{
+							"name": "static non-private",
+							"kinds": [
+								"public-static-field",
+								"protected-static-field"
+							]
+						}
+					]
+				}
+			]
 		},
 		"new-parens": true,
 		"no-arg": true,
