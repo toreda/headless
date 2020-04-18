@@ -1,4 +1,4 @@
-export class ArmorBrowserRequestAdapterInfo {
+export class ArmorRequestAdapterInfo {
 	public readonly id: string;
 	public readonly filePath: string;
 	public loadedClass: any;

@@ -1,21 +1,19 @@
+import {ArmorRequestAdapter} from './adapter';
+import {ArmorRequestAdapters} from './adapters';
+import {ArmorRequestOptions} from './options';
+import {ArmorRequestOptionsLog} from './options/log';
 import {EventEmitter} from 'events';
-import {RequestAdapter} from './adapter';
-import {RequestAdapters} from './adapters';
-import {RequestDetails} from './details';
-import {RequestOptions} from './options';
-import {RequestOptionsLog} from './options/log';
 
 export class ArmorRequest {
 	public readonly events: EventEmitter;
 	public readonly adapterId: string;
-	public readonly adapter: RequestAdapter | null;
-	public readonly adapters: RequestAdapters;
+	public readonly adapter: ArmorRequestAdapter | null;
+	public readonly adapters: ArmorRequestAdapters;
 	public readonly method: string | null;
-	public readonly details: RequestDetails;
 	public timeStart: number;
 	public timeEnd: number;
 	public loaded: boolean;
-	public readonly options: RequestOptions;
+	public readonly options: ArmorRequestOptions;
 
 	constructor(events: EventEmitter, adapters: ArmorRequestAdapters, options: ArmorRequestOptions) {
 		this.events = events;
@@ -24,7 +22,6 @@ export class ArmorRequest {
 		this.loaded = false;
 		this.timeStart = 0;
 		this.timeEnd = 0;
-		this.details = new RequestDetails();
 
 		if (!this.options.method.getUnsafe()) {
 			throw new Error(`Request failed - options.method is missing or an invalid
@@ -52,7 +49,7 @@ export class ArmorRequest {
 		}
 	}
 
-	public async load(options: RequestOptions): Promise<any> {
+	public async load(options: ArmorRequestOptions): Promise<any> {
 		if (this.loaded) {
 			console.warn(
 				'headless browser request.load already called - ignoring additional load calls for this request.'
@@ -65,11 +62,11 @@ export class ArmorRequest {
 		this.loaded = true;
 	}
 
-	public async loadAdapter(adapters: RequestAdapters, id: string): Promise<any> {
+	public async loadAdapter(adapters: ArmorRequestAdapters, id: string): Promise<any> {
 		// todo: load adapter here.
 	}
 
-	public async execute(): Promise<Request> {
+	public async execute(): Promise<ArmorRequest> {
 		return this;
 	}
 }
