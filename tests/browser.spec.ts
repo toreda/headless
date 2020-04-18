@@ -22,17 +22,5 @@ describe('ArmorBrowser', () => {
 			const custom = new ArmorBrowser();
 			expect((custom.events instanceof EventEmitter)).toBe(true);
 		});
-
-		it('should initialize the windows property to an array', () => {
-			const custom = new ArmorBrowser();
-			expect(Array.isArray(custom.windows)).toBe(true);
-		});
-
-		it('should create one initial window and add it to the windows array', () => {
-			const custom = new ArmorBrowser();
-			expect(custom.windows).toHaveLength(1);
-			const wnd = custom.windows[0];
-			expect((wnd instanceof ArmorBrowserWindow)).toBe(true);
-		});
 	});
 });

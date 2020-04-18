@@ -5,7 +5,7 @@ import {RequestDetails} from './details';
 import {RequestOptions} from './options';
 import {RequestOptionsLog} from './options/log';
 
-export class Request {
+export class ArmorRequest {
 	public readonly events: EventEmitter;
 	public readonly adapterId: string;
 	public readonly adapter: RequestAdapter | null;
@@ -17,7 +17,7 @@ export class Request {
 	public loaded: boolean;
 	public readonly options: RequestOptions;
 
-	constructor(events: EventEmitter, adapters: RequestAdapters, options: RequestOptions) {
+	constructor(events: EventEmitter, adapters: ArmorRequestAdapters, options: ArmorRequestOptions) {
 		this.events = events;
 		this.options = options;
 		this.adapters = adapters;

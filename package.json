@@ -6,7 +6,7 @@
   "typings": "./dist/index.d.ts",
   "scripts": {
     "build:nolint": "yarn tsc",
-    "test": "jest --coverage",
+    "test": "yarn jest --coverage",
     "build": "yarn gulp"
   },
   "repository": {
