@@ -1,5 +1,5 @@
 import { ArmorBrowser } from '../src/browser';
-import { ArmorBrowserWindow } from '../src/window/window';
+import { ArmorBrowserWindow } from '../src/browser-window';
 import { EventEmitter } from 'events';
 
 describe('ArmorBrowser', () => {
