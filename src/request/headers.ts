@@ -1,4 +1,4 @@
-export interface ArmorRequestHeaders {
+export interface ArmorBrowserRequestHeaders {
 	Origin: string;
 	Host: string;
 	'User-Agent': string;

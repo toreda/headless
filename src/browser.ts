@@ -1,5 +1,5 @@
 import {ArmorBrowserConfig} from './config';
-import {ArmorBrowserRequest} from './request/request';
+import { ArmorBrowserRequest } from './request/request';
 import {ArmorBrowserRequestOptions} from './request/options/options';
 import { ArmorBrowserWindow } from './browser-window';
 import {EventEmitter} from 'events';
@@ -16,8 +16,8 @@ export class ArmorBrowser {
 	public async load(url: string, method: string, options: ArmorBrowserRequestOptions): Promise<ArmorBrowserWindow> {
 		options.method.update(method);
 		const request = new ArmorBrowserRequest(this.events, options);
-		const wnd = new ArmorBrowserWindow(this.events);
-		return wnd.execute(request);
+		const wnd = new ArmorBrowserWindow(this.events, this.config);
+		return wnd.execute(url, options);
 	}
 
 	public async get(url: string, options: ArmorBrowserRequestOptions): Promise<ArmorBrowserWindow> {
