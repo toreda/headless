@@ -1,7 +1,7 @@
 import {ArmorConfigGroup} from '@armorjs/config';
 
 export class ArmorBrowserConfigGeneral extends ArmorConfigGroup {
-	constructor() {
+	constructor(options?: any) {
 		super();
 	}
 }

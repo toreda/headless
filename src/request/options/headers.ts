@@ -1,6 +1,6 @@
 import {ArmorConfigGroup, ArmorConfigKeyString} from '@armorjs/config';
 
-export class ArmorRequestOptionsHeaders extends ArmorConfigGroup {
+export class ArmorBrowserRequestOptionsHeaders extends ArmorConfigGroup {
 	constructor() {
 		super();
 	}

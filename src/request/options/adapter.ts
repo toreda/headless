@@ -1,6 +1,6 @@
 import {ArmorConfigGroup, ArmorConfigKeyBoolean, ArmorConfigKeyString} from '@armorjs/config';
 
-export class ArmorRequestOptionsAdapter extends ArmorConfigGroup {
+export class ArmorBrowserRequestOptionsAdapter extends ArmorConfigGroup {
 	public readonly id: ArmorConfigKeyString;
 	public readonly httpFallback: {
 		enabled: ArmorConfigKeyBoolean;
