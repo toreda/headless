@@ -12,7 +12,7 @@ export class ArmorBrowserRequestAdapterHttp implements ArmorBrowserRequestAdapte
 
 	public get(url: string | null, headers: ArmorBrowserRequestHeaders): Promise<any> {
 		return new Promise((resolve, reject) => {
-			headers.method = 'GET';
+			headers.method.update('GET');
 
 			if (!url) {
 				return null;
@@ -31,7 +31,7 @@ export class ArmorBrowserRequestAdapterHttp implements ArmorBrowserRequestAdapte
 
 	public post(url: string | null, headers: ArmorBrowserRequestHeaders, payload: any): Promise<any> {
 		return new Promise((resolve, reject) => {
-			headers.method = 'POST';
+			headers.method.update('POST');
 
 			if (!url) {
 				return null;
