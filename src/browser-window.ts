@@ -2,7 +2,6 @@ import {ArmorBrowserConfig} from './config/config';
 import {ArmorBrowserRequest} from './request/request';
 import {ArmorBrowserRequestOptions} from './request/options';
 import {EventEmitter} from 'events';
-import axios from 'axios';
 
 export class ArmorBrowserWindow {
 	public readonly events: EventEmitter;

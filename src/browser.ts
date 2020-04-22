@@ -1,7 +1,9 @@
+import { ArmorConfig, ArmorConfigParser } from '@armorjs/config';
+
 import {ArmorBrowserConfig} from './config';
-import { ArmorBrowserRequest } from './request/request';
+import {ArmorBrowserRequest} from './request/request';
 import {ArmorBrowserRequestOptions} from './request/options/options';
-import { ArmorBrowserWindow } from './browser-window';
+import {ArmorBrowserWindow} from './browser-window';
 import {EventEmitter} from 'events';
 
 export class ArmorBrowser {
@@ -10,7 +12,9 @@ export class ArmorBrowser {
 
 	constructor(options?: any) {
 		this.events = options && options.events ? options.events : new EventEmitter();
-		this.config = new ArmorBrowserConfig(options);
+		this.config = new ArmorBrowserConfig();
+		const configParser = new ArmorConfigParser()
+		configParser.parse(this.config, options);
 	}
 
 	public async load(url: string, method: string, options: ArmorBrowserRequestOptions): Promise<ArmorBrowserWindow> {

@@ -12,14 +12,14 @@ export class ArmorBrowserRequest {
 
 	constructor(events: EventEmitter, options: ArmorBrowserRequestOptions) {
 		if (!events) {
-			throw new Error('ArmorRequest init failed - events argument missing.');
+			throw new Error('ArmorBrowserRequest init failed - events argument missing.');
 		}
 
 		if (!options) {
-			throw new Error('ArmorRequest init failed - options argument missing.');
+			throw new Error('ArmorBrowserRequest init failed - options argument missing.');
 		}
 
-		this.adapter = this.createAdapter(options.adapter.id.get(''));
+		this.adapter = this.createAdapter(options.adapter.id.get('http'));
 		this.events = events;
 		this.options = options;
 	}
@@ -29,9 +29,6 @@ export class ArmorBrowserRequest {
 	}
 
 	public createAdapter(adapterId: string): ArmorBrowserRequestAdapter {
-		if (!adapterId || typeof adapterId !== 'string') {
-		}
-
 		switch (adapterId) {
 			case 'mock':
 				return new ArmorBrowserRequestAdapterMock();
