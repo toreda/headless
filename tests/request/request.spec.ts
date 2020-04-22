@@ -1,8 +1,10 @@
 import {ArmorBrowserRequest} from '../../src/request/request';
-import { ArmorBrowserRequestAdapterHttp } from '../../src/request/adapter/http';
+import {ArmorBrowserRequestAdapterHttp} from '../../src/request/adapter/http';
 import {ArmorBrowserRequestAdapterMock} from '../../src/request/adapter/mock';
 import {ArmorBrowserRequestOptions} from '../../src/request/options/options';
 import {EventEmitter} from 'events';
+
+const MOCK_URL = 'https://sample.armorjs.com';
 
 describe('ArmorBrowserRequest', () => {
 	let instance: ArmorBrowserRequest;
@@ -12,7 +14,7 @@ describe('ArmorBrowserRequest', () => {
 	beforeAll(() => {
 		events = new EventEmitter();
 		options = new ArmorBrowserRequestOptions();
-		instance = new ArmorBrowserRequest(events, options);
+		instance = new ArmorBrowserRequest(events, MOCK_URL, options);
 	});
 
 	describe('Constructor', () => {});
