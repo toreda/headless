@@ -3,7 +3,7 @@ import {ArmorBrowserRequestAdapterHttp} from './adapter/http';
 import {ArmorBrowserRequestAdapterMock} from './adapter/mock';
 import {ArmorBrowserRequestOptions} from './options/options';
 import {ArmorBrowserRequestOptionsHeaders} from './options/headers';
-import { ArmorBrowserResponse } from '../response/response';
+import {ArmorBrowserResponse} from '../response/response';
 import {EventEmitter} from 'events';
 
 export class ArmorBrowserRequest {

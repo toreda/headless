@@ -3,6 +3,7 @@ import {ArmorBrowserRequestAdapterHttp} from '../../src/request/adapter/http';
 import {ArmorBrowserRequestAdapterMock} from '../../src/request/adapter/mock';
 import {ArmorBrowserRequestOptions} from '../../src/request/options/options';
 import {ArmorBrowserResponse} from '../../src/response/response';
+import {ArmorBrowserResponseWindow} from '../../src/response/window';
 import {EventEmitter} from 'events';
 
 const MOCK_URL = 'https://sample.armorjs.com';
@@ -44,13 +45,35 @@ describe('ArmorBrowserResponse', () => {
 
 		it('should initialize res property from the res argument', () => {
 			const res = {
-				'one': '14414141',
-				'two': '44091091'
+				one: '14414141',
+				two: '44091091'
 			} as any;
 			const custom = new ArmorBrowserResponse(events, res);
 			expect(custom.res).toEqual(res);
 		});
+
+		it('should initialize wnd property', () => {
+			const custom = new ArmorBrowserResponse(events, {} as any);
+			expect(custom.wnd).not.toBeUndefined();
+		});
 	});
 
-	describe('Implementation', () => {});
+	describe('Implementation', () => {
+		describe('createAndLoadWindow', () => {
+			it('should return an ArmorBrowserResponseWindow instance', () => {
+				const res = {};
+				const wnd = instance.createAndLoadWindow(events, res);
+				expect(wnd).not.toBeNull();
+				expect(wnd instanceof ArmorBrowserResponseWindow).toBe(true);
+			});
+
+			it('should return null when window init throws', () => {
+				const res = {};
+				const wnd = instance.createAndLoadWindow(undefined as any, res);
+				expect(wnd).toBeNull();
+			});
+
+
+		});
+	});
 });

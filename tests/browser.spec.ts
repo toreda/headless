@@ -24,4 +24,8 @@ describe('ArmorBrowser', () => {
 			expect(custom.events instanceof EventEmitter).toBe(true);
 		});
 	});
+
+	describe('Configuration', () => {
+
+	});
 });
