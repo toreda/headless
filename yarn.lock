@@ -33,9 +33,9 @@
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@armorjs/config/-/config-0.0.2.tgz#630b72c6f753a27c596c1a096dea04312564f13e"
 
-"@armorjs/key-store@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@armorjs/key-store/-/key-store-0.0.2.tgz#bccc07238022746a5cc28a933d41e9beb6a2b669"
+"@armorjs/key-store@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@armorjs/key-store/-/key-store-0.0.4.tgz#304e7660141bafd509e16e22b28d481ea3518898"
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.8.3":
   version "7.8.3"

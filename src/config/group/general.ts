@@ -1,6 +1,6 @@
-import {ArmorKeyGroup} from '@armorjs/key';
+import {ArmorKeyStore} from '@armorjs/key-store';
 
-export class ArmorHeadlessConfigGeneral extends ArmorKeyGroup {
+export class ArmorHeadlessConfigGeneral extends ArmorKeyStore {
 	constructor() {
 		super();
 	}

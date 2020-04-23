@@ -1,5 +1,3 @@
-import {ArmorKeyStore, ArmorKeyStoreParser} from '@armorjs/key-store';
-
 import {ArmorHeadlessConfig} from './config';
 import {ArmorHeadlessRequest} from './request/request';
 import {ArmorHeadlessRequestOptions} from './request/options/options';
@@ -8,13 +6,12 @@ import {EventEmitter} from 'events';
 
 export class ArmorHeadless {
 	public readonly events: EventEmitter;
-	public readonly config: ArmorKeyGroup;
+	public readonly config: ArmorHeadlessConfig;
 
 	constructor(options?: any) {
 		this.events = options && options.events ? options.events : new EventEmitter();
 		this.config = new ArmorHeadlessConfig();
-		const configParser = new ArmorKeyParser();
-		configParser.parse(this.config, options);
+		this.config.parse(options);
 	}
 
 	public async load(

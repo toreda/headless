@@ -1,6 +1,6 @@
-import {ArmorKeyBoolean, ArmorKeyGroup, ArmorKeyString} from '@armorjs/key';
+import {ArmorKeyBoolean, ArmorKeyStore, ArmorKeyString} from '@armorjs/key-store';
 
-export class ArmorHeadlessRequestOptionsAdapter extends ArmorKeyGroup {
+export class ArmorHeadlessRequestOptionsAdapter extends ArmorKeyStore {
 	public readonly id: ArmorKeyString;
 	public readonly httpFallback: {
 		enabled: ArmorKeyBoolean;

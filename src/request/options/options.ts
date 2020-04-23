@@ -1,10 +1,10 @@
-import {ArmorKeyGroup, ArmorKeyString} from '@armorjs/key';
+import {ArmorKeyStore, ArmorKeyString} from '@armorjs/key-store';
 
 import {ArmorHeadlessRequestOptionsAdapter} from './adapter';
 import {ArmorHeadlessRequestOptionsHeaders} from './headers';
 import {ArmorHeadlessRequestOptionsLog} from './log';
 
-export class ArmorHeadlessRequestOptions extends ArmorKeyGroup {
+export class ArmorHeadlessRequestOptions extends ArmorKeyStore {
 	public readonly log: ArmorHeadlessRequestOptionsLog;
 	public readonly headers: ArmorHeadlessRequestOptionsHeaders;
 	public method: ArmorKeyString;

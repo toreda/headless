@@ -1,4 +1,4 @@
-import { ArmorKeyUInt } from '@armorjs/key';
+import { ArmorKeyUInt } from '@armorjs/key-store';
 import {EventEmitter} from 'events';
 
 export class ArmorHeadlessResponseWindow {

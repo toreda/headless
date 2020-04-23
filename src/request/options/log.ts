@@ -1,6 +1,6 @@
-import {ArmorKeyBoolean, ArmorKeyGroup, ArmorKeyString} from '@armorjs/key';
+import {ArmorKeyBoolean, ArmorKeyStore, ArmorKeyString} from '@armorjs/key-store';
 
-export class ArmorHeadlessRequestOptionsLog extends ArmorKeyGroup {
+export class ArmorHeadlessRequestOptionsLog extends ArmorKeyStore {
 	public readonly enabled: ArmorKeyBoolean;
 
 	public readonly writeToDisk: {

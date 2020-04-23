@@ -1,8 +1,8 @@
-import {ArmorKeyString, ArmorKeyUInt} from '@armorjs/key';
+import { ArmorKeyStore, ArmorKeyString, ArmorKeyUInt } from '@armorjs/key-store';
 
 import {ArmorHeadlessRequestHeaders} from '../headers';
 
-export class ArmorHeadlessRequestOptionsHeaders {
+export class ArmorHeadlessRequestOptionsHeaders extends ArmorKeyStore {
 	public readonly origin: ArmorKeyString;
 	public readonly host: ArmorKeyString;
 	public readonly accept: ArmorKeyString;
@@ -25,6 +25,7 @@ export class ArmorHeadlessRequestOptionsHeaders {
 	public readonly xMicrosoftAjax: ArmorKeyString;
 
 	constructor() {
+		super();
 		this.accept = new ArmorKeyString();
 		this.acceptEncoding = new ArmorKeyString();
 		this.acceptLanguage = new ArmorKeyString();
