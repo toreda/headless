@@ -30,7 +30,7 @@ export class ArmorHeadlessRequest {
 
 	public async execute(): Promise<ArmorHeadlessResponse> {
 		const method = this.options.method.get('GET');
-		const headers = this.options.headers.get();
+		const headers = this.options.headers.getAsObject();
 		const payload = {};
 
 		let result: any = null;

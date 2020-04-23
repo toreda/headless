@@ -1,16 +1,16 @@
-import {ArmorConfigGroup, ArmorConfigKeyBoolean, ArmorConfigKeyString} from '@armorjs/config';
+import {ArmorKeyBoolean, ArmorKeyGroup, ArmorKeyString} from '@armorjs/key';
 
-export class ArmorHeadlessRequestOptionsAdapter extends ArmorConfigGroup {
-	public readonly id: ArmorConfigKeyString;
+export class ArmorHeadlessRequestOptionsAdapter extends ArmorKeyGroup {
+	public readonly id: ArmorKeyString;
 	public readonly httpFallback: {
-		enabled: ArmorConfigKeyBoolean;
+		enabled: ArmorKeyBoolean;
 	};
 
 	constructor() {
 		super();
-		this.id = new ArmorConfigKeyString('http');
+		this.id = new ArmorKeyString('http');
 		this.httpFallback = {
-			enabled: new ArmorConfigKeyBoolean()
+			enabled: new ArmorKeyBoolean()
 		};
 	}
 }

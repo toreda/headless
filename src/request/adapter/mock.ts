@@ -9,13 +9,13 @@ export class ArmorHeadlessRequestAdapterMock implements ArmorHeadlessRequestAdap
 		this.id = 'mock';
 	}
 
-	public get(url: string | null, headers: ArmorHeadlessRequestOptionsHeaders): Promise<any> {
+	public get(url: string | null, headers: ArmorHeadlessRequestHeaders): Promise<any> {
 		return new Promise((resolve, reject) => {
 			return resolve();
 		});
 	}
 
-	public post(url: string | null, headers: ArmorHeadlessRequestOptionsHeaders, payload: any): Promise<any> {
+	public post(url: string | null, headers: ArmorHeadlessRequestHeaders, payload: any): Promise<any> {
 		return new Promise((resolve, reject) => {
 			return resolve();
 		});

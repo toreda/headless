@@ -1,19 +1,19 @@
-import {ArmorConfigGroup, ArmorConfigKeyBoolean, ArmorConfigKeyString} from '@armorjs/config';
+import {ArmorKeyBoolean, ArmorKeyGroup, ArmorKeyString} from '@armorjs/key';
 
-export class ArmorHeadlessRequestOptionsLog extends ArmorConfigGroup {
-	public readonly enabled: ArmorConfigKeyBoolean;
+export class ArmorHeadlessRequestOptionsLog extends ArmorKeyGroup {
+	public readonly enabled: ArmorKeyBoolean;
 
 	public readonly writeToDisk: {
-		enabled: ArmorConfigKeyBoolean;
-		atPath: ArmorConfigKeyString;
+		enabled: ArmorKeyBoolean;
+		atPath: ArmorKeyString;
 	};
 
 	constructor() {
 		super();
-		this.enabled = new ArmorConfigKeyBoolean(false);
+		this.enabled = new ArmorKeyBoolean(false);
 		this.writeToDisk = {
-			enabled: new ArmorConfigKeyBoolean(false),
-			atPath: new ArmorConfigKeyString()
+			enabled: new ArmorKeyBoolean(false),
+			atPath: new ArmorKeyString()
 		};
 	}
 }

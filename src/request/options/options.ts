@@ -1,13 +1,13 @@
-import {ArmorConfig, ArmorConfigKeyString} from '@armorjs/config';
+import {ArmorKeyGroup, ArmorKeyString} from '@armorjs/key';
 
 import {ArmorHeadlessRequestOptionsAdapter} from './adapter';
 import {ArmorHeadlessRequestOptionsHeaders} from './headers';
 import {ArmorHeadlessRequestOptionsLog} from './log';
 
-export class ArmorHeadlessRequestOptions extends ArmorConfig {
+export class ArmorHeadlessRequestOptions extends ArmorKeyGroup {
 	public readonly log: ArmorHeadlessRequestOptionsLog;
 	public readonly headers: ArmorHeadlessRequestOptionsHeaders;
-	public method: ArmorConfigKeyString;
+	public method: ArmorKeyString;
 	public adapter: ArmorHeadlessRequestOptionsAdapter;
 
 	constructor() {
@@ -15,6 +15,6 @@ export class ArmorHeadlessRequestOptions extends ArmorConfig {
 		this.adapter = new ArmorHeadlessRequestOptionsAdapter();
 		this.log = new ArmorHeadlessRequestOptionsLog();
 		this.headers = new ArmorHeadlessRequestOptionsHeaders();
-		this.method = new ArmorConfigKeyString('get');
+		this.method = new ArmorKeyString('get');
 	}
 }

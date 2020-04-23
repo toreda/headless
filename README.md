@@ -28,10 +28,10 @@ ArmorJS standards:
 ## Install
 
 ***With yarn (preferred):***
-```yarn add @armorjs/config```
+```yarn add @armorjs/headless```
 
 With NPM:
-```npm install @armorjs/config```
+```npm install @armorjs/headless```
 
 ## Usage
 
@@ -39,12 +39,12 @@ With NPM:
 
 #### Typescript
 ```
-import { ArmorConfig } from '@armorjs/config';
+import { ArmorHeadless } from '@armorjs/headless';
 ```
 
 #### Node
 ```
-const ArmorConfig = require('@armorjs/config');
+const ArmorHeadless = require('@armorjs/headless');
 ```
 
 ## Build
@@ -63,7 +63,7 @@ npm run-script build
 ```
 ## Testing
 
-Config implements unit tests using jest. Run the following commands from the directory where config has been installed.
+Headless implements unit tests using jest. Run the following commands from the directory where headless has been installed.
 
 ***With yarn (preferred):***
 ```

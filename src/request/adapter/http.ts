@@ -11,9 +11,9 @@ export class ArmorHeadlessRequestAdapterHttp implements ArmorHeadlessRequestAdap
 		this.id = 'http';
 	}
 
-	public get(url: string | null, headers: ArmorHeadlessRequestOptionsHeaders): Promise<any> {
+	public get(url: string | null, headers: ArmorHeadlessRequestHeaders): Promise<any> {
 		return new Promise((resolve, reject) => {
-			headers.method.update('GET');
+			headers.method = 'GET';
 
 			if (!url) {
 				return null;
@@ -30,16 +30,16 @@ export class ArmorHeadlessRequestAdapterHttp implements ArmorHeadlessRequestAdap
 		});
 	}
 
-	public post(url: string | null, headers: ArmorHeadlessRequestOptionsHeaders, payload: any): Promise<any> {
+	public post(url: string | null, headers: ArmorHeadlessRequestHeaders, payload: any): Promise<any> {
 		return new Promise((resolve, reject) => {
-			headers.method.update('POST');
+			headers.method = 'POST';
 
 			if (!url) {
 				return null;
 			}
 
 			axios
-				.post(url, payload, {headers: headers.getAsObject()})
+				.post(url, payload, {headers: headers})
 				.then((res) => {
 					return resolve(res);
 				})

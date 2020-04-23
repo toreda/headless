@@ -1,7 +1,9 @@
+import { ArmorKeyUInt } from '@armorjs/key';
 import {EventEmitter} from 'events';
 
 export class ArmorHeadlessResponseWindow {
 	public readonly events: EventEmitter;
+
 
 	constructor(events: EventEmitter) {
 		if (!events) {
@@ -15,5 +17,12 @@ export class ArmorHeadlessResponseWindow {
 		this.events = events;
 	}
 
-	public load(res: any): void {}
+	public load(res: any): void {
+		if (!res) {
+			console.warn('Request load aborted - no response provided');
+			return;
+		}
+
+	}
+
 }

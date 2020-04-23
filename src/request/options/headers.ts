@@ -1,50 +1,50 @@
-import {ArmorConfigKeyString, ArmorConfigKeyUInt} from '@armorjs/config';
+import {ArmorKeyString, ArmorKeyUInt} from '@armorjs/key';
 
 import {ArmorHeadlessRequestHeaders} from '../headers';
 
 export class ArmorHeadlessRequestOptionsHeaders {
-	public readonly origin: ArmorConfigKeyString;
-	public readonly host: ArmorConfigKeyString;
-	public readonly accept: ArmorConfigKeyString;
-	public readonly acceptLanguage: ArmorConfigKeyString;
-	public readonly acceptEncoding: ArmorConfigKeyString;
-	public readonly acceptsCookies: ArmorConfigKeyString;
-	public readonly cacheControl: ArmorConfigKeyString;
-	public readonly cookie: ArmorConfigKeyString;
-	public readonly contentControl: ArmorConfigKeyString;
-	public readonly dnt: ArmorConfigKeyUInt;
-	public readonly method: ArmorConfigKeyString;
-	public readonly pragma: ArmorConfigKeyString;
-	public readonly referer: ArmorConfigKeyString;
-	public readonly secFetchMode: ArmorConfigKeyString;
-	public readonly secFetchSite: ArmorConfigKeyString;
-	public readonly secFetchUser: ArmorConfigKeyString;
-	public readonly upgradeInsecureRequests: ArmorConfigKeyString;
-	public readonly userAgent: ArmorConfigKeyString;
-	public readonly xRequestedWith: ArmorConfigKeyString;
-	public readonly xMicrosoftAjax: ArmorConfigKeyString;
+	public readonly origin: ArmorKeyString;
+	public readonly host: ArmorKeyString;
+	public readonly accept: ArmorKeyString;
+	public readonly acceptLanguage: ArmorKeyString;
+	public readonly acceptEncoding: ArmorKeyString;
+	public readonly acceptsCookies: ArmorKeyString;
+	public readonly cacheControl: ArmorKeyString;
+	public readonly cookie: ArmorKeyString;
+	public readonly contentControl: ArmorKeyString;
+	public readonly dnt: ArmorKeyUInt;
+	public readonly method: ArmorKeyString;
+	public readonly pragma: ArmorKeyString;
+	public readonly referer: ArmorKeyString;
+	public readonly secFetchMode: ArmorKeyString;
+	public readonly secFetchSite: ArmorKeyString;
+	public readonly secFetchUser: ArmorKeyString;
+	public readonly upgradeInsecureRequests: ArmorKeyString;
+	public readonly userAgent: ArmorKeyString;
+	public readonly xRequestedWith: ArmorKeyString;
+	public readonly xMicrosoftAjax: ArmorKeyString;
 
 	constructor() {
-		this.accept = new ArmorConfigKeyString();
-		this.acceptEncoding = new ArmorConfigKeyString();
-		this.acceptLanguage = new ArmorConfigKeyString();
-		this.acceptsCookies = new ArmorConfigKeyString();
-		this.cacheControl = new ArmorConfigKeyString();
-		this.cookie = new ArmorConfigKeyString();
-		this.contentControl = new ArmorConfigKeyString();
-		this.dnt = new ArmorConfigKeyUInt(1);
-		this.method = new ArmorConfigKeyString('GET');
-		this.host = new ArmorConfigKeyString();
-		this.pragma = new ArmorConfigKeyString();
-		this.origin = new ArmorConfigKeyString();
-		this.referer = new ArmorConfigKeyString();
-		this.secFetchMode = new ArmorConfigKeyString();
-		this.secFetchSite = new ArmorConfigKeyString();
-		this.secFetchUser = new ArmorConfigKeyString();
-		this.upgradeInsecureRequests = new ArmorConfigKeyString();
-		this.userAgent = new ArmorConfigKeyString();
-		this.xRequestedWith = new ArmorConfigKeyString();
-		this.xMicrosoftAjax = new ArmorConfigKeyString();
+		this.accept = new ArmorKeyString();
+		this.acceptEncoding = new ArmorKeyString();
+		this.acceptLanguage = new ArmorKeyString();
+		this.acceptsCookies = new ArmorKeyString();
+		this.cacheControl = new ArmorKeyString();
+		this.cookie = new ArmorKeyString();
+		this.contentControl = new ArmorKeyString();
+		this.dnt = new ArmorKeyUInt(1);
+		this.method = new ArmorKeyString('GET');
+		this.host = new ArmorKeyString();
+		this.pragma = new ArmorKeyString();
+		this.origin = new ArmorKeyString();
+		this.referer = new ArmorKeyString();
+		this.secFetchMode = new ArmorKeyString();
+		this.secFetchSite = new ArmorKeyString();
+		this.secFetchUser = new ArmorKeyString();
+		this.upgradeInsecureRequests = new ArmorKeyString();
+		this.userAgent = new ArmorKeyString();
+		this.xRequestedWith = new ArmorKeyString();
+		this.xMicrosoftAjax = new ArmorKeyString();
 	}
 
 	public getAsObject(): ArmorHeadlessRequestHeaders {

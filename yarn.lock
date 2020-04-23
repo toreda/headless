@@ -33,6 +33,10 @@
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@armorjs/config/-/config-0.0.2.tgz#630b72c6f753a27c596c1a096dea04312564f13e"
 
+"@armorjs/key@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@armorjs/key/-/key-0.0.2.tgz#70f6bc9fdca5daff072fa151ea06647c1ee7723b"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.8.3":
   version "7.8.3"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.8.3.tgz#33e25903d7481181534e12ec0a25f16b6fcf419e"

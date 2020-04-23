@@ -1,4 +1,4 @@
-import {ArmorConfig, ArmorConfigParser} from '@armorjs/config';
+import {ArmorKeyGroup, ArmorKeyParser} from '@armorjs/key';
 
 import {ArmorHeadlessConfig} from './config';
 import {ArmorHeadlessRequest} from './request/request';
@@ -8,16 +8,20 @@ import {EventEmitter} from 'events';
 
 export class ArmorHeadless {
 	public readonly events: EventEmitter;
-	public readonly config: ArmorHeadlessConfig;
+	public readonly config: ArmorKeyGroup;
 
 	constructor(options?: any) {
 		this.events = options && options.events ? options.events : new EventEmitter();
 		this.config = new ArmorHeadlessConfig();
-		const configParser = new ArmorConfigParser();
+		const configParser = new ArmorKeyParser();
 		configParser.parse(this.config, options);
 	}
 
-	public async load(url: string, method: string, options: ArmorHeadlessRequestOptions): Promise<ArmorHeadlessResponse> {
+	public async load(
+		url: string,
+		method: string,
+		options: ArmorHeadlessRequestOptions
+	): Promise<ArmorHeadlessResponse> {
 		options.method.update(method);
 		const request = new ArmorHeadlessRequest(this.events, url, options);
 		return await request.execute();
