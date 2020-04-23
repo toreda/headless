@@ -1,4 +1,4 @@
-import {ArmorKeyGroup, ArmorKeyParser} from '@armorjs/key';
+import {ArmorKeyStore, ArmorKeyStoreParser} from '@armorjs/key-store';
 
 import {ArmorHeadlessConfig} from './config';
 import {ArmorHeadlessRequest} from './request/request';
