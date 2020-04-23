@@ -1,7 +1,7 @@
-import {ArmorBrowserRequestHeaders} from '../headers';
+import { ArmorHeadlessRequestOptionsHeaders } from '../options/headers';
 
-export interface ArmorBrowserRequestAdapter {
+export interface ArmorHeadlessRequestAdapter {
 	id: string;
-	get(url: string | null, headers: ArmorBrowserRequestHeaders): Promise<any>;
-	post(url: string | null, headers: ArmorBrowserRequestHeaders, payload: any): Promise<any>;
+	get(url: string | null, headers: ArmorHeadlessRequestOptionsHeaders): Promise<any>;
+	post(url: string | null, headers: ArmorHeadlessRequestOptionsHeaders, payload: any): Promise<any>;
 }

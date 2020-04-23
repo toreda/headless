@@ -1,6 +1,7 @@
-# ArmorJS - Browser
+# ArmorJS - Headless
+## Headless Browser for automated testing
 
-![CI](https://github.com/armorjs/browser/workflows/CI/badge.svg?branch=master) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=armorjs_browser&metric=coverage)](https://sonarcloud.io/dashboard?id=armorjs_browser) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=armorjs_browser&metric=alert_status)](https://sonarcloud.io/dashboard?id=armorjs_browser)
+![CI](https://github.com/armorjs/headless/workflows/CI/badge.svg?branch=master) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=armorjs_headless&metric=coverage)](https://sonarcloud.io/dashboard?id=armorjs_headless) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=armorjs_headless&metric=alert_status)](https://sonarcloud.io/dashboard?id=armorjs_headless)
 
 
 ## Contents

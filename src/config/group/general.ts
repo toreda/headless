@@ -1,6 +1,6 @@
 import {ArmorConfigGroup} from '@armorjs/config';
 
-export class ArmorBrowserConfigGeneral extends ArmorConfigGroup {
+export class ArmorHeadlessConfigGeneral extends ArmorConfigGroup {
 	constructor() {
 		super();
 	}

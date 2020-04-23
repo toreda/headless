@@ -1,20 +1,20 @@
-import {ArmorBrowserRequest} from '../../src/request/request';
-import {ArmorBrowserRequestAdapterHttp} from '../../src/request/adapter/http';
-import {ArmorBrowserRequestAdapterMock} from '../../src/request/adapter/mock';
-import {ArmorBrowserRequestOptions} from '../../src/request/options/options';
+import {ArmorHeadlessRequest} from '../../src/request/request';
+import {ArmorHeadlessRequestAdapterHttp} from '../../src/request/adapter/http';
+import {ArmorHeadlessRequestAdapterMock} from '../../src/request/adapter/mock';
+import {ArmorHeadlessRequestOptions} from '../../src/request/options/options';
 import {EventEmitter} from 'events';
 
 const MOCK_URL = 'https://sample.armorjs.com';
 
-describe('ArmorBrowserRequest', () => {
-	let instance: ArmorBrowserRequest;
+describe('ArmorHeadlessRequest', () => {
+	let instance: ArmorHeadlessRequest;
 	let events: EventEmitter;
-	let options: ArmorBrowserRequestOptions;
+	let options: ArmorHeadlessRequestOptions;
 
 	beforeAll(() => {
 		events = new EventEmitter();
-		options = new ArmorBrowserRequestOptions();
-		instance = new ArmorBrowserRequest(events, MOCK_URL, options);
+		options = new ArmorHeadlessRequestOptions();
+		instance = new ArmorHeadlessRequest(events, MOCK_URL, options);
 	});
 
 	describe('Constructor', () => {});
@@ -23,32 +23,32 @@ describe('ArmorBrowserRequest', () => {
 		describe('createAdapter', () => {
 			it('should return a mock adapter instance when adapterId argument is mock', () => {
 				const result = instance.createAdapter('mock');
-				expect(result instanceof ArmorBrowserRequestAdapterMock).toBe(true);
+				expect(result instanceof ArmorHeadlessRequestAdapterMock).toBe(true);
 			});
 
 			it('should return a http adapter instance when adapterId argument is http', () => {
 				const result = instance.createAdapter('http');
-				expect(result instanceof ArmorBrowserRequestAdapterHttp).toBe(true);
+				expect(result instanceof ArmorHeadlessRequestAdapterHttp).toBe(true);
 			});
 
 			it('should return a http adapter instance when adapterId argument is https', () => {
 				const result = instance.createAdapter('https');
-				expect(result instanceof ArmorBrowserRequestAdapterHttp).toBe(true);
+				expect(result instanceof ArmorHeadlessRequestAdapterHttp).toBe(true);
 			});
 
 			it('should return a http adapter instance when adapterId argument is not provided', () => {
 				const result = instance.createAdapter(undefined as any);
-				expect(result instanceof ArmorBrowserRequestAdapterHttp).toBe(true);
+				expect(result instanceof ArmorHeadlessRequestAdapterHttp).toBe(true);
 			});
 
 			it('should return a http adapter instance when adapterId argument is an empty string', () => {
 				const result = instance.createAdapter('');
-				expect(result instanceof ArmorBrowserRequestAdapterHttp).toBe(true);
+				expect(result instanceof ArmorHeadlessRequestAdapterHttp).toBe(true);
 			});
 
 			it('should return a http adapter instance when adapterId argument is not a supported adapterId', () => {
 				const result = instance.createAdapter('@@@@@@');
-				expect(result instanceof ArmorBrowserRequestAdapterHttp).toBe(true);
+				expect(result instanceof ArmorHeadlessRequestAdapterHttp).toBe(true);
 			});
 		});
 	});

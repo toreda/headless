@@ -1,6 +1,6 @@
 import {ArmorConfigGroup, ArmorConfigKeyBoolean, ArmorConfigKeyString} from '@armorjs/config';
 
-export class ArmorBrowserRequestOptionsLog extends ArmorConfigGroup {
+export class ArmorHeadlessRequestOptionsLog extends ArmorConfigGroup {
 	public readonly enabled: ArmorConfigKeyBoolean;
 
 	public readonly writeToDisk: {

@@ -1,15 +1,15 @@
 import {EventEmitter} from 'events';
 
-export class ArmorBrowserResponseWindow {
+export class ArmorHeadlessResponseWindow {
 	public readonly events: EventEmitter;
 
 	constructor(events: EventEmitter) {
 		if (!events) {
-			throw new Error('ArmorBrowserResponseWindow init failed - events argument missing.')
+			throw new Error('ArmorHeadlessResponseWindow init failed - events argument missing.')
 		}
 
 		if (!(events instanceof EventEmitter)){
-			throw new Error('ArmorBrowserResponseWindow init failed - events argument not an EventEmitter instance.');
+			throw new Error('ArmorHeadlessResponseWindow init failed - events argument not an EventEmitter instance.');
 		}
 
 		this.events = events;

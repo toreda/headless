@@ -1,16 +1,17 @@
-import {ArmorBrowserRequestAdapter} from './adapter';
-import {ArmorBrowserRequestHeaders} from '../headers';
-import {ArmorBrowserRequestOptions} from '../options/options';
+import {ArmorHeadlessRequestAdapter} from './adapter';
+import {ArmorHeadlessRequestHeaders} from '../headers';
+import {ArmorHeadlessRequestOptions} from '../options/options';
+import {ArmorHeadlessRequestOptionsHeaders} from '../options/headers';
 import axios from 'axios';
 
-export class ArmorBrowserRequestAdapterHttp implements ArmorBrowserRequestAdapter {
+export class ArmorHeadlessRequestAdapterHttp implements ArmorHeadlessRequestAdapter {
 	public readonly id: string;
 
 	constructor() {
 		this.id = 'http';
 	}
 
-	public get(url: string | null, headers: ArmorBrowserRequestHeaders): Promise<any> {
+	public get(url: string | null, headers: ArmorHeadlessRequestOptionsHeaders): Promise<any> {
 		return new Promise((resolve, reject) => {
 			headers.method.update('GET');
 
@@ -29,7 +30,7 @@ export class ArmorBrowserRequestAdapterHttp implements ArmorBrowserRequestAdapte
 		});
 	}
 
-	public post(url: string | null, headers: ArmorBrowserRequestHeaders, payload: any): Promise<any> {
+	public post(url: string | null, headers: ArmorHeadlessRequestOptionsHeaders, payload: any): Promise<any> {
 		return new Promise((resolve, reject) => {
 			headers.method.update('POST');
 
@@ -38,7 +39,7 @@ export class ArmorBrowserRequestAdapterHttp implements ArmorBrowserRequestAdapte
 			}
 
 			axios
-				.post(url, payload, {headers})
+				.post(url, payload, {headers: headers.getAsObject()})
 				.then((res) => {
 					return resolve(res);
 				})

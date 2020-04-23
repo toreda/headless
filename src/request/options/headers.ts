@@ -1,8 +1,8 @@
 import {ArmorConfigKeyString, ArmorConfigKeyUInt} from '@armorjs/config';
 
-import {ArmorBrowserRequestHeaders} from '../headers';
+import {ArmorHeadlessRequestHeaders} from '../headers';
 
-export class ArmorBrowserRequestOptionsHeaders {
+export class ArmorHeadlessRequestOptionsHeaders {
 	public readonly origin: ArmorConfigKeyString;
 	public readonly host: ArmorConfigKeyString;
 	public readonly accept: ArmorConfigKeyString;
@@ -47,7 +47,7 @@ export class ArmorBrowserRequestOptionsHeaders {
 		this.xMicrosoftAjax = new ArmorConfigKeyString();
 	}
 
-	public get(): ArmorBrowserRequestHeaders {
+	public getAsObject(): ArmorHeadlessRequestHeaders {
 		return {
 			Accept: this.accept.get('*/*'),
 			AcceptsCookies: this.acceptsCookies.get('yes'),

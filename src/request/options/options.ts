@@ -1,20 +1,20 @@
 import {ArmorConfig, ArmorConfigKeyString} from '@armorjs/config';
 
-import {ArmorBrowserRequestOptionsAdapter} from './adapter';
-import {ArmorBrowserRequestOptionsHeaders} from './headers';
-import {ArmorBrowserRequestOptionsLog} from './log';
+import {ArmorHeadlessRequestOptionsAdapter} from './adapter';
+import {ArmorHeadlessRequestOptionsHeaders} from './headers';
+import {ArmorHeadlessRequestOptionsLog} from './log';
 
-export class ArmorBrowserRequestOptions extends ArmorConfig {
-	public readonly log: ArmorBrowserRequestOptionsLog;
-	public readonly headers: ArmorBrowserRequestOptionsHeaders;
+export class ArmorHeadlessRequestOptions extends ArmorConfig {
+	public readonly log: ArmorHeadlessRequestOptionsLog;
+	public readonly headers: ArmorHeadlessRequestOptionsHeaders;
 	public method: ArmorConfigKeyString;
-	public adapter: ArmorBrowserRequestOptionsAdapter;
+	public adapter: ArmorHeadlessRequestOptionsAdapter;
 
 	constructor() {
 		super();
-		this.adapter = new ArmorBrowserRequestOptionsAdapter();
-		this.log = new ArmorBrowserRequestOptionsLog();
-		this.headers = new ArmorBrowserRequestOptionsHeaders();
+		this.adapter = new ArmorHeadlessRequestOptionsAdapter();
+		this.log = new ArmorHeadlessRequestOptionsLog();
+		this.headers = new ArmorHeadlessRequestOptionsHeaders();
 		this.method = new ArmorConfigKeyString('get');
 	}
 }

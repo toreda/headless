@@ -1,24 +1,24 @@
-import {ArmorBrowserRequestAdapter} from './adapter/adapter';
-import {ArmorBrowserRequestAdapterHttp} from './adapter/http';
-import {ArmorBrowserRequestAdapterMock} from './adapter/mock';
-import {ArmorBrowserRequestOptions} from './options/options';
-import {ArmorBrowserRequestOptionsHeaders} from './options/headers';
-import {ArmorBrowserResponse} from '../response/response';
+import {ArmorHeadlessRequestAdapter} from './adapter/adapter';
+import {ArmorHeadlessRequestAdapterHttp} from './adapter/http';
+import {ArmorHeadlessRequestAdapterMock} from './adapter/mock';
+import {ArmorHeadlessRequestOptions} from './options/options';
+import {ArmorHeadlessRequestOptionsHeaders} from './options/headers';
+import {ArmorHeadlessResponse} from '../response/response';
 import {EventEmitter} from 'events';
 
-export class ArmorBrowserRequest {
+export class ArmorHeadlessRequest {
 	public readonly url: string | null;
 	public readonly events: EventEmitter;
-	public readonly options: ArmorBrowserRequestOptions;
-	public readonly adapter: ArmorBrowserRequestAdapter;
+	public readonly options: ArmorHeadlessRequestOptions;
+	public readonly adapter: ArmorHeadlessRequestAdapter;
 
-	constructor(events: EventEmitter, url: string | null, options: ArmorBrowserRequestOptions) {
+	constructor(events: EventEmitter, url: string | null, options: ArmorHeadlessRequestOptions) {
 		if (!events) {
-			throw new Error('ArmorBrowserRequest init failed - events argument missing.');
+			throw new Error('ArmorHeadlessRequest init failed - events argument missing.');
 		}
 
 		if (!options) {
-			throw new Error('ArmorBrowserRequest init failed - options argument missing.');
+			throw new Error('ArmorHeadlessRequest init failed - options argument missing.');
 		}
 
 		this.url = url;
@@ -28,7 +28,7 @@ export class ArmorBrowserRequest {
 		this.options = options;
 	}
 
-	public async execute(): Promise<ArmorBrowserResponse> {
+	public async execute(): Promise<ArmorHeadlessResponse> {
 		const method = this.options.method.get('GET');
 		const headers = this.options.headers.get();
 		const payload = {};
@@ -46,19 +46,19 @@ export class ArmorBrowserRequest {
 				break;
 		}
 
-		return new ArmorBrowserResponse(this.events, result);
+		return new ArmorHeadlessResponse(this.events, result);
 	}
 
-	public createAdapter(adapterId: string): ArmorBrowserRequestAdapter {
+	public createAdapter(adapterId: string): ArmorHeadlessRequestAdapter {
 		switch (adapterId) {
 			case 'mock':
-				return new ArmorBrowserRequestAdapterMock();
+				return new ArmorHeadlessRequestAdapterMock();
 			case 'https':
-				return new ArmorBrowserRequestAdapterHttp();
+				return new ArmorHeadlessRequestAdapterHttp();
 			case 'http':
-				return new ArmorBrowserRequestAdapterHttp();
+				return new ArmorHeadlessRequestAdapterHttp();
 			default:
-				return new ArmorBrowserRequestAdapterHttp();
+				return new ArmorHeadlessRequestAdapterHttp();
 		}
 	}
 }

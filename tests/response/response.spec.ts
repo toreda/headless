@@ -1,44 +1,44 @@
-import {ArmorBrowserRequest} from '../../src/request/request';
-import {ArmorBrowserRequestAdapterHttp} from '../../src/request/adapter/http';
-import {ArmorBrowserRequestAdapterMock} from '../../src/request/adapter/mock';
-import {ArmorBrowserRequestOptions} from '../../src/request/options/options';
-import {ArmorBrowserResponse} from '../../src/response/response';
-import {ArmorBrowserResponseWindow} from '../../src/response/window';
+import {ArmorHeadlessRequest} from '../../src/request/request';
+import {ArmorHeadlessRequestAdapterHttp} from '../../src/request/adapter/http';
+import {ArmorHeadlessRequestAdapterMock} from '../../src/request/adapter/mock';
+import {ArmorHeadlessRequestOptions} from '../../src/request/options/options';
+import {ArmorHeadlessResponse} from '../../src/response/response';
+import {ArmorHeadlessResponseWindow} from '../../src/response/window';
 import {EventEmitter} from 'events';
 
 const MOCK_URL = 'https://sample.armorjs.com';
 
-describe('ArmorBrowserResponse', () => {
-	let instance: ArmorBrowserResponse;
+describe('ArmorHeadlessResponse', () => {
+	let instance: ArmorHeadlessResponse;
 	let events: EventEmitter;
 
 	beforeAll(() => {
 		events = new EventEmitter();
-		instance = new ArmorBrowserResponse(events, {} as any);
+		instance = new ArmorHeadlessResponse(events, {} as any);
 	});
 
 	describe('Constructor', () => {
 		it('should throw when events argument is missing', () => {
 			expect(() => {
-				const custom = new ArmorBrowserResponse(undefined as any, {} as any);
-			}).toThrow('ArmorBrowserResponse init failed - request.events property missing.');
+				const custom = new ArmorHeadlessResponse(undefined as any, {} as any);
+			}).toThrow('ArmorHeadlessResponse init failed - request.events property missing.');
 		});
 
 		it('should throw when events argument is not an EventEmitter instance', () => {
 			expect(() => {
-				const custom = new ArmorBrowserResponse({} as any, {} as any);
-			}).toThrow('ArmorBrowserResponse init failed - request.event property is not an EventEmitter instance.');
+				const custom = new ArmorHeadlessResponse({} as any, {} as any);
+			}).toThrow('ArmorHeadlessResponse init failed - request.event property is not an EventEmitter instance.');
 		});
 
 		it('should throw when res argument is missing', () => {
 			expect(() => {
-				const custom = new ArmorBrowserResponse(events, undefined as any);
-			}).toThrow('ArmorBrowserResponse init failed - res argument missing.');
+				const custom = new ArmorHeadlessResponse(events, undefined as any);
+			}).toThrow('ArmorHeadlessResponse init failed - res argument missing.');
 		});
 
 		it('should initialize events property from the events argument', () => {
 			const events12 = new EventEmitter();
-			const custom = new ArmorBrowserResponse(events12, {} as any);
+			const custom = new ArmorHeadlessResponse(events12, {} as any);
 			expect(custom.events).toBe(events12);
 			expect(custom.events).not.toBe(events);
 		});
@@ -48,23 +48,23 @@ describe('ArmorBrowserResponse', () => {
 				one: '14414141',
 				two: '44091091'
 			} as any;
-			const custom = new ArmorBrowserResponse(events, res);
+			const custom = new ArmorHeadlessResponse(events, res);
 			expect(custom.res).toEqual(res);
 		});
 
 		it('should initialize wnd property', () => {
-			const custom = new ArmorBrowserResponse(events, {} as any);
+			const custom = new ArmorHeadlessResponse(events, {} as any);
 			expect(custom.wnd).not.toBeUndefined();
 		});
 	});
 
 	describe('Implementation', () => {
 		describe('createAndLoadWindow', () => {
-			it('should return an ArmorBrowserResponseWindow instance', () => {
+			it('should return an ArmorHeadlessResponseWindow instance', () => {
 				const res = {};
 				const wnd = instance.createAndLoadWindow(events, res);
 				expect(wnd).not.toBeNull();
-				expect(wnd instanceof ArmorBrowserResponseWindow).toBe(true);
+				expect(wnd instanceof ArmorHeadlessResponseWindow).toBe(true);
 			});
 
 			it('should return null when window init throws', () => {

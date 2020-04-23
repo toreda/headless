@@ -1,9 +1,9 @@
-import {ArmorBrowserConfigGeneral} from './group';
+import {ArmorHeadlessConfigGeneral} from './group';
 
-export class ArmorBrowserConfig {
-	public readonly general: ArmorBrowserConfigGeneral;
+export class ArmorHeadlessConfig {
+	public readonly general: ArmorHeadlessConfigGeneral;
 
 	constructor() {
-		this.general = new ArmorBrowserConfigGeneral();
+		this.general = new ArmorHeadlessConfigGeneral();
 	}
 }
