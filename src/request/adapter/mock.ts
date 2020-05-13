@@ -1,4 +1,4 @@
-import {ArmorHeadlessRequestAdapter} from './adapter';
+import {ArmorHeadlessRequestAdapter} from '../adapter';
 import {ArmorHeadlessRequestHeaders} from '../headers';
 import { ArmorHeadlessRequestOptionsHeaders } from '../options/headers';
 

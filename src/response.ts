@@ -1,5 +1,6 @@
-import {ArmorHeadlessRequest} from '../request/request';
-import {ArmorHeadlessResponseWindow} from './window';
+import {ArmorHeadlessElement} from './element';
+import {ArmorHeadlessRequest} from './request';
+import {ArmorHeadlessResponseWindow} from './response/window';
 import {EventEmitter} from 'events';
 
 export class ArmorHeadlessResponse {
@@ -25,6 +26,10 @@ export class ArmorHeadlessResponse {
 		this.res = res;
 		this.events = events;
 		this.wnd = this.createAndLoadWindow(this.events, res);
+	}
+
+	public getBody(): ArmorHeadlessElement | null {
+		return null;
 	}
 
 	public createAndLoadWindow(events: EventEmitter, res: any): ArmorHeadlessResponseWindow | null {

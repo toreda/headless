@@ -1,8 +1,8 @@
 import {ArmorKeyStore, ArmorKeyString} from '@armorjs/key-store';
 
-import {ArmorHeadlessRequestOptionsAdapter} from './adapter';
-import {ArmorHeadlessRequestOptionsHeaders} from './headers';
-import {ArmorHeadlessRequestOptionsLog} from './log';
+import {ArmorHeadlessRequestOptionsAdapter} from './options/adapter';
+import {ArmorHeadlessRequestOptionsHeaders} from './options/headers';
+import {ArmorHeadlessRequestOptionsLog} from './options/log';
 
 export class ArmorHeadlessRequestOptions extends ArmorKeyStore {
 	public readonly log: ArmorHeadlessRequestOptionsLog;

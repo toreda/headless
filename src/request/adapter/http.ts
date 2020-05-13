@@ -1,6 +1,6 @@
-import {ArmorHeadlessRequestAdapter} from './adapter';
+import {ArmorHeadlessRequestAdapter} from '../adapter';
 import {ArmorHeadlessRequestHeaders} from '../headers';
-import {ArmorHeadlessRequestOptions} from '../options/options';
+import {ArmorHeadlessRequestOptions} from '../options';
 import {ArmorHeadlessRequestOptionsHeaders} from '../options/headers';
 import axios from 'axios';
 

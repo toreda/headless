@@ -1,7 +1,7 @@
 import {ArmorHeadlessConfig} from './config';
-import {ArmorHeadlessRequest} from './request/request';
-import {ArmorHeadlessRequestOptions} from './request/options/options';
-import {ArmorHeadlessResponse} from './response/response';
+import {ArmorHeadlessRequest} from './request';
+import {ArmorHeadlessRequestOptions} from './request/options';
+import {ArmorHeadlessResponse} from './response';
 import {EventEmitter} from 'events';
 
 export class ArmorHeadless {
@@ -17,18 +17,20 @@ export class ArmorHeadless {
 	public async load(
 		url: string,
 		method: string,
-		options: ArmorHeadlessRequestOptions
+		options?: ArmorHeadlessRequestOptions
 	): Promise<ArmorHeadlessResponse> {
-		options.method.update(method);
-		const request = new ArmorHeadlessRequest(this.events, url, options);
+		const requestOptions = options ? options : new ArmorHeadlessRequestOptions();
+		requestOptions.method.update(method);
+
+		const request = new ArmorHeadlessRequest(this.events, url, requestOptions);
 		return await request.execute();
 	}
 
-	public async get(url: string, options: ArmorHeadlessRequestOptions): Promise<ArmorHeadlessResponse> {
+	public async get(url: string, options?: ArmorHeadlessRequestOptions): Promise<ArmorHeadlessResponse> {
 		return await this.load(url, 'get', options);
 	}
 
-	public async post(url: string, options: ArmorHeadlessRequestOptions): Promise<ArmorHeadlessResponse> {
+	public async post(url: string, options?: ArmorHeadlessRequestOptions): Promise<ArmorHeadlessResponse> {
 		return await this.load(url, 'post', options);
 	}
 }

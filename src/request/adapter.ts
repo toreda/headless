@@ -1,4 +1,4 @@
-import {ArmorHeadlessRequestHeaders} from '../headers';
+import {ArmorHeadlessRequestHeaders} from './headers';
 
 export interface ArmorHeadlessRequestAdapter {
 	id: string;

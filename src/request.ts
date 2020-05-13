@@ -1,9 +1,9 @@
-import {ArmorHeadlessRequestAdapter} from './adapter/adapter';
-import {ArmorHeadlessRequestAdapterHttp} from './adapter/http';
-import {ArmorHeadlessRequestAdapterMock} from './adapter/mock';
-import {ArmorHeadlessRequestOptions} from './options/options';
-import {ArmorHeadlessRequestOptionsHeaders} from './options/headers';
-import {ArmorHeadlessResponse} from '../response/response';
+import {ArmorHeadlessRequestAdapter} from './request/adapter';
+import {ArmorHeadlessRequestAdapterHttp} from './request/adapter/http';
+import {ArmorHeadlessRequestAdapterMock} from './request/adapter/mock';
+import {ArmorHeadlessRequestOptions} from './request/options';
+import {ArmorHeadlessRequestOptionsHeaders} from './request/options/headers';
+import {ArmorHeadlessResponse} from './response';
 import {EventEmitter} from 'events';
 
 export class ArmorHeadlessRequest {
