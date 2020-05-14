@@ -1,7 +1,7 @@
-import {ArmorHeadlessRequest} from '../../src/request/request';
-import {ArmorHeadlessRequestAdapterHttp} from '../../src/request/adapter/http';
-import {ArmorHeadlessRequestAdapterMock} from '../../src/request/adapter/mock';
-import {ArmorHeadlessRequestOptions} from '../../src/request/options/options';
+import {ArmorHeadlessRequest} from '../src/request';
+import {ArmorHeadlessRequestAdapterHttp} from '../src/request/adapter/http';
+import {ArmorHeadlessRequestAdapterMock} from '../src/request/adapter/mock';
+import {ArmorHeadlessRequestOptions} from '../src/request/options';
 import {EventEmitter} from 'events';
 
 const MOCK_URL = 'https://sample.armorjs.com';

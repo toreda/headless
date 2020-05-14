@@ -1,5 +1,5 @@
 import {ArmorHeadless} from '../src/headless';
-import { ArmorHeadlessRequestOptions } from '../src/request/options/options';
+import { ArmorHeadlessRequestOptions } from '../src/request/options';
 import { EventEmitter } from 'events';
 
 describe('Headless Requests', () => {

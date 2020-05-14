@@ -26,7 +26,8 @@ export class ArmorHeadless {
 		return await request.execute();
 	}
 
-	public async get(url: string, options?: ArmorHeadlessRequestOptions): Promise<ArmorHeadlessResponse> {
+	public async get(url: string, options?: ArmorHeadlessRequestOptions): Promise<any> {
+		console.info('get mock dead');
 		return await this.load(url, 'get', options);
 	}
 

@@ -1,9 +1,9 @@
-import {ArmorHeadlessRequest} from '../../src/request/request';
-import {ArmorHeadlessRequestAdapterHttp} from '../../src/request/adapter/http';
-import {ArmorHeadlessRequestAdapterMock} from '../../src/request/adapter/mock';
-import {ArmorHeadlessRequestOptions} from '../../src/request/options/options';
-import {ArmorHeadlessResponse} from '../../src/response/response';
-import {ArmorHeadlessResponseWindow} from '../../src/response/window';
+import {ArmorHeadlessRequest} from '../src/request';
+import {ArmorHeadlessRequestAdapterHttp} from '../src/request/adapter/http';
+import {ArmorHeadlessRequestAdapterMock} from '../src/request/adapter/mock';
+import {ArmorHeadlessRequestOptions} from '../src/request/options';
+import {ArmorHeadlessResponse} from '../src/response';
+import {ArmorHeadlessResponseWindow} from '../src/response/window';
 import {EventEmitter} from 'events';
 
 const MOCK_URL = 'https://sample.armorjs.com';
@@ -28,12 +28,6 @@ describe('ArmorHeadlessResponse', () => {
 			expect(() => {
 				const custom = new ArmorHeadlessResponse({} as any, {} as any);
 			}).toThrow('ArmorHeadlessResponse init failed - request.event property is not an EventEmitter instance.');
-		});
-
-		it('should throw when res argument is missing', () => {
-			expect(() => {
-				const custom = new ArmorHeadlessResponse(events, undefined as any);
-			}).toThrow('ArmorHeadlessResponse init failed - res argument missing.');
 		});
 
 		it('should initialize events property from the events argument', () => {

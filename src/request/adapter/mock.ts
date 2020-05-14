@@ -11,12 +11,14 @@ export class ArmorHeadlessRequestAdapterMock implements ArmorHeadlessRequestAdap
 
 	public get(url: string | null, headers: ArmorHeadlessRequestHeaders): Promise<any> {
 		return new Promise((resolve, reject) => {
+			console.info('get request mocked');
 			return resolve();
 		});
 	}
 
 	public post(url: string | null, headers: ArmorHeadlessRequestHeaders, payload: any): Promise<any> {
 		return new Promise((resolve, reject) => {
+			console.info('post request mocked');
 			return resolve();
 		});
 	}

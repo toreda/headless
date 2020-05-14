@@ -1,4 +1,5 @@
 import {ArmorHeadlessRequestAdapter} from './request/adapter';
+import {ArmorHeadlessRequestAdapterFileSystem} from './request/adapter/file-system';
 import {ArmorHeadlessRequestAdapterHttp} from './request/adapter/http';
 import {ArmorHeadlessRequestAdapterMock} from './request/adapter/mock';
 import {ArmorHeadlessRequestOptions} from './request/options';
@@ -46,7 +47,14 @@ export class ArmorHeadlessRequest {
 				break;
 		}
 
-		return new ArmorHeadlessResponse(this.events, result);
+		console.log('result: ' + result);
+		return this.createResponse(this.events, result);
+	}
+
+	public createResponse(events: EventEmitter, res: any): ArmorHeadlessResponse {
+		const response = new ArmorHeadlessResponse(events, res);
+
+		return response;
 	}
 
 	public createAdapter(adapterId: string): ArmorHeadlessRequestAdapter {
@@ -57,6 +65,8 @@ export class ArmorHeadlessRequest {
 				return new ArmorHeadlessRequestAdapterHttp();
 			case 'http':
 				return new ArmorHeadlessRequestAdapterHttp();
+			case 'file-system':
+				return new ArmorHeadlessRequestAdapterFileSystem();
 			default:
 				return new ArmorHeadlessRequestAdapterHttp();
 		}

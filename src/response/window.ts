@@ -4,7 +4,6 @@ import {EventEmitter} from 'events';
 export class ArmorHeadlessResponseWindow {
 	public readonly events: EventEmitter;
 
-
 	constructor(events: EventEmitter) {
 		if (!events) {
 			throw new Error('ArmorHeadlessResponseWindow init failed - events argument missing.')

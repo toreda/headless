@@ -16,7 +16,7 @@ export class ArmorHeadlessRequestAdapterHttp implements ArmorHeadlessRequestAdap
 			headers.method = 'GET';
 
 			if (!url) {
-				return null;
+				return reject(null);
 			}
 
 			axios
@@ -35,7 +35,7 @@ export class ArmorHeadlessRequestAdapterHttp implements ArmorHeadlessRequestAdap
 			headers.method = 'POST';
 
 			if (!url) {
-				return null;
+				return reject(null);
 			}
 
 			axios

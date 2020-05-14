@@ -1,6 +1,6 @@
 import {ArmorHeadless} from '../src/headless';
-import {ArmorHeadlessRequest} from '../src/request/request';
-import {ArmorHeadlessResponse} from '../src/response/response';
+import {ArmorHeadlessRequest} from '../src/request';
+import {ArmorHeadlessResponse} from '../src/response';
 import {EventEmitter} from 'events';
 
 describe('ArmorHeadless', () => {
