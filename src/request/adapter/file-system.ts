@@ -10,7 +10,7 @@ export class ArmorHeadlessRequestAdapterFileSystem implements ArmorHeadlessReque
 		this.id = 'file-system';
 	}
 
-	public getFile(path: string | null): Promise<string | null> {
+	public getFile(path: string | null): Promise<any | null> {
 		return new Promise((resolve, reject) => {
 			if (!path) {
 				console.error('Headless FileSystem adapter failed to get file content - path not a valid string.');
@@ -25,8 +25,10 @@ export class ArmorHeadlessRequestAdapterFileSystem implements ArmorHeadlessReque
 					return reject(err);
 				}
 
-				console.log('file content: ' + data);
-				return resolve(data);
+				const res = {
+					data: data
+				};
+				return resolve(res);
 			});
 		});
 	}

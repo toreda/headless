@@ -46,8 +46,6 @@ export class ArmorHeadlessRequest {
 				result = await this.adapter.get(this.url, headers);
 				break;
 		}
-
-		console.log('result: ' + result);
 		return this.createResponse(this.events, result);
 	}
 

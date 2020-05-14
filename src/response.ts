@@ -24,7 +24,6 @@ export class ArmorHeadlessResponse {
 		}
 
 		this.res = res ? res : null;
-		console.log('res: ', res);
 		this.url = this.createUrl(res);
 		this.status = new ArmorHeadlessResponseStatus(res);
 		this.events = events;

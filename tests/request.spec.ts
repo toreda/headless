@@ -14,6 +14,7 @@ describe('ArmorHeadlessRequest', () => {
 	beforeAll(() => {
 		events = new EventEmitter();
 		options = new ArmorHeadlessRequestOptions();
+		options.adapter.id.update('mock');
 		instance = new ArmorHeadlessRequest(events, MOCK_URL, options);
 	});
 
