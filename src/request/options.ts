@@ -1,17 +1,20 @@
-import {ArmorKeyStore, ArmorKeyString} from '@armorjs/key-store';
+import { ArmorKeyBoolean, ArmorKeyStore, ArmorKeyString } from '@armorjs/key-store';
 
 import {ArmorHeadlessRequestOptionsAdapter} from './options/adapter';
 import {ArmorHeadlessRequestOptionsHeaders} from './options/headers';
 import {ArmorHeadlessRequestOptionsLog} from './options/log';
+import { ArmorHeadlessRequestOptionsWindow } from './window';
 
 export class ArmorHeadlessRequestOptions extends ArmorKeyStore {
+	public readonly window: ArmorHeadlessRequestOptionsWindow;
 	public readonly log: ArmorHeadlessRequestOptionsLog;
 	public readonly headers: ArmorHeadlessRequestOptionsHeaders;
-	public method: ArmorKeyString;
-	public adapter: ArmorHeadlessRequestOptionsAdapter;
+	public readonly method: ArmorKeyString;
+	public readonly adapter: ArmorHeadlessRequestOptionsAdapter;
 
 	constructor() {
 		super();
+		this.window = new ArmorHeadlessRequestOptionsWindow();
 		this.adapter = new ArmorHeadlessRequestOptionsAdapter();
 		this.log = new ArmorHeadlessRequestOptionsLog();
 		this.headers = new ArmorHeadlessRequestOptionsHeaders();
