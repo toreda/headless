@@ -1,34 +1,37 @@
 import {ArmorHeadless} from '../src/headless';
 import { ArmorHeadlessElement } from '../src/element';
 import {ArmorHeadlessRequestOptions} from '../src/request/options';
+import { ArmorHeadlessRequestOptionsWindow } from '../src/request/window';
 import {ArmorHeadlessResponse} from '../src/response';
 import {ArmorHeadlessResponseWindow} from '../src/response/window';
 import {EventEmitter} from 'events';
 import Path from 'path';
 
-describe('Response Window', () => {
+describe('Response API', () => {
 	let instance: ArmorHeadless;
+	let options: ArmorHeadlessRequestOptions;
 
 	beforeAll(() => {
 		jest.setTimeout(10000);
 		instance = new ArmorHeadless();
+		options = new ArmorHeadlessRequestOptions();
+		options.adapter.id.update('file');
+	});
+
+	beforeEach(() => {
+		options.adapter.id.update('file');
 	});
 
 	describe('Simple Parsing', () => {
 		let response: ArmorHeadlessResponse | null = null;
-		let options: ArmorHeadlessRequestOptions;
 
 		beforeAll(async (done) => {
-			options = new ArmorHeadlessRequestOptions();
-			options.adapter.id.update('file-system');
 			const path = Path.resolve('./sample-data/hello.html');
 			response = await instance.get(path, options);
 			done();
 		});
 
 		beforeEach(() => {
-			options = new ArmorHeadlessRequestOptions();
-			options.adapter.id.update('file-system');
 		});
 
 		it('should return headless response when target url returned data', async () => {
@@ -73,21 +76,16 @@ describe('Response Window', () => {
 
 	describe('Javascript Execution', () => {
 		let response: ArmorHeadlessResponse | null = null;
-		let options: ArmorHeadlessRequestOptions;
 
 		beforeAll(async (done) => {
-			options = new ArmorHeadlessRequestOptions();
-			options.adapter.id.update('file-system');
-			options.executeJavascript.update(true);
+			options.window.executeJavascript.update(true);
 			const path = Path.resolve('./sample-data/javascript.html');
 			response = await instance.get(path, options);
 			done();
 		});
 
 		beforeEach(() => {
-			options = new ArmorHeadlessRequestOptions();
-			options.executeJavascript.update(true);
-			options.adapter.id.update('file-system');
+			options.window.executeJavascript.update(true);
 		});
 
 		describe('Enabled', () => {

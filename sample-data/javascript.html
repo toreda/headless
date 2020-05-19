@@ -1,13 +1,6 @@
 <html>
 	<head>
 		<title>hello</title>
-		<script>
-		window.addEventListener('load', function() {
-			var div = window.document.createElement('div');
-			div.id = 'div11';
-			document.body.appendChild(div);
-		});
-		</script>
 	</head>
 	<body>
 		<div id="box1552">
@@ -23,5 +16,15 @@
 			<div id="childcount_two">child_two</div>
 			<div id="childcount_three">child_three</div>
 		</div>
+		<script type="text/javascript">
+		window.addEventListener('DOMContentLoaded', function() {
+			var div = window.document.createElement('div');
+			div.id = 'div11';
+			document.body.appendChild(div);
+			console.log('javascript.html script loaded');
+			throw new Error('aaaa');
+		});
+		console.info('hello, javascript');
+		</script>
 	</body>
 </html>

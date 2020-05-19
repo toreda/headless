@@ -28,7 +28,8 @@
   "dependencies": {
     "@armorjs/key-store": "^0.0.4",
     "axios": "^0.19.2",
-    "jsdom": "^16.2.2"
+    "jsdom": "^16.2.2",
+    "vm2": "^3.9.2"
   },
   "devDependencies": {
     "@armorjs/build": "^0.0.2",

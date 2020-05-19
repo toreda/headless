@@ -3,11 +3,11 @@ import {ArmorHeadlessRequestHeaders} from '../headers';
 import {ArmorHeadlessRequestOptionsHeaders} from '../options/headers';
 import fs from 'fs';
 
-export class ArmorHeadlessRequestAdapterFileSystem implements ArmorHeadlessRequestAdapter {
+export class ArmorHeadlessRequestAdapterFile implements ArmorHeadlessRequestAdapter {
 	public readonly id: string;
 
 	constructor() {
-		this.id = 'file-system';
+		this.id = 'file';
 	}
 
 	public getFile(path: string | null): Promise<any | null> {
