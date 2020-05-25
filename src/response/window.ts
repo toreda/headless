@@ -83,11 +83,11 @@ export class ArmorHeadlessResponseWindow {
 		let dom: any = null;
 
 		const runScripts = this.options.executeJavascript.get(false) ? 'dangerously' : undefined;
-		console.log('runScripts: ' + runScripts);
+
 		try {
 			const virtualConsole = new VirtualConsole();
 			virtualConsole.on('error', (...data: any[]) => {
-				console.error('VC Error: ', data);
+				console.info('VC Error: ', data);
 			});
 
 			virtualConsole.on('info', (...data: any[]) => {
@@ -103,7 +103,6 @@ export class ArmorHeadlessResponseWindow {
 				userAgent: "Mell/9000"
 			});
 
-			console.log('res data: ' + res.data);
 			dom = await new JSDOM(res.data, {
 				runScripts: runScripts,
 				pretendToBeVisual: true,

@@ -1,0 +1,19 @@
+<html>
+	<head>
+		<title>hello</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+		window.addEventListener('DOMContentLoaded', function() {
+			if (arguments.caller === null) {
+				console.log('null caller');
+			}
+			var div = window.document.createElement('div');
+			div.id = 'div-args-caller';
+			document.body.appendChild(div);
+			console.log('javascript.html script loaded');
+		});
+		console.info('hello, arguments.caller');
+		</script>
+	</body>
+</html>

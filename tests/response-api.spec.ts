@@ -1,7 +1,7 @@
 import {ArmorHeadless} from '../src/headless';
-import { ArmorHeadlessElement } from '../src/element';
+import {ArmorHeadlessElement} from '../src/element';
 import {ArmorHeadlessRequestOptions} from '../src/request/options';
-import { ArmorHeadlessRequestOptionsWindow } from '../src/request/window';
+import {ArmorHeadlessRequestOptionsWindow} from '../src/request/window';
 import {ArmorHeadlessResponse} from '../src/response';
 import {ArmorHeadlessResponseWindow} from '../src/response/window';
 import {EventEmitter} from 'events';
@@ -31,8 +31,7 @@ describe('Response API', () => {
 			done();
 		});
 
-		beforeEach(() => {
-		});
+		beforeEach(() => {});
 
 		it('should return headless response when target url returned data', async () => {
 			expect.assertions(1);
@@ -88,12 +87,51 @@ describe('Response API', () => {
 			options.window.executeJavascript.update(true);
 		});
 
-		describe('Enabled', () => {
-			it('should execute javascript on page load', () => {
-				const element: ArmorHeadlessElement | null = response!.wnd!.element('#div11');
+		it('should execute script on page load when javascript is enabled', () => {
+			const element: ArmorHeadlessElement | null = response!.wnd!.element('#div11');
+			expect(element).not.toBeNull();
+		});
+
+		describe('Javascript Compatibility (args.caller)', () => {
+			beforeAll(async (done) => {
+				const path = Path.resolve('./sample-data/javascript-args-caller.html');
+				response = await instance.get(path, options);
+				done();
+			});
+
+			it('should process code containing the obsolete arguments.caller argument', () => {
+				const element: ArmorHeadlessElement | null = response!.wnd!.element('#div-args-caller');
 				expect(element).not.toBeNull();
 			});
 		});
 
+		describe('Javascript Compatibility (args.callee)', () => {
+			beforeAll(async (done) => {
+				const path = Path.resolve('./sample-data/javascript-args-callee.html');
+				response = await instance.get(path, options);
+				done();
+			});
+
+			it('should process code containing the obsolete arguments.callee argument', () => {
+				const element: ArmorHeadlessElement | null = response!.wnd!.element('#div-args-callee');
+				expect(element).not.toBeNull();
+			});
+		});
+
+		describe('Javascript Compatibility (args.callee, strict mode)', () => {
+			beforeAll(async (done) => {
+				const path = Path.resolve('./sample-data/javascript-args-caller-strict.html');
+				response = await instance.get(path, options);
+				done();
+			});
+
+			it('should not process code containing the obsolete arguments.callee argument in strict mode', () => {
+				const element: ArmorHeadlessElement | null = response!.wnd!.element('#div-args-callee-strict');
+				expect(element).toBeNull();
+			});
+		});
+
 	});
+
+
 });

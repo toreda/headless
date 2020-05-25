@@ -68,6 +68,7 @@ export class ArmorHeadlessResponse {
 			await wnd.load(res);
 		} catch (e) {
 			console.error(`ArmorHeadlessResponse failed to createAndLoad response window: ${e.message}.`);
+			wnd = null;
 		}
 
 		return wnd;

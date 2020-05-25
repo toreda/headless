@@ -56,17 +56,19 @@ describe('ArmorHeadlessResponse', () => {
 
 	describe('Implementation', () => {
 		describe('createAndLoadWindow', () => {
-			it('should return an ArmorHeadlessResponseWindow instance', () => {
+			it('should return an ArmorHeadlessResponseWindow instance', async(done) => {
 				const res = {};
-				const wnd = instance.createAndLoadWindow(events, res, options.window);
+				const wnd = await instance.createAndLoadWindow(events, res, options.window);
 				expect(wnd).not.toBeNull();
 				expect(wnd instanceof ArmorHeadlessResponseWindow).toBe(true);
+				done();
 			});
 
-			it('should return null when window init throws', () => {
+			it('should return null when window init throws', async(done) => {
 				const res = {};
-				const wnd = instance.createAndLoadWindow(undefined as any, res, options.window);
+				const wnd = await instance.createAndLoadWindow(undefined as any, res, options.window);
 				expect(wnd).toBeNull();
+				done();
 			});
 
 
