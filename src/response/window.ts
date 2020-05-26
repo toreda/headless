@@ -1,9 +1,8 @@
 import {JSDOM, ResourceLoader, VirtualConsole} from 'jsdom';
-import { NodeVM, VM } from 'vm2';
 
-import {ArmorHeadlessElement} from '../element';
-import { ArmorHeadlessRequestOptions } from '../request/options';
-import { ArmorHeadlessRequestOptionsWindow } from '../request/window';
+import { ArmorHeadlessElement } from '../element';
+import {ArmorHeadlessRequestOptions} from '../request/options';
+import {ArmorHeadlessRequestOptionsWindow} from '../request/window';
 import {ArmorKeyUInt} from '@armorjs/key-store';
 import {EventEmitter} from 'events';
 
@@ -11,8 +10,6 @@ export class ArmorHeadlessResponseWindow {
 	public readonly events: EventEmitter;
 	public dom: any;
 	public options: ArmorHeadlessRequestOptionsWindow;
-	public vm: NodeVM;
-	//public resourceLoader: any;
 
 	constructor(events: EventEmitter, options: ArmorHeadlessRequestOptionsWindow) {
 		if (!events) {
@@ -23,21 +20,31 @@ export class ArmorHeadlessResponseWindow {
 			throw new Error('ArmorHeadlessResponseWindow init failed - events argument not an EventEmitter instance.');
 		}
 
-		this.vm = new NodeVM({
-			timeout: 1000,
-			sandbox: {}
-		});
 		this.dom = null;
 		this.options = options;
 		this.events = events;
 	}
 
-	public createVm(): any {
-		const context = {
-			x: 2
-		};
+	public elements(selector: string): ArmorHeadlessElement[] {
+		let results: ArmorHeadlessElement[] = [];
+		if (!this.dom || !this.dom.window || !this.dom.window.document) {
+			return results;
+		}
 
+		let matches;
+		try {
+			matches = this.dom.window.document.querySelectorAll(selector);
+			if (Array.isArray(matches)) {
+				matches.forEach((match) => {
+					const element = new ArmorHeadlessElement(this.dom.window.document, match);
+					results.push(element);
+				});
+			}
+		} catch (e) {
 
+		}
+
+		return results;
 	}
 
 	public element(selector: string): ArmorHeadlessElement | null {
@@ -100,19 +107,17 @@ export class ArmorHeadlessResponseWindow {
 
 			const resourceLoader = new ResourceLoader({
 				strictSSL: false,
-				userAgent: "Mell/9000"
+				userAgent: 'Mell/9000'
 			});
 
 			dom = await new JSDOM(res.data, {
 				runScripts: runScripts,
 				pretendToBeVisual: true,
 				url: 'http://localhost',
-				contentType: "text/html",
+				contentType: 'text/html',
 				virtualConsole: virtualConsole,
-				resources: "usable"
-			})
-
-
+				resources: 'usable'
+			});
 		} catch (e) {
 			console.error(`Headless response window failed to parse dom: ${e.message}.`);
 			dom = null;

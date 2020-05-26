@@ -10,6 +10,10 @@ export class ArmorHeadlessRequestAdapterFile implements ArmorHeadlessRequestAdap
 		this.id = 'file';
 	}
 
+	public readStream(fileStream: any): Promise<any> {
+		return new Promise<any>((resolve, reject) => {});
+	}
+
 	public getFile(path: string | null): Promise<any | null> {
 		return new Promise((resolve, reject) => {
 			if (!path) {
@@ -19,7 +23,24 @@ export class ArmorHeadlessRequestAdapterFile implements ArmorHeadlessRequestAdap
 				);
 			}
 
-			fs.readFile(path, 'utf8', (err: NodeJS.ErrnoException | null, data: any) => {
+			let header = '';
+			let data = '';
+			const stream = fs.createReadStream(path, {encoding: 'utf8'});
+			stream.on('data', (chunk: any) => {
+				data += chunk;
+			});
+
+			stream.on('close', () => {
+				return resolve({
+					data: data
+				});
+			});
+
+			stream.on('error', (e) => {
+				return reject(e);
+			});
+
+			/* 			fs.readFile(path, 'utf8', (err: NodeJS.ErrnoException | null, data: any) => {
 				if (err) {
 					console.error('Failed to get file content: ' + err.message);
 					return reject(err);
@@ -28,8 +49,9 @@ export class ArmorHeadlessRequestAdapterFile implements ArmorHeadlessRequestAdap
 				const res = {
 					data: data
 				};
+
 				return resolve(res);
-			});
+			}); */
 		});
 	}
 

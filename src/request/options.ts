@@ -1,4 +1,4 @@
-import { ArmorKeyBoolean, ArmorKeyStore, ArmorKeyString } from '@armorjs/key-store';
+import { ArmorKeyBoolean, ArmorKeyStore, ArmorKeyString, ArmorKeyUInt } from '@armorjs/key-store';
 
 import {ArmorHeadlessRequestOptionsAdapter} from './options/adapter';
 import {ArmorHeadlessRequestOptionsHeaders} from './options/headers';
@@ -11,6 +11,7 @@ export class ArmorHeadlessRequestOptions extends ArmorKeyStore {
 	public readonly headers: ArmorHeadlessRequestOptionsHeaders;
 	public readonly method: ArmorKeyString;
 	public readonly adapter: ArmorHeadlessRequestOptionsAdapter;
+	public readonly timeout: ArmorKeyUInt;
 
 	constructor() {
 		super();
@@ -19,5 +20,6 @@ export class ArmorHeadlessRequestOptions extends ArmorKeyStore {
 		this.log = new ArmorHeadlessRequestOptionsLog();
 		this.headers = new ArmorHeadlessRequestOptionsHeaders();
 		this.method = new ArmorKeyString('get');
+		this.timeout = new ArmorKeyUInt(10000);
 	}
 }

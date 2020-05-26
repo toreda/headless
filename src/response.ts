@@ -57,6 +57,27 @@ export class ArmorHeadlessResponse {
 		return null;
 	}
 
+	public async click(selector: string): Promise<any> {
+		if (!this.loaded) {
+			console.error(`headless response click failed - response has not finished loading.`);
+			return null;
+		}
+
+		if (!this.wnd) {
+			console.error(`headless response click failed - response window not found.`);
+			return null;
+		}
+
+		const element = this.wnd.element(selector);
+
+		if (!element) {
+			console.error(`headless response click failed - no elements with '${selector}' not found in response.`);
+			return null;
+		}
+
+
+	}
+
 	public async createAndLoadWindow(
 		events: EventEmitter,
 		res: any,

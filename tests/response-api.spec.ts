@@ -131,7 +131,12 @@ describe('Response API', () => {
 			});
 		});
 
+		describe('Javascript Click', () => {
+			beforeAll(async (done) => {
+				const path = Path.resolve('./sample-data/javascript-click.html');
+				response = await instance.get(path, options);
+				done();
+			});
+		});
 	});
-
-
 });
