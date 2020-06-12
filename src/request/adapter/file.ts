@@ -39,19 +39,6 @@ export class ArmorHeadlessRequestAdapterFile implements ArmorHeadlessRequestAdap
 			stream.on('error', (e) => {
 				return reject(e);
 			});
-
-			/* 			fs.readFile(path, 'utf8', (err: NodeJS.ErrnoException | null, data: any) => {
-				if (err) {
-					console.error('Failed to get file content: ' + err.message);
-					return reject(err);
-				}
-
-				const res = {
-					data: data
-				};
-
-				return resolve(res);
-			}); */
 		});
 	}
 
@@ -60,7 +47,6 @@ export class ArmorHeadlessRequestAdapterFile implements ArmorHeadlessRequestAdap
 	}
 
 	public async post(url: string | null, headers: ArmorHeadlessRequestHeaders, payload: any): Promise<any> {
-		console.info('filesystem post request');
 		return await this.getFile(url);
 	}
 }

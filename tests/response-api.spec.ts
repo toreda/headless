@@ -135,6 +135,9 @@ describe('Response API', () => {
 			beforeAll(async (done) => {
 				const path = Path.resolve('./sample-data/javascript-click.html');
 				response = await instance.get(path, options);
+				expect(response!.wnd!.element('#click-result')).toBeNull();
+				response!.click('#click_target');
+				expect(response!.wnd!.element('#click-result')).not.toBeNull();
 				done();
 			});
 		});

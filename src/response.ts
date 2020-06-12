@@ -75,6 +75,7 @@ export class ArmorHeadlessResponse {
 			return null;
 		}
 
+		element.click();
 
 	}
 

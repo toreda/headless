@@ -1,24 +1,17 @@
 <html>
 	<head>
 		<title>hello</title>
+		<script>
+		function doClick() {
+			var div = window.document.createElement('div');
+			div.id = 'click-result';
+			document.body.appendChild(div);
+		}
+		</script>
 	</head>
 	<body>
-		<div id="box1552">
-		content_1552
-		</div>
 
-		<div id="clickbox">
-
+		<div id="click_target" onclick="doClick">
 		</div>
-		<script type="text/javascript">
-		window.addEventListener('DOMContentLoaded', function() {
-			var div = window.document.createElement('div');
-			div.id = 'div11';
-			document.body.appendChild(div);
-			console.log('javascript.html script loaded');
-			throw new Error('aaaa');
-		});
-		console.info('hello, javascript');
-		</script>
 	</body>
 </html>
