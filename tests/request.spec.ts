@@ -4,7 +4,7 @@ import {HBRequestAdapterHttp} from '../src/request/adapter/http';
 import {HBRequestAdapterMock} from '../src/request/adapter/mock';
 import {HBRequestOptions} from '../src/request/options';
 
-const MOCK_URL = 'https://sample.armorjs.com';
+const MOCK_URL = 'https://www.w3schools.com/howto/tryhow_make_a_website_ifr.htm';
 
 describe('HBRequest', () => {
 	let instance: HBRequest;
@@ -18,7 +18,14 @@ describe('HBRequest', () => {
 		instance = new HBRequest(events, MOCK_URL, options);
 	});
 
-	describe('Constructor', () => {});
+	describe('Constructor', () => {
+		it('testing stuff', () => {
+			// expect.assertions(1);
+			// return instance.execute().then((data) => {
+			// 	expect(data.res.data).toBe({});
+			// });
+		});
+	});
 
 	describe('Implementation', () => {
 		describe('createAdapter', () => {

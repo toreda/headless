@@ -15,10 +15,10 @@ export class HBRequestOptions extends ArmorKeyStore {
 
 	constructor() {
 		super();
-		this.window = new HBRequestOptionsWindow();
 		this.adapter = new HBRequestOptionsAdapter();
-		this.log = new HBRequestOptionsLog();
 		this.headers = new HBRequestOptionsHeaders();
+		this.log = new HBRequestOptionsLog();
+		this.window = new HBRequestOptionsWindow();
 		this.method = new ArmorKeyString('get');
 		this.timeout = new ArmorKeyUInt(10000);
 	}

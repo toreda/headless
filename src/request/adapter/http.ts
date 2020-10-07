@@ -1,7 +1,5 @@
 import {HBRequestAdapter} from '../adapter';
 import {HBRequestHeaders} from '../headers';
-import {HBRequestOptions} from '../options';
-import {HBRequestOptionsHeaders} from '../options/headers';
 import axios from 'axios';
 
 export class HBRequestAdapterHttp implements HBRequestAdapter {
@@ -15,8 +13,8 @@ export class HBRequestAdapterHttp implements HBRequestAdapter {
 		return new Promise((resolve, reject) => {
 			headers.method = 'GET';
 
-			if (!url) {
-				return reject(null);
+			if (typeof url !== 'string') {
+				return reject(new Error('HBRequestAdapterHttp get failed - url is not a string.'));
 			}
 
 			axios
@@ -34,8 +32,8 @@ export class HBRequestAdapterHttp implements HBRequestAdapter {
 		return new Promise((resolve, reject) => {
 			headers.method = 'POST';
 
-			if (!url) {
-				return reject(null);
+			if (typeof url !== 'string') {
+				return reject(new Error('HBRequestAdapterHttp post failed - url is not a string.'));
 			}
 
 			axios
