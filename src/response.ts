@@ -52,6 +52,16 @@ export class HBResponse {
 	}
 
 	public getBody(): HBElement | null {
+		if (!this.wnd) {
+			return null;
+		}
+
+		const element = this.wnd.element('body');
+
+		if (!element) {
+			return null;
+		}
+
 		return null;
 	}
 

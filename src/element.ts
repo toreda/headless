@@ -34,7 +34,7 @@ export class HBElement {
 	public click(): void {
 		const evt: Event = this.document.createEvent('Event');
 		evt.initEvent('click', false, true);
-		this.document.body.dispatchEvent(evt);
+		this.element.dispatchEvent(evt);
 	}
 
 	public child(selector: string): HBElement | null {
