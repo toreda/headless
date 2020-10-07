@@ -1,6 +1,6 @@
-import { ArmorKeyStore, ArmorKeyString, ArmorKeyUInt } from '@armorjs/key-store';
+import {ArmorKeyStore, ArmorKeyString, ArmorKeyUInt} from '@armorjs/key-store';
 
-export class ArmorHeadlessResponseStatus extends ArmorKeyStore {
+export class HBResponseStatus extends ArmorKeyStore {
 	public readonly status: ArmorKeyUInt;
 	public readonly statusText: ArmorKeyString;
 

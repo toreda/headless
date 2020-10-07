@@ -1,17 +1,17 @@
-import {ArmorHeadlessRequestAdapter} from '../adapter';
-import {ArmorHeadlessRequestHeaders} from '../headers';
-import {ArmorHeadlessRequestOptions} from '../options';
-import {ArmorHeadlessRequestOptionsHeaders} from '../options/headers';
+import {HBRequestAdapter} from '../adapter';
+import {HBRequestHeaders} from '../headers';
+import {HBRequestOptions} from '../options';
+import {HBRequestOptionsHeaders} from '../options/headers';
 import axios from 'axios';
 
-export class ArmorHeadlessRequestAdapterHttp implements ArmorHeadlessRequestAdapter {
+export class HBRequestAdapterHttp implements HBRequestAdapter {
 	public readonly id: string;
 
 	constructor() {
 		this.id = 'http';
 	}
 
-	public get(url: string | null, headers: ArmorHeadlessRequestHeaders): Promise<any> {
+	public get(url: string | null, headers: HBRequestHeaders): Promise<any> {
 		return new Promise((resolve, reject) => {
 			headers.method = 'GET';
 
@@ -30,7 +30,7 @@ export class ArmorHeadlessRequestAdapterHttp implements ArmorHeadlessRequestAdap
 		});
 	}
 
-	public post(url: string | null, headers: ArmorHeadlessRequestHeaders, payload: any): Promise<any> {
+	public post(url: string | null, headers: HBRequestHeaders, payload: any): Promise<any> {
 		return new Promise((resolve, reject) => {
 			headers.method = 'POST';
 

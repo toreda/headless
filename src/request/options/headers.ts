@@ -1,8 +1,8 @@
-import { ArmorKeyStore, ArmorKeyString, ArmorKeyUInt } from '@armorjs/key-store';
+import {ArmorKeyStore, ArmorKeyString, ArmorKeyUInt} from '@armorjs/key-store';
 
-import {ArmorHeadlessRequestHeaders} from '../headers';
+import {HBRequestHeaders} from '../headers';
 
-export class ArmorHeadlessRequestOptionsHeaders extends ArmorKeyStore {
+export class HBRequestOptionsHeaders extends ArmorKeyStore {
 	public readonly origin: ArmorKeyString;
 	public readonly host: ArmorKeyString;
 	public readonly accept: ArmorKeyString;
@@ -48,7 +48,7 @@ export class ArmorHeadlessRequestOptionsHeaders extends ArmorKeyStore {
 		this.xMicrosoftAjax = new ArmorKeyString();
 	}
 
-	public getAsObject(): ArmorHeadlessRequestHeaders {
+	public getAsObject(): HBRequestHeaders {
 		return {
 			Accept: this.accept.get('*/*'),
 			AcceptsCookies: this.acceptsCookies.get('yes'),

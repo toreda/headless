@@ -1,31 +1,29 @@
-import {ArmorHeadless} from '../src/headless';
-import {ArmorHeadlessRequest} from '../src/request';
-import {ArmorHeadlessResponse} from '../src/response';
 import {EventEmitter} from 'events';
+import {HBRequest} from '../src/request';
+import {HBResponse} from '../src/response';
+import {HeadlessBrowser} from '../src/headless';
 
-describe('ArmorHeadless', () => {
-	let instance: ArmorHeadless;
+describe('HeadlessBrowser', () => {
+	let instance: HeadlessBrowser;
 	let events: EventEmitter;
 
 	beforeAll(() => {
 		events = new EventEmitter();
-		instance = new ArmorHeadless(events);
+		instance = new HeadlessBrowser(events);
 	});
 
 	describe('Constructor', () => {
 		it('should not throw when events argument is omitted', () => {
 			expect(() => {
-				const custom = new ArmorHeadless();
+				const custom = new HeadlessBrowser();
 			}).not.toThrow();
 		});
 
 		it('should create a new event emitter when events argument is omitted', () => {
-			const custom = new ArmorHeadless();
+			const custom = new HeadlessBrowser();
 			expect(custom.events instanceof EventEmitter).toBe(true);
 		});
 	});
 
-	describe('Configuration', () => {
-
-	});
+	describe('Configuration', () => {});
 });

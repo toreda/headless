@@ -1,25 +1,25 @@
-import {ArmorHeadlessRequestAdapter} from './request/adapter';
-import {ArmorHeadlessRequestAdapterFile} from './request/adapter/file';
-import {ArmorHeadlessRequestAdapterHttp} from './request/adapter/http';
-import {ArmorHeadlessRequestAdapterMock} from './request/adapter/mock';
-import {ArmorHeadlessRequestOptions} from './request/options';
-import {ArmorHeadlessRequestOptionsHeaders} from './request/options/headers';
-import {ArmorHeadlessResponse} from './response';
 import {EventEmitter} from 'events';
+import {HBRequestAdapter} from './request/adapter';
+import {HBRequestAdapterFile} from './request/adapter/file';
+import {HBRequestAdapterHttp} from './request/adapter/http';
+import {HBRequestAdapterMock} from './request/adapter/mock';
+import {HBRequestOptions} from './request/options';
+import {HBRequestOptionsHeaders} from './request/options/headers';
+import {HBResponse} from './response';
 
-export class ArmorHeadlessRequest {
+export class HBRequest {
 	public readonly url: string | null;
 	public readonly events: EventEmitter;
-	public readonly options: ArmorHeadlessRequestOptions;
-	public readonly adapter: ArmorHeadlessRequestAdapter;
+	public readonly options: HBRequestOptions;
+	public readonly adapter: HBRequestAdapter;
 
-	constructor(events: EventEmitter, url: string | null, options: ArmorHeadlessRequestOptions) {
+	constructor(events: EventEmitter, url: string | null, options: HBRequestOptions) {
 		if (!events) {
-			throw new Error('ArmorHeadlessRequest init failed - events argument missing.');
+			throw new Error('HBRequest init failed - events argument missing.');
 		}
 
 		if (!options) {
-			throw new Error('ArmorHeadlessRequest init failed - options argument missing.');
+			throw new Error('HBRequest init failed - options argument missing.');
 		}
 
 		this.url = url;
@@ -29,7 +29,7 @@ export class ArmorHeadlessRequest {
 		this.options = options;
 	}
 
-	public async execute(): Promise<ArmorHeadlessResponse> {
+	public async execute(): Promise<HBResponse> {
 		const method = this.options.method.get('GET');
 		const headers = this.options.headers.getAsObject();
 		const payload = {};
@@ -49,25 +49,25 @@ export class ArmorHeadlessRequest {
 		return await this.createResponse(this.events, result);
 	}
 
-	public async createResponse(events: EventEmitter, res: any): Promise<ArmorHeadlessResponse> {
+	public async createResponse(events: EventEmitter, res: any): Promise<HBResponse> {
 		this.options.window.executeJavascript.update(true);
-		const response = new ArmorHeadlessResponse(events, res, this.options);
+		const response = new HBResponse(events, res, this.options);
 		await response.load();
 		return response;
 	}
 
-	public createAdapter(adapterId: string): ArmorHeadlessRequestAdapter {
+	public createAdapter(adapterId: string): HBRequestAdapter {
 		switch (adapterId) {
 			case 'mock':
-				return new ArmorHeadlessRequestAdapterMock();
+				return new HBRequestAdapterMock();
 			case 'https':
-				return new ArmorHeadlessRequestAdapterHttp();
+				return new HBRequestAdapterHttp();
 			case 'http':
-				return new ArmorHeadlessRequestAdapterHttp();
+				return new HBRequestAdapterHttp();
 			case 'file':
-				return new ArmorHeadlessRequestAdapterFile();
+				return new HBRequestAdapterFile();
 			default:
-				return new ArmorHeadlessRequestAdapterHttp();
+				return new HBRequestAdapterHttp();
 		}
 	}
 }

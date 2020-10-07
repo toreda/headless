@@ -422,6 +422,26 @@
   dependencies:
     type-detect "4.0.8"
 
+"@toreda/map@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@toreda/map/-/map-0.1.3.tgz#a0e80c8688af3bb6e42d0a8efaf8076e686909da"
+  integrity sha512-TTOR7y18iKX2pxkbAUrkwLqQij6hq3MpORAWdlsTfGZen37i7H4IbUJElmjJBB6c9VOLFr7Bac6PKeRl9LZX0Q==
+  dependencies:
+    "@toreda/type-box" "^0.5.7"
+
+"@toreda/map@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@toreda/map/-/map-0.2.0.tgz#3becb44e18c157b1edf0580a0ab0822fa76c2dbd"
+  integrity sha512-o9Wo6NHJFvclEII2V/KblQdFor4e41VGoM75G/FVAsTzZ9lHc9oJ3hPJF1cTp5jU261+lPaQaKGLLB/4u++cYg==
+  dependencies:
+    "@toreda/map" "^0.1.3"
+    "@toreda/type-box" "^0.5.7"
+
+"@toreda/type-box@^0.5.7":
+  version "0.5.7"
+  resolved "https://registry.yarnpkg.com/@toreda/type-box/-/type-box-0.5.7.tgz#4ce5ca5c2b795818ff5f9e8c07cf9b44eeb18dc5"
+  integrity sha512-sJbXfhlvILLPzpR0/nHbkx1zNOFvYXMs+w0gNq+meusE8hKuYgLPEucdYY69rda2DNO05px7S2FQyuxyoiOBKA==
+
 "@types/babel__core@^7.1.7":
   version "7.1.7"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.7.tgz#1dacad8840364a57c98d0dd4855c6dd3752c6b89"

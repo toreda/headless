@@ -1,4 +1,4 @@
- export interface ArmorHeadlessRequestHeaders {
+export interface HBRequestHeaders {
 	Origin: string;
 	Host: string;
 	'User-Agent': string;
@@ -20,4 +20,3 @@
 	method?: string;
 	'Upgrade-Insecure-Requests'?: string;
 }
-

@@ -1,9 +1,9 @@
-import {ArmorHeadlessRequestAdapter} from '../adapter';
-import {ArmorHeadlessRequestHeaders} from '../headers';
-import {ArmorHeadlessRequestOptionsHeaders} from '../options/headers';
+import {HBRequestAdapter} from '../adapter';
+import {HBRequestHeaders} from '../headers';
+import {HBRequestOptionsHeaders} from '../options/headers';
 import fs from 'fs';
 
-export class ArmorHeadlessRequestAdapterFile implements ArmorHeadlessRequestAdapter {
+export class HBRequestAdapterFile implements HBRequestAdapter {
 	public readonly id: string;
 
 	constructor() {
@@ -42,11 +42,11 @@ export class ArmorHeadlessRequestAdapterFile implements ArmorHeadlessRequestAdap
 		});
 	}
 
-	public async get(url: string | null, headers: ArmorHeadlessRequestHeaders): Promise<any> {
+	public async get(url: string | null, headers: HBRequestHeaders): Promise<any> {
 		return await this.getFile(url);
 	}
 
-	public async post(url: string | null, headers: ArmorHeadlessRequestHeaders, payload: any): Promise<any> {
+	public async post(url: string | null, headers: HBRequestHeaders, payload: any): Promise<any> {
 		return await this.getFile(url);
 	}
 }

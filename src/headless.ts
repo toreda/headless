@@ -1,36 +1,32 @@
-import {ArmorHeadlessConfig} from './config';
-import {ArmorHeadlessRequest} from './request';
-import {ArmorHeadlessRequestOptions} from './request/options';
-import {ArmorHeadlessResponse} from './response';
 import {EventEmitter} from 'events';
+import {HBConfig} from './config';
+import {HBRequest} from './request';
+import {HBRequestOptions} from './request/options';
+import {HBResponse} from './response';
 
-export class ArmorHeadless {
+export class HeadlessBrowser {
 	public readonly events: EventEmitter;
-	public readonly config: ArmorHeadlessConfig;
+	public readonly config: HBConfig;
 
 	constructor(options?: any) {
 		this.events = options && options.events ? options.events : new EventEmitter();
-		this.config = new ArmorHeadlessConfig();
+		this.config = new HBConfig();
 		this.config.parse(options);
 	}
 
-	public async load(
-		url: string,
-		method: string,
-		options?: ArmorHeadlessRequestOptions
-	): Promise<ArmorHeadlessResponse> {
-		const requestOptions = options ? options : new ArmorHeadlessRequestOptions();
+	public async load(url: string, method: string, options?: HBRequestOptions): Promise<HBResponse> {
+		const requestOptions = options ? options : new HBRequestOptions();
 		requestOptions.method.update(method);
 
-		const request = new ArmorHeadlessRequest(this.events, url, requestOptions);
+		const request = new HBRequest(this.events, url, requestOptions);
 		return await request.execute();
 	}
 
-	public async get(url: string, options?: ArmorHeadlessRequestOptions): Promise<any> {
+	public async get(url: string, options?: HBRequestOptions): Promise<any> {
 		return await this.load(url, 'get', options);
 	}
 
-	public async post(url: string, options?: ArmorHeadlessRequestOptions): Promise<ArmorHeadlessResponse> {
+	public async post(url: string, options?: HBRequestOptions): Promise<HBResponse> {
 		return await this.load(url, 'post', options);
 	}
 }

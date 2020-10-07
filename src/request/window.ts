@@ -1,6 +1,6 @@
 import {ArmorKeyBoolean, ArmorKeyStore, ArmorKeyString} from '@armorjs/key-store';
 
-export class ArmorHeadlessRequestOptionsWindow extends ArmorKeyStore {
+export class HBRequestOptionsWindow extends ArmorKeyStore {
 	public readonly executeJavascript: ArmorKeyBoolean;
 	public readonly loadResources: ArmorKeyBoolean;
 

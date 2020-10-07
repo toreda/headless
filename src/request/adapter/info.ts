@@ -1,4 +1,4 @@
-export class ArmorHeadlessRequestAdapterInfo {
+export class HBRequestAdapterInfo {
 	public readonly id: string;
 	public readonly filePath: string;
 	public loadedClass: any;

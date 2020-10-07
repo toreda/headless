@@ -1,20 +1,20 @@
-import {ArmorHeadless} from '../src/headless';
-import {ArmorHeadlessElement} from '../src/element';
-import {ArmorHeadlessRequestOptions} from '../src/request/options';
-import {ArmorHeadlessRequestOptionsWindow} from '../src/request/window';
-import {ArmorHeadlessResponse} from '../src/response';
-import {ArmorHeadlessResponseWindow} from '../src/response/window';
 import {EventEmitter} from 'events';
+import {HBElement} from '../src/element';
+import {HBRequestOptions} from '../src/request/options';
+import {HBRequestOptionsWindow} from '../src/request/window';
+import {HBResponse} from '../src/response';
+import {HBResponseWindow} from '../src/response/window';
+import {HeadlessBrowser} from '../src/headless';
 import Path from 'path';
 
 describe('Response API', () => {
-	let instance: ArmorHeadless;
-	let options: ArmorHeadlessRequestOptions;
+	let instance: HeadlessBrowser;
+	let options: HBRequestOptions;
 
 	beforeAll(() => {
 		jest.setTimeout(10000);
-		instance = new ArmorHeadless();
-		options = new ArmorHeadlessRequestOptions();
+		instance = new HeadlessBrowser();
+		options = new HBRequestOptions();
 		options.adapter.id.update('file');
 	});
 
@@ -23,7 +23,7 @@ describe('Response API', () => {
 	});
 
 	describe('Simple Parsing', () => {
-		let response: ArmorHeadlessResponse | null = null;
+		let response: HBResponse | null = null;
 
 		beforeAll(async (done) => {
 			const path = Path.resolve('./sample-data/hello.html');
@@ -54,18 +54,18 @@ describe('Response API', () => {
 
 			describe('element', () => {
 				it('should get element specified by id', () => {
-					const element: ArmorHeadlessElement | null = response!.wnd!.element('#box1552');
+					const element: HBElement | null = response!.wnd!.element('#box1552');
 					expect(element).not.toBeNull();
 				});
 
 				it('should return text content of element specified by id', () => {
-					const element: ArmorHeadlessElement | null = response!.wnd!.element('#box1552');
+					const element: HBElement | null = response!.wnd!.element('#box1552');
 					expect(element).not.toBeNull();
 					expect(element!.text()).toBe('content_1552');
 				});
 
 				it('should return number of children', () => {
-					const element: ArmorHeadlessElement | null = response!.wnd!.element('#childcount');
+					const element: HBElement | null = response!.wnd!.element('#childcount');
 					expect(element).not.toBeNull();
 					expect(element!.childCount()).toBe(3);
 				});
@@ -74,7 +74,7 @@ describe('Response API', () => {
 	});
 
 	describe('Javascript Execution', () => {
-		let response: ArmorHeadlessResponse | null = null;
+		let response: HBResponse | null = null;
 
 		beforeAll(async (done) => {
 			options.window.executeJavascript.update(true);
@@ -88,7 +88,7 @@ describe('Response API', () => {
 		});
 
 		it('should execute script on page load when javascript is enabled', () => {
-			const element: ArmorHeadlessElement | null = response!.wnd!.element('#div11');
+			const element: HBElement | null = response!.wnd!.element('#div11');
 			expect(element).not.toBeNull();
 		});
 
@@ -100,7 +100,7 @@ describe('Response API', () => {
 			});
 
 			it('should process code containing the obsolete arguments.caller argument', () => {
-				const element: ArmorHeadlessElement | null = response!.wnd!.element('#div-args-caller');
+				const element: HBElement | null = response!.wnd!.element('#div-args-caller');
 				expect(element).not.toBeNull();
 			});
 		});
@@ -113,7 +113,7 @@ describe('Response API', () => {
 			});
 
 			it('should process code containing the obsolete arguments.callee argument', () => {
-				const element: ArmorHeadlessElement | null = response!.wnd!.element('#div-args-callee');
+				const element: HBElement | null = response!.wnd!.element('#div-args-callee');
 				expect(element).not.toBeNull();
 			});
 		});
@@ -126,7 +126,7 @@ describe('Response API', () => {
 			});
 
 			it('should not process code containing the obsolete arguments.callee argument in strict mode', () => {
-				const element: ArmorHeadlessElement | null = response!.wnd!.element('#div-args-callee-strict');
+				const element: HBElement | null = response!.wnd!.element('#div-args-callee-strict');
 				expect(element).toBeNull();
 			});
 		});

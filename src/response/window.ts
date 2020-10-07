@@ -1,23 +1,23 @@
 import {JSDOM, ResourceLoader, VirtualConsole} from 'jsdom';
 
-import { ArmorHeadlessElement } from '../element';
-import {ArmorHeadlessRequestOptions} from '../request/options';
-import {ArmorHeadlessRequestOptionsWindow} from '../request/window';
 import {ArmorKeyUInt} from '@armorjs/key-store';
 import {EventEmitter} from 'events';
+import {HBElement} from '../element';
+import {HBRequestOptions} from '../request/options';
+import {HBRequestOptionsWindow} from '../request/window';
 
-export class ArmorHeadlessResponseWindow {
+export class HBResponseWindow {
 	public readonly events: EventEmitter;
 	public dom: any;
-	public options: ArmorHeadlessRequestOptionsWindow;
+	public options: HBRequestOptionsWindow;
 
-	constructor(events: EventEmitter, options: ArmorHeadlessRequestOptionsWindow) {
+	constructor(events: EventEmitter, options: HBRequestOptionsWindow) {
 		if (!events) {
-			throw new Error('ArmorHeadlessResponseWindow init failed - events argument missing.');
+			throw new Error('HBResponseWindow init failed - events argument missing.');
 		}
 
 		if (!(events instanceof EventEmitter)) {
-			throw new Error('ArmorHeadlessResponseWindow init failed - events argument not an EventEmitter instance.');
+			throw new Error('HBResponseWindow init failed - events argument not an EventEmitter instance.');
 		}
 
 		this.dom = null;
@@ -25,8 +25,8 @@ export class ArmorHeadlessResponseWindow {
 		this.events = events;
 	}
 
-	public elements(selector: string): ArmorHeadlessElement[] {
-		let results: ArmorHeadlessElement[] = [];
+	public elements(selector: string): HBElement[] {
+		let results: HBElement[] = [];
 		if (!this.dom || !this.dom.window || !this.dom.window.document) {
 			return results;
 		}
@@ -36,18 +36,16 @@ export class ArmorHeadlessResponseWindow {
 			matches = this.dom.window.document.querySelectorAll(selector);
 			if (Array.isArray(matches)) {
 				matches.forEach((match) => {
-					const element = new ArmorHeadlessElement(this.dom.window.document, match);
+					const element = new HBElement(this.dom.window.document, match);
 					results.push(element);
 				});
 			}
-		} catch (e) {
-
-		}
+		} catch (e) {}
 
 		return results;
 	}
 
-	public element(selector: string): ArmorHeadlessElement | null {
+	public element(selector: string): HBElement | null {
 		if (!this.dom || !this.dom.window || !this.dom.window.document) {
 			return null;
 		}
@@ -64,7 +62,7 @@ export class ArmorHeadlessResponseWindow {
 			return null;
 		}
 
-		return new ArmorHeadlessElement(this.dom.window.document, result);
+		return new HBElement(this.dom.window.document, result);
 	}
 
 	public title(): string | null {
