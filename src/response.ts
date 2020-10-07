@@ -1,9 +1,9 @@
 import {ArmorKeyString} from '@armorjs/key-store';
 import {EventEmitter} from 'events';
-import {HBElement} from './element';
 import {HBRequest} from './request';
 import {HBRequestOptions} from './request/options';
-import {HBRequestOptionsWindow} from './request/window';
+import {HBRequestOptionsWindow} from './request/options/window';
+import {HBResponseElement} from './response/element';
 import {HBResponseStatus} from './response/status';
 import {HBResponseWindow} from './response/window';
 
@@ -51,7 +51,7 @@ export class HBResponse {
 		return url;
 	}
 
-	public getBody(): HBElement | null {
+	public getBody(): HBResponseElement | null {
 		if (!this.wnd) {
 			return null;
 		}

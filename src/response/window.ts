@@ -2,9 +2,9 @@ import {JSDOM, ResourceLoader, VirtualConsole} from 'jsdom';
 
 import {ArmorKeyUInt} from '@armorjs/key-store';
 import {EventEmitter} from 'events';
-import {HBElement} from '../element';
 import {HBRequestOptions} from '../request/options';
-import {HBRequestOptionsWindow} from '../request/window';
+import {HBRequestOptionsWindow} from '../request/options/window';
+import {HBResponseElement} from './element';
 
 export class HBResponseWindow {
 	public readonly events: EventEmitter;
@@ -25,8 +25,8 @@ export class HBResponseWindow {
 		this.events = events;
 	}
 
-	public elements(selector: string): HBElement[] {
-		let results: HBElement[] = [];
+	public elements(selector: string): HBResponseElement[] {
+		let results: HBResponseElement[] = [];
 		if (!this.dom || !this.dom.window || !this.dom.window.document) {
 			return results;
 		}
@@ -36,7 +36,7 @@ export class HBResponseWindow {
 			matches = this.dom.window.document.querySelectorAll(selector);
 			if (Array.isArray(matches)) {
 				matches.forEach((match) => {
-					const element = new HBElement(this.dom.window.document, match);
+					const element = new HBResponseElement(this.dom.window.document, match);
 					results.push(element);
 				});
 			}
@@ -45,7 +45,7 @@ export class HBResponseWindow {
 		return results;
 	}
 
-	public element(selector: string): HBElement | null {
+	public element(selector: string): HBResponseElement | null {
 		if (!this.dom || !this.dom.window || !this.dom.window.document) {
 			return null;
 		}
@@ -62,7 +62,7 @@ export class HBResponseWindow {
 			return null;
 		}
 
-		return new HBElement(this.dom.window.document, result);
+		return new HBResponseElement(this.dom.window.document, result);
 	}
 
 	public title(): string | null {

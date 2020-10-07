@@ -3,7 +3,7 @@ import {ArmorKeyBoolean, ArmorKeyStore, ArmorKeyString, ArmorKeyUInt} from '@arm
 import {HBRequestOptionsAdapter} from './options/adapter';
 import {HBRequestOptionsHeaders} from './options/headers';
 import {HBRequestOptionsLog} from './options/log';
-import {HBRequestOptionsWindow} from './window';
+import {HBRequestOptionsWindow} from './options/window';
 
 export class HBRequestOptions extends ArmorKeyStore {
 	public readonly window: HBRequestOptionsWindow;

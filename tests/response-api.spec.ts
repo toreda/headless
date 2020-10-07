@@ -1,8 +1,8 @@
 import {EventEmitter} from 'events';
-import {HBElement} from '../src/element';
 import {HBRequestOptions} from '../src/request/options';
 import {HBRequestOptionsWindow} from '../src/request/window';
 import {HBResponse} from '../src/response';
+import {HBResponseElement} from '../src/element';
 import {HBResponseWindow} from '../src/response/window';
 import {HeadlessBrowser} from '../src/headless';
 import Path from 'path';
@@ -54,18 +54,18 @@ describe('Response API', () => {
 
 			describe('element', () => {
 				it('should get element specified by id', () => {
-					const element: HBElement | null = response!.wnd!.element('#box1552');
+					const element: HBResponseElement | null = response!.wnd!.element('#box1552');
 					expect(element).not.toBeNull();
 				});
 
 				it('should return text content of element specified by id', () => {
-					const element: HBElement | null = response!.wnd!.element('#box1552');
+					const element: HBResponseElement | null = response!.wnd!.element('#box1552');
 					expect(element).not.toBeNull();
 					expect(element!.text()).toBe('content_1552');
 				});
 
 				it('should return number of children', () => {
-					const element: HBElement | null = response!.wnd!.element('#childcount');
+					const element: HBResponseElement | null = response!.wnd!.element('#childcount');
 					expect(element).not.toBeNull();
 					expect(element!.childCount()).toBe(3);
 				});
@@ -88,7 +88,7 @@ describe('Response API', () => {
 		});
 
 		it('should execute script on page load when javascript is enabled', () => {
-			const element: HBElement | null = response!.wnd!.element('#div11');
+			const element: HBResponseElement | null = response!.wnd!.element('#div11');
 			expect(element).not.toBeNull();
 		});
 
@@ -100,7 +100,7 @@ describe('Response API', () => {
 			});
 
 			it('should process code containing the obsolete arguments.caller argument', () => {
-				const element: HBElement | null = response!.wnd!.element('#div-args-caller');
+				const element: HBResponseElement | null = response!.wnd!.element('#div-args-caller');
 				expect(element).not.toBeNull();
 			});
 		});
@@ -113,7 +113,7 @@ describe('Response API', () => {
 			});
 
 			it('should process code containing the obsolete arguments.callee argument', () => {
-				const element: HBElement | null = response!.wnd!.element('#div-args-callee');
+				const element: HBResponseElement | null = response!.wnd!.element('#div-args-callee');
 				expect(element).not.toBeNull();
 			});
 		});
@@ -126,7 +126,7 @@ describe('Response API', () => {
 			});
 
 			it('should not process code containing the obsolete arguments.callee argument in strict mode', () => {
-				const element: HBElement | null = response!.wnd!.element('#div-args-callee-strict');
+				const element: HBResponseElement | null = response!.wnd!.element('#div-args-callee-strict');
 				expect(element).toBeNull();
 			});
 		});

@@ -1,4 +1,4 @@
-export class HBElement {
+export class HBResponseElement {
 	public readonly element: HTMLElement;
 	public readonly document: HTMLDocument;
 
@@ -37,7 +37,7 @@ export class HBElement {
 		this.element.dispatchEvent(evt);
 	}
 
-	public child(selector: string): HBElement | null {
+	public child(selector: string): HBResponseElement | null {
 		if (!this.element) {
 			return null;
 		}
@@ -54,6 +54,6 @@ export class HBElement {
 			return null;
 		}
 
-		return new HBElement(this.document, result);
+		return new HBResponseElement(this.document, result);
 	}
 }
