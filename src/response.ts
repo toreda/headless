@@ -1,6 +1,5 @@
 import {ArmorKeyString} from '@armorjs/key-store';
 import {EventEmitter} from 'events';
-import {HBRequest} from './request';
 import {HBRequestOptions} from './request/options';
 import {HBRequestOptionsWindow} from './request/options/window';
 import {HBResponseElement} from './response/element';
@@ -34,21 +33,40 @@ export class HBResponse {
 		this.wnd = null;
 	}
 
-	public async load(): Promise<any> {
-		if (this.loaded) {
-			return;
-		}
-
-		this.wnd = await this.createAndLoadWindow(this.events, this.res, this.options.window);
-	}
-
 	public createUrl(res: any): ArmorKeyString {
 		const url = new ArmorKeyString();
+
 		if (res && res.config) {
 			url.update(res.config.url);
 		}
 
 		return url;
+	}
+
+	public async load(): Promise<any> {
+		if (this.loaded) {
+			return false;
+		}
+
+		this.wnd = await this.createAndLoadWindow(this.events, this.res, this.options.window);
+		return this.wnd;
+	}
+
+	public async createAndLoadWindow(
+		events: EventEmitter,
+		res: any,
+		options: HBRequestOptionsWindow
+	): Promise<HBResponseWindow | null> {
+		let wnd: HBResponseWindow | null = null;
+		try {
+			wnd = new HBResponseWindow(events, options);
+			await wnd.load(res);
+			this.loaded = true;
+		} catch (e) {
+			wnd = null;
+		}
+
+		return wnd;
 	}
 
 	public getBody(): HBResponseElement | null {
@@ -62,44 +80,25 @@ export class HBResponse {
 			return null;
 		}
 
-		return null;
+		return element;
 	}
 
 	public async click(selector: string): Promise<any> {
 		if (!this.loaded) {
-			console.error(`headless response click failed - response has not finished loading.`);
-			return null;
+			throw Error('headless response click failed - response has not finished loading.');
 		}
 
 		if (!this.wnd) {
-			console.error(`headless response click failed - response window not found.`);
-			return null;
+			throw Error(`headless response click failed - response window not found.`);
 		}
 
 		const element = this.wnd.element(selector);
 
 		if (!element) {
-			console.error(`headless response click failed - no elements with '${selector}' not found in response.`);
-			return null;
+			throw Error(`headless response click failed - no elements with '${selector}' not found in response.`);
 		}
 
 		element.click();
-	}
-
-	public async createAndLoadWindow(
-		events: EventEmitter,
-		res: any,
-		options: HBRequestOptionsWindow
-	): Promise<HBResponseWindow | null> {
-		let wnd: HBResponseWindow | null = null;
-		try {
-			wnd = new HBResponseWindow(events, options);
-			await wnd.load(res);
-		} catch (e) {
-			console.error(`HBResponse failed to createAndLoad response window: ${e.message}.`);
-			wnd = null;
-		}
-
-		return wnd;
+		return true;
 	}
 }
