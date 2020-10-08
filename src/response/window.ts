@@ -74,20 +74,18 @@ export class HBResponseWindow {
 	}
 
 	public async load(res: any): Promise<any> {
-		if (!res) {
-			return null;
-		}
-
 		let dom: JSDOM | null = null;
 
-		const runScripts = this.options.executeJavascript.get(false) ? 'dangerously' : undefined;
-
 		try {
+			if (!res) {
+				throw Error('No res given');
+			}
+
+			const runScripts = this.options.executeJavascript.get(false) ? 'dangerously' : undefined;
+
 			const virtualConsole = new VirtualConsole();
 			virtualConsole.on('error', (...data: any[]) => {});
-
 			virtualConsole.on('info', (...data: any[]) => {});
-
 			virtualConsole.on('log', (...data: any[]) => {});
 
 			const resourceLoader = new ResourceLoader({
@@ -103,7 +101,9 @@ export class HBResponseWindow {
 				virtualConsole: virtualConsole,
 				resources: 'usable'
 			});
-		} catch (e) {}
+		} catch (e) {
+			dom = null;
+		}
 
 		this.dom = dom;
 

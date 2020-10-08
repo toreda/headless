@@ -100,7 +100,7 @@ describe('HBResponseWindow', () => {
 				});
 			});
 
-			it('should return JSDOM object if successful', () => {
+			it('should return JSDOM object if  runScripts is dangerously', () => {
 				expect.assertions(1);
 
 				return instance.load(emptyRes).then((data) => {
@@ -108,7 +108,7 @@ describe('HBResponseWindow', () => {
 				});
 			});
 
-			it('should return JSDOM object if successful', () => {
+			it('should return JSDOM object if runScripts is undefined', () => {
 				expect.assertions(1);
 
 				instance.options.executeJavascript.update(true);
