@@ -26,21 +26,25 @@ describe('HBResponse', () => {
 					new HBResponse(undefined as any, emptyRes, options);
 				}).toThrow('HBResponse init failed - request.events property missing.');
 			});
+
 			it('should throw when events argument is not an EventEmitter instance', () => {
 				expect(() => {
 					new HBResponse({} as any, emptyRes, options);
 				}).toThrow('HBResponse init failed - request.event property is not an EventEmitter instance.');
 			});
+
 			it('should initialize res property to null when missing', () => {
 				const custom = new HBResponse(events, null, options);
 				expect(custom.res).toBeNull();
 			});
+
 			it('should initialize events property from the events argument', () => {
 				const events12 = new EventEmitter();
 				const custom = new HBResponse(events12, emptyRes, options);
 				expect(custom.events).toBe(events12);
 				expect(custom.events).not.toBe(events);
 			});
+
 			it('should initialize res property from the res argument', () => {
 				const res = {
 					one: '14414141',
@@ -49,6 +53,7 @@ describe('HBResponse', () => {
 				const custom = new HBResponse(events, res, options);
 				expect(custom.res).toEqual(res);
 			});
+
 			it('should initialize wnd property', () => {
 				const custom = new HBResponse(events, emptyRes, options);
 				expect(custom.wnd).not.toBeUndefined();
@@ -64,6 +69,7 @@ describe('HBResponse', () => {
 				expect(result).toBeInstanceOf(ArmorKeyString);
 				expect(result.get('')).toBe(expectedV);
 			});
+
 			it('should return default ArmorKeyString if res is not the right format', () => {
 				const expectedV = 'fallback';
 				expect(instance.createUrl('not valid format').get(expectedV)).toBe(expectedV);
@@ -79,6 +85,7 @@ describe('HBResponse', () => {
 				});
 				done();
 			});
+
 			it('should return window object', async (done) => {
 				const custom = new HBResponse(events, emptyRes, options);
 				expect(custom.loaded).toBe(false);
@@ -97,6 +104,7 @@ describe('HBResponse', () => {
 				expect(wnd instanceof HBResponseWindow).toBe(true);
 				done();
 			});
+
 			it('should return null when window init throws', async (done) => {
 				const res = {};
 				const wnd = await instance.createAndLoadWindow(undefined as any, res, options.window);
@@ -111,6 +119,7 @@ describe('HBResponse', () => {
 				expect(custom.wnd).toBeFalsy();
 				expect(custom.getBody()).toBeNull();
 			});
+
 			it('should return null if no body element exists', () => {
 				expect(instance.getBody()).not.toBeNull();
 				const body = instance.wnd!.element('body')!;
@@ -119,6 +128,7 @@ describe('HBResponse', () => {
 				expect(instance.getBody()).toBeNull();
 				parent.appendChild(body.element);
 			});
+
 			it('should return HBResponseElement of document body', () => {
 				expect(instance.getBody()).toBeInstanceOf(HBResponseElement);
 			});

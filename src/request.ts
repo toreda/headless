@@ -18,6 +18,10 @@ export class HBRequest {
 			throw new Error('HBRequest init failed - events argument missing.');
 		}
 
+		if (!(events instanceof EventEmitter)) {
+			throw new Error('HBRequest init failed - events argument is not an EventEmitter instance.');
+		}
+
 		if (!options) {
 			throw new Error('HBRequest init failed - options argument missing.');
 		}
@@ -29,10 +33,23 @@ export class HBRequest {
 		this.options = options;
 	}
 
-	public async execute(): Promise<HBResponse> {
-		const method = this.options.method.get('GET');
+	public createAdapter(adapterId: string): HBRequestAdapter {
+		switch (adapterId) {
+			case 'mock':
+				return new HBRequestAdapterMock();
+			case 'https':
+				return new HBRequestAdapterHttp();
+			case 'http':
+				return new HBRequestAdapterHttp();
+			case 'file':
+				return new HBRequestAdapterFile();
+			default:
+				return new HBRequestAdapterHttp();
+		}
+	}
+
+	public async execute(method: 'GET' | 'POST' = 'GET', payload?: any): Promise<HBResponse> {
 		const headers = this.options.headers.getAsObject();
-		const payload = {};
 
 		let result: any = null;
 		switch (method) {
@@ -54,20 +71,5 @@ export class HBRequest {
 		const response = new HBResponse(events, res, this.options);
 		await response.load();
 		return response;
-	}
-
-	public createAdapter(adapterId: string): HBRequestAdapter {
-		switch (adapterId) {
-			case 'mock':
-				return new HBRequestAdapterMock();
-			case 'https':
-				return new HBRequestAdapterHttp();
-			case 'http':
-				return new HBRequestAdapterHttp();
-			case 'file':
-				return new HBRequestAdapterFile();
-			default:
-				return new HBRequestAdapterHttp();
-		}
 	}
 }
