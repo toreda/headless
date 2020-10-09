@@ -14,34 +14,40 @@ describe('HBResponseWindow', () => {
 		emptyRes = {};
 		options = new HBRequestOptionsWindow();
 		events = new EventEmitter();
-		instance = new HBResponseWindow(events, options);
-		instance.load(emptyRes);
+		instance = new HBResponseWindow(events, emptyRes, options);
 	});
 
 	describe('Constructor', () => {
 		it('should initialize instance events property to the events argument', () => {
 			const events441 = new EventEmitter();
-			const custom = new HBResponseWindow(events441, options);
+			const custom = new HBResponseWindow(events441, emptyRes, options);
 			expect(custom.events).toBe(events441);
 		});
 
 		it('should throw when events argument missing', () => {
 			expect(() => {
-				new HBResponseWindow(undefined as any, options);
+				new HBResponseWindow(undefined as any, emptyRes, options);
 			}).toThrow('HBResponseWindow init failed - events argument missing.');
 		});
 
 		it('should throw when events argument is not an EventEmitter instance', () => {
 			expect(() => {
-				new HBResponseWindow({} as any, options);
+				new HBResponseWindow({} as any, emptyRes, options);
 			}).toThrow('HBResponseWindow init failed - events argument not an EventEmitter instance.');
+		});
+
+		it('should throw if res is missing', () => {
+			expect(() => {
+				new HBResponseWindow(events, null, options);
+			}).toThrow(/HBResponseWindow init failed - HBResponseWindow/);
 		});
 	});
 
 	describe('Implementation', () => {
 		describe('element', () => {
 			it('should return null if there is no document to query', () => {
-				const custom = new HBResponseWindow(events, options);
+				const custom = new HBResponseWindow(events, emptyRes, options);
+				delete custom.doc;
 				expect(custom.element('body')).toBeNull();
 			});
 
@@ -60,7 +66,8 @@ describe('HBResponseWindow', () => {
 
 		describe('elements', () => {
 			it('should return an empty array if there is no document to query', () => {
-				const custom = new HBResponseWindow(events, options);
+				const custom = new HBResponseWindow(events, emptyRes, options);
+				delete custom.doc;
 				expect(custom.elements('body')).toStrictEqual([]);
 			});
 
@@ -82,7 +89,8 @@ describe('HBResponseWindow', () => {
 
 		describe('title', () => {
 			it('should return null if there is no document', () => {
-				const custom = new HBResponseWindow(events, options);
+				const custom = new HBResponseWindow(events, emptyRes, options);
+				delete custom.doc;
 				expect(custom.title()).toBeNull();
 			});
 
@@ -92,31 +100,26 @@ describe('HBResponseWindow', () => {
 		});
 
 		describe('load', () => {
-			it('should return undefined if res is null', () => {
-				expect.assertions(1);
-
-				return instance.load(null).then((data) => {
-					expect(data).toBeNull();
-				});
+			it('should return dom if loaded is true', () => {
+				expect(instance.load(null)).toBeInstanceOf(JSDOM);
 			});
 
-			it('should return JSDOM object if  runScripts is dangerously', () => {
-				expect.assertions(1);
+			it('should throw if res is null', () => {
+				instance.loaded = false;
+				expect(() => {
+					instance.load(null);
+				}).toThrow('HBResponseWindow load failed - no res given.');
+			});
 
-				return instance.load(emptyRes).then((data) => {
-					expect(data).toBeInstanceOf(JSDOM);
-				});
+			it('should return JSDOM object if runScripts is dangerously', () => {
+				instance.options.executeJavascript.update(true);
+				expect(instance.load(emptyRes)).toBeInstanceOf(JSDOM);
+				instance.options.executeJavascript.update(false);
 			});
 
 			it('should return JSDOM object if runScripts is undefined', () => {
-				expect.assertions(1);
-
-				instance.options.executeJavascript.update(true);
-
-				return instance.load(emptyRes).then((data) => {
-					instance.options.executeJavascript.update(false);
-					expect(data).toBeInstanceOf(JSDOM);
-				});
+				instance.options.executeJavascript.update(false);
+				expect(instance.load(emptyRes)).toBeInstanceOf(JSDOM);
 			});
 		});
 	});

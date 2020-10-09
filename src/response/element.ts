@@ -1,6 +1,6 @@
 export class HBResponseElement {
-	public readonly element: HTMLElement;
 	public readonly document: HTMLDocument;
+	public readonly element: HTMLElement;
 
 	constructor(document: any, element: HTMLElement) {
 		if (!document) {
@@ -36,9 +36,7 @@ export class HBResponseElement {
 	}
 
 	public click(): void {
-		const evt: Event = this.document.createEvent('Event');
-		evt.initEvent('click', false, true);
-		this.element.dispatchEvent(evt);
+		this.element.click();
 	}
 
 	public html(): string | null {

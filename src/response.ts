@@ -5,6 +5,7 @@ import {HBRequestOptionsWindow} from './request/options/window';
 import {HBResponseElement} from './response/element';
 import {HBResponseStatus} from './response/status';
 import {HBResponseWindow} from './response/window';
+import {HeadlessBrowser} from './headless';
 
 export class HBResponse {
 	public readonly events: EventEmitter;
@@ -12,7 +13,7 @@ export class HBResponse {
 	public readonly status: HBResponseStatus;
 	public readonly url: ArmorKeyString;
 	public readonly options: HBRequestOptions;
-	public wnd: HBResponseWindow | null;
+	public win: HBResponseWindow;
 	public loaded: boolean;
 
 	constructor(events: EventEmitter, res: any, options: HBRequestOptions) {
@@ -30,7 +31,12 @@ export class HBResponse {
 		this.url = this.createUrl(res);
 		this.status = new HBResponseStatus(res);
 		this.events = events;
-		this.wnd = null;
+
+		try {
+			this.win = this.load();
+		} catch (error) {
+			throw Error(`HBResponse init failed - ${error.message}`);
+		}
 	}
 
 	public createUrl(res: any): ArmorKeyString {
@@ -43,38 +49,48 @@ export class HBResponse {
 		return url;
 	}
 
-	public async load(): Promise<any> {
+	public load(): HBResponseWindow {
 		if (this.loaded) {
-			return false;
+			return this.win;
 		}
 
-		this.wnd = await this.createAndLoadWindow(this.events, this.res, this.options.window);
-		return this.wnd;
+		return this.createAndLoadWindow(this.options.window);
 	}
 
-	public async createAndLoadWindow(
-		events: EventEmitter,
-		res: any,
-		options: HBRequestOptionsWindow
-	): Promise<HBResponseWindow | null> {
-		let wnd: HBResponseWindow | null = null;
+	public createAndLoadWindow(options?: HBRequestOptionsWindow): HBResponseWindow {
+		let win: HBResponseWindow;
+
 		try {
-			wnd = new HBResponseWindow(events, options);
-			await wnd.load(res);
-			this.loaded = true;
-		} catch (e) {
-			wnd = null;
+			win = new HBResponseWindow(this.events, this.res, options || this.options.window);
+		} catch (error) {
+			throw Error(`HBResponse createAndLoadWindow failed - ${error.message}`);
 		}
 
-		return wnd;
+		this.loaded = true;
+
+		return win;
 	}
 
-	public getBody(): HBResponseElement | null {
-		if (!this.wnd) {
+	public getBody(): HBResponseElement {
+		const element = this.win.element('body');
+
+		if (!element) {
+			throw Error('HBResponse getBody failed - no body element');
+		}
+
+		return element;
+	}
+
+	public getElement(selector: string): HBResponseElement | null {
+		if (!this.loaded) {
 			return null;
 		}
 
-		const element = this.wnd.element('body');
+		if (!this.win) {
+			return null;
+		}
+
+		const element = this.win.element(selector);
 
 		if (!element) {
 			return null;
@@ -83,22 +99,55 @@ export class HBResponse {
 		return element;
 	}
 
-	public async click(selector: string): Promise<any> {
+	public click(selector: string): boolean {
 		if (!this.loaded) {
-			throw Error('headless response click failed - response has not finished loading.');
+			return false;
 		}
 
-		if (!this.wnd) {
-			throw Error(`headless response click failed - response window not found.`);
+		if (!this.win) {
+			return false;
 		}
 
-		const element = this.wnd.element(selector);
+		const element = this.getElement(selector);
 
 		if (!element) {
-			throw Error(`headless response click failed - no elements with '${selector}' not found in response.`);
+			return false;
 		}
 
 		element.click();
 		return true;
+	}
+
+	public async submitForm(selector: string): Promise<HBResponse> {
+		const hbEle = this.getElement(selector);
+
+		if (!hbEle || (hbEle.element as HTMLInputElement).type !== 'submit') {
+			throw Error('HBResponse submiteForm failed - no submit button found.');
+		}
+
+		const submit: HTMLInputElement = hbEle.element as HTMLInputElement;
+		const form = submit.form;
+
+		if (!form) {
+			throw Error('HBResponse submiteForm failed - no form found.');
+		}
+
+		const method = form.method.toLowerCase();
+		const action = new URL(form.action).pathname;
+		const hostname = this.url.get('').split('/').slice(0, 3).join('/');
+
+		let search = [].filter
+			.call(form.elements, (elm: any) => {
+				return !!elm.name;
+			})
+			.map((elm: any) => {
+				return `${elm.name}=${elm.value || elm.textContent}`;
+			})
+			.join('&');
+
+		const url = hostname + action + (method === 'get' ? `?${search}` : '');
+
+		const hb = new HeadlessBrowser({events: this.events});
+		return hb[method](url, search);
 	}
 }

@@ -4,7 +4,6 @@ import {HBRequestAdapterFile} from './request/adapter/file';
 import {HBRequestAdapterHttp} from './request/adapter/http';
 import {HBRequestAdapterMock} from './request/adapter/mock';
 import {HBRequestOptions} from './request/options';
-import {HBRequestOptionsHeaders} from './request/options/headers';
 import {HBResponse} from './response';
 
 export class HBRequest {
@@ -63,13 +62,12 @@ export class HBRequest {
 				result = await this.adapter.get(this.url, headers);
 				break;
 		}
-		return await this.createResponse(this.events, result);
+
+		return this.createResponse(this.events, result);
 	}
 
-	public async createResponse(events: EventEmitter, res: any): Promise<HBResponse> {
+	public createResponse(events: EventEmitter, res: any): HBResponse {
 		this.options.window.executeJavascript.update(true);
-		const response = new HBResponse(events, res, this.options);
-		await response.load();
-		return response;
+		return new HBResponse(events, res, this.options);
 	}
 }

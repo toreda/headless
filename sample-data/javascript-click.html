@@ -1,17 +1,19 @@
 <html>
-	<head>
-		<title>hello</title>
-		<script>
+
+<head>
+	<title>hello</title>
+	<script>
 		function doClick() {
-			var div = window.document.createElement('div');
+			console.log('doClick')
+			let div = window.document.createElement('div');
 			div.id = 'click-result';
 			document.body.appendChild(div);
 		}
-		</script>
-	</head>
-	<body>
+	</script>
+</head>
 
-		<div id="click_target" onclick="doClick">
-		</div>
-	</body>
+<body>
+	<div id="click-target" onclick="doClick()"></div>
+</body>
+
 </html>

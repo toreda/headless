@@ -33,9 +33,10 @@ describe('HBResponse', () => {
 				}).toThrow('HBResponse init failed - request.event property is not an EventEmitter instance.');
 			});
 
-			it('should initialize res property to null when missing', () => {
-				const custom = new HBResponse(events, null, options);
-				expect(custom.res).toBeNull();
+			it('should throw when load fails', () => {
+				expect(() => {
+					new HBResponse(events, null, options);
+				}).toThrow(/HBResponse init failed - HBResponse/);
 			});
 
 			it('should initialize events property from the events argument', () => {
@@ -54,9 +55,9 @@ describe('HBResponse', () => {
 				expect(custom.res).toEqual(res);
 			});
 
-			it('should initialize wnd property', () => {
+			it('should initialize win property', () => {
 				const custom = new HBResponse(events, emptyRes, options);
-				expect(custom.wnd).not.toBeUndefined();
+				expect(custom.win).not.toBeUndefined();
 			});
 		});
 	});
@@ -78,54 +79,62 @@ describe('HBResponse', () => {
 		});
 
 		describe('load', () => {
-			it('should return false if it has already been loaded', async (done) => {
+			it('should return win if it has already been loaded', () => {
 				expect(instance.loaded).toBe(true);
-				await instance.load().then((data) => {
-					expect(data).toBe(false);
-				});
-				done();
+				const expectedV = instance.win;
+				expect(instance.load()).toBe(expectedV);
 			});
 
-			it('should return window object', async (done) => {
+			it('should return window object', () => {
 				const custom = new HBResponse(events, emptyRes, options);
+				custom.loaded = false;
+				expect(custom.load()).toBeInstanceOf(HBResponseWindow);
+			});
+
+			it('should throw when createAndLoadWindow throws', () => {
+				let spy = jest.spyOn(HBResponse.prototype, 'createAndLoadWindow');
+				spy.mockReturnValueOnce({} as any);
+				const custom = new HBResponse(events, null, options);
+				spy.mockRestore();
+
 				expect(custom.loaded).toBe(false);
-				await custom.load().then((data) => {
-					expect(data).toBeInstanceOf(HBResponseWindow);
-				});
-				done();
+
+				expect(() => {
+					custom.load();
+				}).toThrow(/HBResponse createAndLoadWindow failed - HBResponseWindow/);
 			});
 		});
 
 		describe('createAndLoadWindow', () => {
-			it('should return an HBResponseWindow instance', async (done) => {
-				const res = {};
-				const wnd = await instance.createAndLoadWindow(events, res, options.window);
-				expect(wnd).not.toBeNull();
-				expect(wnd instanceof HBResponseWindow).toBe(true);
-				done();
+			it('should return an HBResponseWindow instance', () => {
+				const win = instance.createAndLoadWindow();
+				expect(win).not.toBeNull();
+				expect(win instanceof HBResponseWindow).toBe(true);
 			});
 
-			it('should return null when window init throws', async (done) => {
-				const res = {};
-				const wnd = await instance.createAndLoadWindow(undefined as any, res, options.window);
-				expect(wnd).toBeNull();
-				done();
+			it('should throw when window init throws', () => {
+				let spy = jest.spyOn(HBResponse.prototype, 'createAndLoadWindow');
+				spy.mockReturnValueOnce({} as any);
+				const custom = new HBResponse(events, null, options);
+				spy.mockRestore();
+
+				expect(() => {
+					custom.createAndLoadWindow();
+				}).toThrow(/HBResponse createAndLoadWindow failed - HBResponseWindow/);
 			});
 		});
 
 		describe('getBody', () => {
-			it('should return null if wnd does not exist', () => {
-				const custom = new HBResponse(events, emptyRes, options);
-				expect(custom.wnd).toBeFalsy();
-				expect(custom.getBody()).toBeNull();
-			});
-
 			it('should return null if no body element exists', () => {
-				expect(instance.getBody()).not.toBeNull();
-				const body = instance.wnd!.element('body')!;
+				const body = instance.getBody()!;
+				expect(body).not.toBeNull();
+
 				const parent = body.element.parentNode!;
 				parent.removeChild(body.element);
-				expect(instance.getBody()).toBeNull();
+				expect(() => {
+					instance.getBody();
+				}).toThrow('HBResponse getBody failed - no body element');
+
 				parent.appendChild(body.element);
 			});
 
@@ -134,55 +143,66 @@ describe('HBResponse', () => {
 			});
 		});
 
+		describe('getElement', () => {
+			let badSelector = 'something';
+			let goodSelector = '*';
+
+			it('should return null if not finished loading', () => {
+				const custom = new HBResponse(events, emptyRes, options);
+				custom.loaded = false;
+				expect(custom.getElement(badSelector)).toBeNull();
+			});
+
+			it('should return null if win does not exist', () => {
+				const custom = new HBResponse(events, emptyRes, options);
+				expect(custom.loaded).toBe(true);
+				delete custom.win;
+				expect(custom.getElement(badSelector)).toBeNull();
+			});
+
+			it('should return null if no element is found', () => {
+				expect(instance.loaded).toBe(true);
+				expect(instance.win).toBeTruthy();
+				expect(instance.getElement(badSelector)).toBeNull();
+			});
+
+			it('should return HBReponseElement if element is found', () => {
+				expect(instance.loaded).toBe(true);
+				expect(instance.win).not.toBeNull();
+
+				expect.assertions(3);
+
+				expect(instance.getElement(goodSelector)).toBeInstanceOf(HBResponseElement);
+			});
+		});
+
 		describe('click', () => {
 			let badSelector = 'something';
 			let goodSelector = '*';
 
-			it('should return error if not finished loading', async (done) => {
+			it('should return error if not finished loading', () => {
 				const custom = new HBResponse(events, emptyRes, options);
-				expect(custom.loaded).toBe(false);
-
-				expect.assertions(2);
-
-				await expect(custom.click(badSelector)).rejects.toThrow(
-					'headless response click failed - response has not finished loading.'
-				);
-				done();
+				custom.loaded = false;
+				expect(custom.click(goodSelector)).toBe(false);
 			});
 
-			it('should return error if not finished loading', async (done) => {
+			it('should return error if win does not exist', () => {
 				const custom = new HBResponse(events, emptyRes, options);
-				custom.loaded = true;
-				expect(custom.wnd).toBeFalsy();
-
-				expect.assertions(2);
-
-				expect(custom.click(badSelector)).rejects.toThrow(
-					'headless response click failed - response window not found.'
-				);
-				done();
+				expect(custom.loaded).toBe(true);
+				delete custom.win;
+				expect(custom.click(goodSelector)).toBe(false);
 			});
 
-			it('should return error if no element is founc', async (done) => {
+			it('should return error if no element is found', () => {
 				expect(instance.loaded).toBe(true);
-				expect(instance.wnd).toBeTruthy();
-
-				expect.assertions(3);
-
-				expect(instance.click(badSelector)).rejects.toThrow(
-					`headless response click failed - no elements with '${badSelector}' not found in response.`
-				);
-				done();
+				expect(instance.win).toBeTruthy();
+				expect(instance.click(badSelector)).toBe(false);
 			});
 
-			it('should return true if element is clicked', async (done) => {
+			it('should return true if element is clicked', () => {
 				expect(instance.loaded).toBe(true);
-				expect(instance.wnd).toBeTruthy();
-
-				expect.assertions(3);
-
-				expect(instance.click(goodSelector)).resolves.toBe(true);
-				done();
+				expect(instance.win).toBeTruthy();
+				expect(instance.click(goodSelector)).toBe(true);
 			});
 		});
 	});

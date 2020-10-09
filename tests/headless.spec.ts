@@ -1,7 +1,6 @@
 import {EventEmitter} from 'events';
 import {HBRequest} from '../src/request';
 import {HBRequestOptions} from '../src/request/options';
-import {HBResponse} from '../src/response';
 import {HeadlessBrowser} from '../src/headless';
 
 describe('HeadlessBrowser', () => {
@@ -54,9 +53,9 @@ describe('HeadlessBrowser', () => {
 			it('should call load with get', () => {
 				spy.mockImplementationOnce(() => {});
 
-				instance.get(url, options as any);
+				instance.get(url, {}, options as any);
 
-				expect(spy).toBeCalledWith(url, 'get', options);
+				expect(spy).toBeCalledWith(url, 'get', {}, options);
 			});
 		});
 
@@ -64,9 +63,9 @@ describe('HeadlessBrowser', () => {
 			it('should call load with post', () => {
 				spy.mockImplementationOnce(() => {});
 
-				instance.post(url, options as any);
+				instance.post(url, {}, options as any);
 
-				expect(spy).toBeCalledWith(url, 'post', options);
+				expect(spy).toBeCalledWith(url, 'post', {}, options);
 			});
 		});
 
@@ -87,12 +86,12 @@ describe('HeadlessBrowser', () => {
 			});
 
 			it('should create a HBrequest and execute if options is given', () => {
-				const result = instance.load(url, 'get', new HBRequestOptions());
+				const result = instance.load(url, 'get', {}, new HBRequestOptions());
 				return expect(result).resolves.toBe('execute ran');
 			});
 
 			it('should always return HBResponse', () => {
-				const result = instance.load(undefined as any, undefined as any, undefined as any);
+				const result = instance.load(undefined as any, undefined as any, undefined as any, undefined as any);
 				return expect(result).resolves.toBe('execute ran');
 			});
 		});

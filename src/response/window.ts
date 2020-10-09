@@ -6,11 +6,12 @@ import {HBResponseElement} from './element';
 
 export class HBResponseWindow {
 	public readonly events: EventEmitter;
-	public dom: JSDOM | null;
-	public doc: Document | null;
+	public loaded: Boolean;
+	public dom: JSDOM;
+	public doc: Document;
 	public options: HBRequestOptionsWindow;
 
-	constructor(events: EventEmitter, options: HBRequestOptionsWindow) {
+	constructor(events: EventEmitter, res: any, options: HBRequestOptionsWindow) {
 		if (!events) {
 			throw new Error('HBResponseWindow init failed - events argument missing.');
 		}
@@ -19,10 +20,18 @@ export class HBResponseWindow {
 			throw new Error('HBResponseWindow init failed - events argument not an EventEmitter instance.');
 		}
 
-		this.doc = null;
-		this.dom = null;
 		this.options = options;
 		this.events = events;
+		this.loaded = false;
+
+		this.doc = undefined!;
+		this.dom = undefined!;
+
+		try {
+			this.load(res);
+		} catch (error) {
+			throw Error(`HBResponseWindow init failed - ${error.message}`);
+		}
 	}
 
 	public element(selector: string): HBResponseElement | null {
@@ -73,44 +82,47 @@ export class HBResponseWindow {
 		return this.doc.title;
 	}
 
-	public async load(res: any): Promise<any> {
-		let dom: JSDOM | null = null;
-
-		try {
-			if (!res) {
-				throw Error('No res given');
-			}
-
-			const runScripts = this.options.executeJavascript.get(false) ? 'dangerously' : undefined;
-
-			const virtualConsole = new VirtualConsole();
-			virtualConsole.on('error', (...data: any[]) => {});
-			virtualConsole.on('info', (...data: any[]) => {});
-			virtualConsole.on('log', (...data: any[]) => {});
-
-			const resourceLoader = new ResourceLoader({
-				strictSSL: false,
-				userAgent: 'Mell/9000'
-			});
-
-			dom = new JSDOM(res.data, {
-				url: 'http://localhost',
-				runScripts: runScripts,
-				pretendToBeVisual: true,
-				contentType: 'text/html',
-				virtualConsole: virtualConsole,
-				resources: 'usable'
-			});
-		} catch (e) {
-			dom = null;
+	public load(res: any): JSDOM {
+		if (this.loaded) {
+			return this.dom;
 		}
 
-		this.dom = dom;
-
-		if (dom) {
-			this.doc = dom.window.document;
+		if (!res) {
+			throw Error('HBResponseWindow load failed - no res given.');
 		}
 
-		return dom;
+		const runScripts = this.options.executeJavascript.get(false) ? 'dangerously' : undefined;
+
+		const virtualConsole = new VirtualConsole();
+
+		virtualConsole.on('error', (...data: any[]) => {
+			console.error(`VC ERROR: ${data}`);
+		});
+
+		virtualConsole.on('log', (...data: any[]) => {
+			console.log(`VC LOG: ${data}`);
+		});
+
+		virtualConsole.on('trace', (...data: any[]) => {
+			console.trace(`VC TRACE: ${data}`);
+		});
+
+		const resourceLoader = new ResourceLoader({
+			strictSSL: false,
+			userAgent: 'Mell/9000'
+		});
+
+		this.dom = new JSDOM(res.data, {
+			url: 'http://localhost',
+			runScripts: runScripts,
+			pretendToBeVisual: true,
+			contentType: 'text/html',
+			virtualConsole: virtualConsole,
+			resources: resourceLoader
+		});
+		this.doc = this.dom.window.document;
+		this.loaded = true;
+
+		return this.dom;
 	}
 }

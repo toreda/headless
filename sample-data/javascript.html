@@ -1,30 +1,34 @@
 <html>
-	<head>
-		<title>hello</title>
-	</head>
-	<body>
-		<div id="box1552">
+
+<head>
+	<title>hello</title>
+</head>
+
+<body>
+	<div id="box1552">
 		content_1552
-		</div>
+	</div>
 
-		<div id="boxempty">
+	<div id="boxempty">
 
-		</div>
+	</div>
 
-		<div id="childcount">
-			<div id="childcount_one">child_one</div>
-			<div id="childcount_two">child_two</div>
-			<div id="childcount_three">child_three</div>
-		</div>
-		<script type="text/javascript">
-		window.addEventListener('DOMContentLoaded', function() {
+	<div id="childcount">
+		<div id="childcount_one">child_one</div>
+		<div id="childcount_two">child_two</div>
+		<div id="childcount_three">child_three</div>
+	</div>
+	<script type="text/javascript">
+		window.addEventListener('DOMContentLoaded', function () {
 			var div = window.document.createElement('div');
 			div.id = 'div11';
+			div.textContent = 'newdiv'
 			document.body.appendChild(div);
 			console.log('javascript.html script loaded');
 			throw new Error('aaaa');
 		});
 		console.info('hello, javascript');
-		</script>
-	</body>
+	</script>
+</body>
+
 </html>

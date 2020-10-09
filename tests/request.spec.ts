@@ -126,12 +126,9 @@ describe('HBRequest', () => {
 		});
 
 		describe('createResponse', () => {
-			it('should return an HBResponse', async (done) => {
-				expect.assertions(1);
-
-				let result = await instance.createResponse(events, {});
+			it('should return an HBResponse', () => {
+				const result = instance.createResponse(events, {});
 				expect(result).toBeInstanceOf(HBResponse);
-				done();
 			});
 		});
 	});
