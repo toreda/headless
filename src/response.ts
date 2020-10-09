@@ -118,18 +118,43 @@ export class HBResponse {
 		return true;
 	}
 
-	public async submitForm(selector: string): Promise<HBResponse> {
+	public followLink(selector: string): Promise<HBResponse> {
+		const hbEle = this.getElement(selector);
+
+		if (!hbEle || hbEle.element.nodeName !== 'A') {
+			throw Error('HBResponse followLink failed - no anchor link found.');
+		}
+
+		const link: HTMLAnchorElement = hbEle.element as HTMLAnchorElement;
+
+		const hostname = this.url.get('').split('/').slice(0, 3).join('/');
+		const hrefLit = link.getAttribute('href');
+		const hrefRef = link.href;
+
+		let url: string;
+
+		if (hrefLit === hrefRef) {
+			url = hrefLit;
+		} else {
+			url = hostname + hrefLit;
+		}
+
+		const hb = new HeadlessBrowser({events: this.events});
+		return hb.get(url, null, this.options);
+	}
+
+	public submitForm(selector: string): Promise<HBResponse> {
 		const hbEle = this.getElement(selector);
 
 		if (!hbEle || (hbEle.element as HTMLInputElement).type !== 'submit') {
-			throw Error('HBResponse submiteForm failed - no submit button found.');
+			throw Error('HBResponse submitForm failed - no submit button found.');
 		}
 
 		const submit: HTMLInputElement = hbEle.element as HTMLInputElement;
 		const form = submit.form;
 
 		if (!form) {
-			throw Error('HBResponse submiteForm failed - no form found.');
+			throw Error('HBResponse submitForm failed - no form found.');
 		}
 
 		const method = form.method.toLowerCase();
@@ -148,6 +173,7 @@ export class HBResponse {
 		const url = hostname + action + (method === 'get' ? `?${search}` : '');
 
 		const hb = new HeadlessBrowser({events: this.events});
-		return hb[method](url, search);
+
+		return hb.load(url, method === 'post' ? 'POST' : 'GET', search, this.options);
 	}
 }

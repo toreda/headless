@@ -1,6 +1,5 @@
 import {HBRequestOptions} from '../src/request/options';
 import {HeadlessBrowser} from '../src/headless';
-import Path from 'path';
 
 describe('Overall API Usage', () => {
 	let instance: HeadlessBrowser;
@@ -10,6 +9,24 @@ describe('Overall API Usage', () => {
 		instance = new HeadlessBrowser();
 		requestOptions = new HBRequestOptions();
 		requestOptions.adapter.id.update('file');
+	});
+
+	it('Interact With Anchor Links', () => {
+		const path = 'sample-data/anchor-link.html';
+		return instance
+			.get(path, null, requestOptions)
+			.then((rsp) => {
+				const doc = rsp.win.doc;
+
+				return rsp.followLink('#link');
+			})
+			.then((rsp) => {
+				console.log(rsp.win.title());
+			})
+			.catch((err) => {
+				console.error(`Error: ${err}`);
+				expect(false).toBe(true);
+			});
 	});
 
 	it('Interact With GET Form', () => {
@@ -36,7 +53,7 @@ describe('Overall API Usage', () => {
 				console.log(rsp.win.dom.serialize());
 			})
 			.catch((err) => {
-				console.log(`Error: ${err}`);
+				console.error(`Error: ${err}`);
 				expect(err).toBe(undefined);
 			});
 	});
@@ -67,7 +84,7 @@ describe('Overall API Usage', () => {
 				console.log(rsp.win.dom.serialize());
 			})
 			.catch((err) => {
-				console.log(`Error: ${err}`);
+				console.error(`Error: ${err}`);
 				expect(err).toBe(undefined);
 			});
 	});
