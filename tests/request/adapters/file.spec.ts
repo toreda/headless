@@ -29,8 +29,8 @@ describe('HBRequestAdapterFile', () => {
 			});
 
 			it('should resolve and return data', async () => {
-				const path = 'tests/testfile.txt';
-				const expectedV = {data: 'This file has some data.'};
+				const path = 'tests\\testfile.txt';
+				const expectedV = {data: 'This file has some data.', url: path};
 				await expect(instance.getFile(path)).resolves.toEqual(expectedV);
 			});
 		});

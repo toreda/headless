@@ -13,6 +13,7 @@ export class HBResponse {
 	public readonly res: any;
 	public readonly status: HBResponseStatus;
 	public readonly url: ArmorKeyString;
+	public readonly origin: ArmorKeyString;
 	public readonly options: HBRequestOptions;
 	public win: HBResponseWindow;
 	public loaded: boolean;
@@ -30,6 +31,7 @@ export class HBResponse {
 		this.options = options;
 		this.res = res ? res : null;
 		this.url = this.createUrl(res);
+		this.origin = this.createOrigin(this.url.get(''));
 		this.status = new HBResponseStatus(res);
 		this.events = events;
 
@@ -55,6 +57,21 @@ export class HBResponse {
 		return url;
 	}
 
+	public createOrigin(url: string): ArmorKeyString {
+		const origin = new ArmorKeyString();
+
+		if (this.options.adapter.id.get('http') === 'file') {
+			origin.update(url.replace(this.res.url, ''));
+			return origin;
+		}
+
+		if (url) {
+			origin.update(new URL(url).origin);
+		}
+
+		return origin;
+	}
+
 	public load(): HBResponseWindow {
 		if (this.loaded) {
 			return this.win;
@@ -75,6 +92,30 @@ export class HBResponse {
 		this.loaded = true;
 
 		return win;
+	}
+
+	public handleFormElement(element: any): string {
+		if (!element?.name) {
+			return '';
+		}
+
+		if (element.nodeName === 'TEXTAREA') {
+			return element.textContent || '';
+		}
+
+		if (element.nodeName === 'SELECT') {
+			return element.value || '';
+		}
+
+		if (element.nodeName !== 'INPUT') {
+			return '';
+		}
+
+		if (element.type === 'checkbox') {
+			return element.checked ? element.value || 'on' : '';
+		}
+
+		return element.value || '';
 	}
 
 	public getBody(): HBResponseElement {
@@ -133,22 +174,20 @@ export class HBResponse {
 
 		const link: HTMLAnchorElement = hbEle.element as HTMLAnchorElement;
 
-		const hostname = this.url.get('').split('/').slice(0, 3).join('/');
-		const hrefLit = link.getAttribute('href');
-		const hrefRef = link.href;
+		const origin = this.origin.get('');
+		const hrefLiteral = link.getAttribute('href');
+		const hrefResolve = link.href;
 
 		let url: string;
 		let protocol: string = '';
 
-		if (hrefLit === hrefRef) {
-			url = hrefLit;
-			protocol = hrefLit.split(':')[0];
+		if (hrefLiteral === hrefResolve) {
+			url = hrefLiteral;
+			protocol = hrefLiteral.split(':')[0];
 		} else {
-			url = hostname + hrefLit;
+			url = origin + hrefLiteral;
 			protocol = this.options.adapter.id.get('');
 		}
-
-		console.warn([url, hostname, protocol, hrefLit, hrefRef]);
 
 		const hb = new HeadlessBrowser({events: this.events});
 		this.options.adapter.id.update(protocol);
@@ -171,7 +210,8 @@ export class HBResponse {
 
 		const method = form.method.toLowerCase();
 		const action = new URL(form.action).pathname;
-		const hostname = this.url.get('').split('/').slice(0, 3).join('/');
+		const origin = this.origin.get('');
+		let url = origin + action;
 
 		let search = [].filter
 			.call(form.elements, (elm: any) => {
@@ -182,14 +222,6 @@ export class HBResponse {
 			})
 			.join('&');
 
-		let url: string;
-
-		if (!hostname) {
-			url = action;
-		} else {
-			url = hostname + action;
-		}
-
 		if (method === 'get') {
 			url += `?${search}`;
 		}
@@ -197,29 +229,5 @@ export class HBResponse {
 		const hb = new HeadlessBrowser({events: this.events});
 
 		return hb.load(url, method === 'post' ? 'POST' : 'GET', search, this.options);
-	}
-
-	public handleFormElement(element: any): string {
-		if (!element?.name) {
-			return '';
-		}
-
-		if (element.nodeName === 'TEXTAREA') {
-			return element.textContent || '';
-		}
-
-		if (element.nodeName === 'SELECT') {
-			return element.value || '';
-		}
-
-		if (element.nodeName !== 'INPUT') {
-			return '';
-		}
-
-		if (element.type === 'checkbox') {
-			return element.checked ? element.value || 'on' : '';
-		}
-
-		return element.value || '';
 	}
 }

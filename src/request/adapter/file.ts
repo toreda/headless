@@ -24,7 +24,7 @@ export class HBRequestAdapterFile implements HBRequestAdapter {
 			stream.on('close', () => {
 				return resolve({
 					data: data,
-					url: path
+					url: path.replace(/\//g, '\\')
 				});
 			});
 
