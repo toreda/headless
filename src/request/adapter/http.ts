@@ -29,7 +29,6 @@ export class HBRequestAdapterHttp implements HBRequestAdapter {
 	}
 
 	public post(url: string | null, headers: HBRequestHeaders, payload: any): Promise<any> {
-		console.warn('http post');
 		return new Promise((resolve, reject) => {
 			headers.method = 'POST';
 

@@ -55,7 +55,7 @@ describe('HeadlessBrowser', () => {
 
 				instance.get(url, {}, options as any);
 
-				expect(spy).toBeCalledWith(url, 'get', {}, options);
+				expect(spy).toBeCalledWith(url, 'GET', {}, options);
 			});
 		});
 
@@ -65,7 +65,7 @@ describe('HeadlessBrowser', () => {
 
 				instance.post(url, {}, options as any);
 
-				expect(spy).toBeCalledWith(url, 'post', {}, options);
+				expect(spy).toBeCalledWith(url, 'POST', {}, options);
 			});
 		});
 
@@ -81,12 +81,12 @@ describe('HeadlessBrowser', () => {
 			});
 
 			it('should create a HBrequest and execute if options is missing', () => {
-				const result = instance.load(url, 'get');
+				const result = instance.load(url, 'GET');
 				return expect(result).resolves.toBe('execute ran');
 			});
 
 			it('should create a HBrequest and execute if options is given', () => {
-				const result = instance.load(url, 'get', {}, new HBRequestOptions());
+				const result = instance.load(url, 'GET', {}, new HBRequestOptions());
 				return expect(result).resolves.toBe('execute ran');
 			});
 

@@ -23,7 +23,8 @@ export class HBRequestAdapterFile implements HBRequestAdapter {
 
 			stream.on('close', () => {
 				return resolve({
-					data: data
+					data: data,
+					url: path
 				});
 			});
 

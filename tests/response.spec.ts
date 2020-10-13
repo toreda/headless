@@ -205,5 +205,96 @@ describe('HBResponse', () => {
 				expect(instance.click(goodSelector)).toBe(true);
 			});
 		});
+
+		describe('followLink', () => {
+			it('should throw if query does not return an anchor', () => {
+				return expect(instance.followLink('*:not(a)')).rejects.toThrow(
+					/HBResponse followLink failed - no anchor link found/
+				);
+			});
+		});
+
+		describe('submitForm', () => {
+			it('should throw if query does not return a submit', () => {
+				return expect(instance.submitForm('*[type!=submit]')).rejects.toThrow(
+					/HBResponse submitForm failed - no submit button found/
+				);
+			});
+
+			it('should throw if the submit does not have a form', () => {
+				const custom = new HBResponse(events, {data: `<input type='submit'/>`}, options);
+
+				return expect(custom.submitForm('*[type=submit]')).rejects.toThrow(
+					/HBResponse submitForm failed - no form found/
+				);
+			});
+		});
+
+		describe('handleFormElement', () => {
+			it('should return an empty string when element has no name', () => {
+				expect(instance.handleFormElement(null)).toBe('');
+				expect(instance.handleFormElement(instance.getBody())).toBe('');
+			});
+
+			it('should return the textContent of a textarea', () => {
+				let expectedV = '';
+				const formData = instance.win.doc.createElement('textarea');
+				formData.name = 'testForm';
+				expect(instance.handleFormElement(formData)).toBe(expectedV);
+
+				expectedV = 'testing value 398';
+				formData.textContent = expectedV;
+				expect(instance.handleFormElement(formData)).toBe(expectedV);
+			});
+
+			it('should return the value of a select', () => {
+				let expectedV = '';
+				const formData = instance.win.doc.createElement('select');
+				const option = formData.appendChild(instance.win.doc.createElement('option'));
+				formData.name = 'testForm';
+				option.selected;
+				expect(instance.handleFormElement(formData)).toBe(expectedV);
+
+				expectedV = 'testing value 908';
+				option.value = expectedV;
+				expect(instance.handleFormElement(formData)).toBe(expectedV);
+			});
+
+			it('should return the value of an input', () => {
+				let expectedV = '';
+				const formData = instance.win.doc.createElement('input');
+				formData.name = 'testForm';
+				expect(instance.handleFormElement(formData)).toBe(expectedV);
+
+				expectedV = 'testing value 824';
+				formData.value = expectedV;
+				expect(instance.handleFormElement(formData)).toBe(expectedV);
+			});
+
+			it('should return the value of a checkbox', () => {
+				let expectedV = '';
+				const formData = instance.win.doc.createElement('input');
+				formData.type = 'checkbox';
+				formData.name = 'testForm';
+				formData.checked = false;
+				expect(instance.handleFormElement(formData)).toBe(expectedV);
+
+				expectedV = 'on';
+				formData.checked = true;
+				expect(instance.handleFormElement(formData)).toBe(expectedV);
+
+				expectedV = 'testing value 281';
+				formData.value = expectedV;
+				expect(instance.handleFormElement(formData)).toBe(expectedV);
+			});
+
+			it('should return an empty string if it is not a form element', () => {
+				let expectedV = '';
+				const formData = instance.win.doc.createElement('div') as any;
+				formData.name = 'testForm';
+				formData.textContent = 'testing value 635';
+				expect(instance.handleFormElement(formData)).toBe(expectedV);
+			});
+		});
 	});
 });

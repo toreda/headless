@@ -6,6 +6,7 @@ import {HBResponseElement} from './response/element';
 import {HBResponseStatus} from './response/status';
 import {HBResponseWindow} from './response/window';
 import {HeadlessBrowser} from './headless';
+import Path from 'path';
 
 export class HBResponse {
 	public readonly events: EventEmitter;
@@ -41,6 +42,11 @@ export class HBResponse {
 
 	public createUrl(res: any): ArmorKeyString {
 		const url = new ArmorKeyString();
+
+		if (this.options.adapter.id.get('http') === 'file') {
+			url.update(Path.resolve(res.url));
+			return url;
+		}
 
 		if (res && res.config) {
 			url.update(res.config.url);
@@ -108,17 +114,17 @@ export class HBResponse {
 			return false;
 		}
 
-		const element = this.getElement(selector);
+		const hbEle = this.getElement(selector);
 
-		if (!element) {
+		if (!hbEle) {
 			return false;
 		}
 
-		element.click();
+		hbEle.click();
 		return true;
 	}
 
-	public followLink(selector: string): Promise<HBResponse> {
+	public async followLink(selector: string): Promise<HBResponse> {
 		const hbEle = this.getElement(selector);
 
 		if (!hbEle || hbEle.element.nodeName !== 'A') {
@@ -132,18 +138,24 @@ export class HBResponse {
 		const hrefRef = link.href;
 
 		let url: string;
+		let protocol: string = '';
 
 		if (hrefLit === hrefRef) {
 			url = hrefLit;
+			protocol = hrefLit.split(':')[0];
 		} else {
 			url = hostname + hrefLit;
+			protocol = this.options.adapter.id.get('');
 		}
 
+		console.warn([url, hostname, protocol, hrefLit, hrefRef]);
+
 		const hb = new HeadlessBrowser({events: this.events});
+		this.options.adapter.id.update(protocol);
 		return hb.get(url, null, this.options);
 	}
 
-	public submitForm(selector: string): Promise<HBResponse> {
+	public async submitForm(selector: string): Promise<HBResponse> {
 		const hbEle = this.getElement(selector);
 
 		if (!hbEle || (hbEle.element as HTMLInputElement).type !== 'submit') {
@@ -166,14 +178,48 @@ export class HBResponse {
 				return !!elm.name;
 			})
 			.map((elm: any) => {
-				return `${elm.name}=${elm.value || elm.textContent}`;
+				return `${elm.name}=${this.handleFormElement(elm)}`;
 			})
 			.join('&');
 
-		const url = hostname + action + (method === 'get' ? `?${search}` : '');
+		let url: string;
+
+		if (!hostname) {
+			url = action;
+		} else {
+			url = hostname + action;
+		}
+
+		if (method === 'get') {
+			url += `?${search}`;
+		}
 
 		const hb = new HeadlessBrowser({events: this.events});
 
 		return hb.load(url, method === 'post' ? 'POST' : 'GET', search, this.options);
+	}
+
+	public handleFormElement(element: any): string {
+		if (!element?.name) {
+			return '';
+		}
+
+		if (element.nodeName === 'TEXTAREA') {
+			return element.textContent || '';
+		}
+
+		if (element.nodeName === 'SELECT') {
+			return element.value || '';
+		}
+
+		if (element.nodeName !== 'INPUT') {
+			return '';
+		}
+
+		if (element.type === 'checkbox') {
+			return element.checked ? element.value || 'on' : '';
+		}
+
+		return element.value || '';
 	}
 }
