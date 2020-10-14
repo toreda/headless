@@ -2,6 +2,7 @@ import {Browser} from '../src/browser';
 import {BrowserRequest} from '../src/browser/request';
 import {BrowserRequestOptions} from '../src/browser/request/options';
 import {EventEmitter} from 'events';
+import Path from 'path';
 
 const htmltests = false;
 
@@ -108,7 +109,7 @@ describe('Browser', () => {
 		});
 
 		it('Interact With Relative Anchor Links', () => {
-			const path = 'sample-data/anchor-link.html';
+			const path = Path.resolve('sample-data/anchor-link.html');
 			return new Browser()
 				.get(path, null, requestOptions)
 				.then((rsp) => {
@@ -125,7 +126,7 @@ describe('Browser', () => {
 
 		if (htmltests) {
 			it('Interact With Absolute Anchor Links', () => {
-				const path = 'sample-data/anchor-link.html';
+				const path = Path.resolve('sample-data/anchor-link.html');
 				return new Browser()
 					.get(path, null, requestOptions)
 					.then((rsp) => {

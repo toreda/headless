@@ -1,4 +1,5 @@
 import {BrowserRequestAdapterFile} from '../../../../src/browser/request/adapter/file';
+import Path from 'path';
 
 describe('BrowserRequestAdapterFile', () => {
 	let instance: BrowserRequestAdapterFile;
@@ -29,7 +30,7 @@ describe('BrowserRequestAdapterFile', () => {
 			});
 
 			it('should resolve and return data', async () => {
-				const path = 'sample-data\\testfile.txt';
+				const path = Path.resolve('sample-data\\testfile.txt');
 				const expectedV = {data: 'This file has some data.', url: path};
 				await expect(instance.getFile(path)).resolves.toEqual(expectedV);
 			});
