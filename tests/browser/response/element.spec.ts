@@ -1,7 +1,7 @@
-import {BrowserResponseElement} from '../../../src/browser/response/element';
+import {BrowserResponseNode} from '../../../src/browser/response/node';
 import {JSDOM} from 'jsdom';
 
-describe('BrowserResponseElement', () => {
+describe('BrowserResponseNode', () => {
 	const DOC = new JSDOM().window.document;
 	DOC.documentElement.appendChild(DOC.createElement('head'));
 	DOC.documentElement.appendChild(DOC.createElement('body'));
@@ -10,26 +10,26 @@ describe('BrowserResponseElement', () => {
 	DOC.body.appendChild(ELM);
 	ELM.appendChild(DOC.createElement('p'));
 
-	let instance: BrowserResponseElement;
+	let instance: BrowserResponseNode;
 
 	beforeAll(() => {
-		instance = new BrowserResponseElement(DOC, ELM);
+		instance = new BrowserResponseNode(DOC, ELM);
 	});
 
 	describe('Constructors', () => {
 		describe('constructor', () => {
 			it('should throw if no document is given', () => {
-				const expectedV = 'BrowserResponseElement init failed - must provide document argument';
-				expect(() => new BrowserResponseElement(undefined!, undefined!)).toThrow(expectedV);
+				const expectedV = 'BrowserResponseNode init failed - must provide document argument';
+				expect(() => new BrowserResponseNode(undefined!, undefined!)).toThrow(expectedV);
 			});
 
 			it('should throw if no element is given', () => {
-				const expectedV = 'BrowserResponseElement init failed - must provide element argument';
-				expect(() => new BrowserResponseElement(DOC, undefined!)).toThrow(expectedV);
+				const expectedV = 'BrowserResponseNode init failed - must provide element argument';
+				expect(() => new BrowserResponseNode(DOC, undefined!)).toThrow(expectedV);
 			});
 
 			it('should not throw if both args are given', () => {
-				expect(() => new BrowserResponseElement(DOC, ELM)).not.toThrow();
+				expect(() => new BrowserResponseNode(DOC, ELM)).not.toThrow();
 			});
 		});
 	});
@@ -44,8 +44,8 @@ describe('BrowserResponseElement', () => {
 				expect(instance.child('#randomUnmatchedId13579')).toBeNull();
 			});
 
-			it('should return an BrowserResponseElement', () => {
-				expect(instance.child('p')).toBeInstanceOf(BrowserResponseElement);
+			it('should return an BrowserResponseNode', () => {
+				expect(instance.child('p')).toBeInstanceOf(BrowserResponseNode);
 			});
 		});
 

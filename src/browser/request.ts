@@ -27,7 +27,7 @@ export class BrowserRequest {
 
 		this.url = url;
 
-		this.adapter = this.createAdapter(options.adapter.id.get('http'));
+		this.adapter = this.createAdapter(options.adapter.id());
 		this.events = events;
 		this.options = options;
 	}
@@ -67,7 +67,6 @@ export class BrowserRequest {
 	}
 
 	public createResponse(events: EventEmitter, res: any): BrowserResponse {
-		this.options.window.executeJavascript.update(true);
 		return new BrowserResponse(events, res, this.options);
 	}
 }

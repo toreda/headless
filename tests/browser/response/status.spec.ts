@@ -9,9 +9,9 @@ describe('BrowserResponseStatus', () => {
 
 	describe('Constructors', () => {
 		describe('constructor', () => {
-			it('should not throw if res is null', () => {
+			it('should not throw', () => {
 				expect(() => {
-					new BrowserResponseStatus(null);
+					new BrowserResponseStatus();
 				}).not.toThrow();
 			});
 
@@ -23,8 +23,8 @@ describe('BrowserResponseStatus', () => {
 
 				let result = new BrowserResponseStatus(expectedV);
 
-				expect(result.status.get(0)).toBe(expectedV.status);
-				expect(result.statusText.get('')).toBe(expectedV.statusText);
+				expect(result.status()).toBe(expectedV.status);
+				expect(result.statusText()).toBe(expectedV.statusText);
 			});
 		});
 	});

@@ -21,7 +21,7 @@ export class Browser {
 		options?: BrowserRequestOptions
 	): Promise<BrowserResponse> {
 		const requestOptions = options ? options : new BrowserRequestOptions();
-		requestOptions.method.update(method);
+		requestOptions.method(method);
 
 		const request = new BrowserRequest(this.events, url, requestOptions);
 		return await request.execute(method, payload);

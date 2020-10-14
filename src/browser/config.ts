@@ -1,11 +1,13 @@
-import {ArmorKeyStore} from '@armorjs/key-store';
 import {BrowserConfigGeneral} from './config/general';
+import {StrongMap} from '@toreda/strong-types';
 
-export class BrowserConfig extends ArmorKeyStore {
+export class BrowserConfig extends StrongMap {
 	public readonly general: BrowserConfigGeneral;
 
-	constructor() {
+	constructor(json: any = {}) {
 		super();
 		this.general = new BrowserConfigGeneral();
+
+		this.parse(json);
 	}
 }

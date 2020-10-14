@@ -1,8 +1,9 @@
-import {ArmorKeyString} from '@armorjs/key-store';
+import {StrongString, makeString} from '@toreda/strong-types';
+
 import {Browser} from '../browser';
 import {BrowserRequestOptions} from './request/options';
 import {BrowserRequestOptionsWindow} from './request/options/window';
-import {BrowserResponseElement} from './response/element';
+import {BrowserResponseNode} from './response/node';
 import {BrowserResponseStatus} from './response/status';
 import {BrowserResponseWindow} from './response/window';
 import {EventEmitter} from 'events';
@@ -12,8 +13,8 @@ export class BrowserResponse {
 	public readonly events: EventEmitter;
 	public readonly res: any;
 	public readonly status: BrowserResponseStatus;
-	public readonly url: ArmorKeyString;
-	public readonly origin: ArmorKeyString;
+	public readonly url: StrongString;
+	public readonly origin: StrongString;
 	public readonly options: BrowserRequestOptions;
 	public win: BrowserResponseWindow;
 	public loaded: boolean;
@@ -31,7 +32,7 @@ export class BrowserResponse {
 		this.options = options;
 		this.res = res ? res : null;
 		this.url = this.createUrl(res);
-		this.origin = this.createOrigin(this.url.get(''));
+		this.origin = this.createOrigin(this.url());
 		this.status = new BrowserResponseStatus(res);
 		this.events = events;
 
@@ -42,31 +43,31 @@ export class BrowserResponse {
 		}
 	}
 
-	public createUrl(res: any): ArmorKeyString {
-		const url = new ArmorKeyString();
+	public createUrl(res: any): StrongString {
+		const url = makeString(null, '');
 
-		if (this.options.adapter.id.get('http') === 'file') {
-			url.update(Path.resolve(res.url));
+		if (this.options.adapter.id() === 'file') {
+			url(Path.resolve(res.url));
 			return url;
 		}
 
 		if (res && res.config) {
-			url.update(res.config.url);
+			url(res.config.url);
 		}
 
 		return url;
 	}
 
-	public createOrigin(url: string): ArmorKeyString {
-		const origin = new ArmorKeyString();
+	public createOrigin(url: string): StrongString {
+		const origin = makeString(null, '');
 
-		if (this.options.adapter.id.get('http') === 'file') {
-			origin.update(url.replace(this.res.url, ''));
+		if (this.options.adapter.id() === 'file') {
+			origin(url.replace(this.res.url, ''));
 			return origin;
 		}
 
 		if (url) {
-			origin.update(new URL(url).origin);
+			origin(new URL(url).origin);
 		}
 
 		return origin;
@@ -118,7 +119,7 @@ export class BrowserResponse {
 		return element.value || '';
 	}
 
-	public getBody(): BrowserResponseElement {
+	public getBody(): BrowserResponseNode {
 		const element = this.win.element('body');
 
 		if (!element) {
@@ -128,7 +129,7 @@ export class BrowserResponse {
 		return element;
 	}
 
-	public getElement(selector: string): BrowserResponseElement | null {
+	public getElement(selector: string): BrowserResponseNode | null {
 		if (!this.loaded) {
 			return null;
 		}
@@ -155,53 +156,51 @@ export class BrowserResponse {
 			return false;
 		}
 
-		const hbEle = this.getElement(selector);
+		const node = this.getElement(selector);
 
-		if (!hbEle) {
+		if (!node) {
 			return false;
 		}
 
-		hbEle.click();
+		node.click();
 		return true;
 	}
 
 	public async followLink(selector: string): Promise<BrowserResponse> {
-		const hbEle = this.getElement(selector);
+		const node = this.getElement(selector);
 
-		if (!hbEle || hbEle.element.nodeName !== 'A') {
+		if (!node || node.element.nodeName !== 'A') {
 			throw Error('BrowserResponse followLink failed - no anchor link found.');
 		}
 
-		const link: HTMLAnchorElement = hbEle.element as HTMLAnchorElement;
+		const link: HTMLAnchorElement = node.element as HTMLAnchorElement;
 
-		const origin = this.origin.get('');
+		const origin = this.origin();
 		const hrefLiteral = link.getAttribute('href');
 		const hrefResolve = link.href;
 
 		let url: string;
-		let protocol: string = '';
 
 		if (hrefLiteral === hrefResolve) {
 			url = hrefLiteral;
-			protocol = hrefLiteral.split(':')[0];
+			let protocol = hrefLiteral.split(':')[0];
+			this.options.adapter.id(protocol);
 		} else {
 			url = origin + hrefLiteral;
-			protocol = this.options.adapter.id.get('');
 		}
 
-		const hb = new Browser({events: this.events});
-		this.options.adapter.id.update(protocol);
-		return hb.get(url, null, this.options);
+		const browser = new Browser({events: this.events});
+		return browser.get(url, null, this.options);
 	}
 
 	public async submitForm(selector: string): Promise<BrowserResponse> {
-		const hbEle = this.getElement(selector);
+		const node = this.getElement(selector);
 
-		if (!hbEle || (hbEle.element as HTMLInputElement).type !== 'submit') {
+		if (!node || (node.element as HTMLInputElement).type !== 'submit') {
 			throw Error('BrowserResponse submitForm failed - no submit button found.');
 		}
 
-		const submit: HTMLInputElement = hbEle.element as HTMLInputElement;
+		const submit: HTMLInputElement = node.element as HTMLInputElement;
 		const form = submit.form;
 
 		if (!form) {
@@ -210,7 +209,7 @@ export class BrowserResponse {
 
 		const method = form.method.toLowerCase();
 		const action = new URL(form.action).pathname;
-		const origin = this.origin.get('');
+		const origin = this.origin();
 		let url = origin + action;
 
 		let search = [].filter
@@ -226,8 +225,8 @@ export class BrowserResponse {
 			url += `?${search}`;
 		}
 
-		const hb = new Browser({events: this.events});
+		const browser = new Browser({events: this.events});
 
-		return hb.load(url, method === 'post' ? 'POST' : 'GET', search, this.options);
+		return browser.load(url, method === 'post' ? 'POST' : 'GET', search, this.options);
 	}
 }

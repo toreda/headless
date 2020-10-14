@@ -1,7 +1,7 @@
 import {JSDOM, ResourceLoader, VirtualConsole} from 'jsdom';
 
 import {BrowserRequestOptionsWindow} from '../request/options/window';
-import {BrowserResponseElement} from './element';
+import {BrowserResponseNode} from './node';
 import {EventEmitter} from 'events';
 
 export class BrowserResponseWindow {
@@ -34,7 +34,7 @@ export class BrowserResponseWindow {
 		}
 	}
 
-	public element(selector: string): BrowserResponseElement | null {
+	public element(selector: string): BrowserResponseNode | null {
 		if (!this.doc) {
 			return null;
 		}
@@ -51,11 +51,11 @@ export class BrowserResponseWindow {
 			return null;
 		}
 
-		return new BrowserResponseElement(this.doc, result);
+		return new BrowserResponseNode(this.doc, result);
 	}
 
-	public elements(selector: string): BrowserResponseElement[] {
-		let results: BrowserResponseElement[] = [];
+	public elements(selector: string): BrowserResponseNode[] {
+		let results: BrowserResponseNode[] = [];
 		if (!this.doc) {
 			return results;
 		}
@@ -64,7 +64,7 @@ export class BrowserResponseWindow {
 		try {
 			matches = this.doc.querySelectorAll(selector);
 			matches.forEach((match) => {
-				const element = new BrowserResponseElement(this.doc, match);
+				const element = new BrowserResponseNode(this.doc, match);
 				results.push(element);
 			});
 		} catch (e) {
@@ -91,7 +91,7 @@ export class BrowserResponseWindow {
 			throw Error('BrowserResponseWindow load failed - no res given.');
 		}
 
-		const runScripts = this.options.executeJavascript.get(false) ? 'dangerously' : undefined;
+		const runScripts = this.options.executeJavascript() ? 'dangerously' : undefined;
 
 		const virtualConsole = new VirtualConsole();
 

@@ -1,5 +1,5 @@
 import {BrowserRequestOptionsWindow} from '../../../src/browser/request/options/window';
-import {BrowserResponseElement} from '../../../src/browser/response/element';
+import {BrowserResponseNode} from '../../../src/browser/response/node';
 import {BrowserResponseWindow} from '../../../src/browser/response/window';
 import {EventEmitter} from 'events';
 import {JSDOM} from 'jsdom';
@@ -59,8 +59,8 @@ describe('BrowserResponseWindow', () => {
 				expect(instance.element('#UnmatchedSelector')).toBeNull();
 			});
 
-			it('should return an BrowserResponseElement', () => {
-				expect(instance.element('body')).toBeInstanceOf(BrowserResponseElement);
+			it('should return an BrowserResponseNode', () => {
+				expect(instance.element('body')).toBeInstanceOf(BrowserResponseNode);
 			});
 		});
 
@@ -79,10 +79,10 @@ describe('BrowserResponseWindow', () => {
 				expect(instance.elements('#UnmatchedSelector')).toStrictEqual([]);
 			});
 
-			it('should return an BrowserResponseElement array', () => {
+			it('should return an BrowserResponseNode array', () => {
 				const results = instance.elements('*');
 				results.forEach((ele) => {
-					expect(ele).toBeInstanceOf(BrowserResponseElement);
+					expect(ele).toBeInstanceOf(BrowserResponseNode);
 				});
 			});
 		});
@@ -112,13 +112,13 @@ describe('BrowserResponseWindow', () => {
 			});
 
 			it('should return JSDOM object if runScripts is dangerously', () => {
-				instance.options.executeJavascript.update(true);
+				instance.options.executeJavascript(true);
 				expect(instance.load(emptyRes)).toBeInstanceOf(JSDOM);
-				instance.options.executeJavascript.update(false);
+				instance.options.executeJavascript(false);
 			});
 
 			it('should return JSDOM object if runScripts is undefined', () => {
-				instance.options.executeJavascript.update(false);
+				instance.options.executeJavascript(false);
 				expect(instance.load(emptyRes)).toBeInstanceOf(JSDOM);
 			});
 		});

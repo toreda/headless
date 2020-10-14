@@ -1,16 +1,18 @@
-import {ArmorKeyBoolean, ArmorKeyStore, ArmorKeyString} from '@armorjs/key-store';
+import {StrongBoolean, StrongMap, StrongString, makeBoolean, makeString} from '@toreda/strong-types';
 
-export class BrowserRequestOptionsAdapter extends ArmorKeyStore {
-	public readonly id: ArmorKeyString;
+export class BrowserRequestOptionsAdapter extends StrongMap {
+	public readonly id: StrongString;
 	public readonly httpFallback: {
-		enabled: ArmorKeyBoolean;
+		enabled: StrongBoolean;
 	};
 
-	constructor() {
+	constructor(json: any = {}) {
 		super();
-		this.id = new ArmorKeyString('http');
+		this.id = makeString(null, 'http');
 		this.httpFallback = {
-			enabled: new ArmorKeyBoolean()
+			enabled: makeBoolean(null, true)
 		};
+
+		this.parse(json);
 	}
 }

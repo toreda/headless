@@ -1,17 +1,14 @@
-import {ArmorKeyStore, ArmorKeyString, ArmorKeyUInt} from '@armorjs/key-store';
+import {StrongMap, StrongString, StrongUInt, makeString, makeUInt} from '@toreda/strong-types';
 
-export class BrowserResponseStatus extends ArmorKeyStore {
-	public readonly status: ArmorKeyUInt;
-	public readonly statusText: ArmorKeyString;
+export class BrowserResponseStatus extends StrongMap {
+	public readonly status: StrongUInt;
+	public readonly statusText: StrongString;
 
-	constructor(res: any) {
+	constructor(json: any = {}) {
 		super();
-		this.status = new ArmorKeyUInt();
-		this.statusText = new ArmorKeyString();
+		this.status = makeUInt(null, 0);
+		this.statusText = makeString(null, '');
 
-		if (res) {
-			this.status.update(res.status);
-			this.statusText.update(res.statusText);
-		}
+		this.parse(json);
 	}
 }

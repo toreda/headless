@@ -1,19 +1,21 @@
-import {ArmorKeyBoolean, ArmorKeyStore, ArmorKeyString} from '@armorjs/key-store';
+import {StrongBoolean, StrongMap, StrongString, makeBoolean, makeString} from '@toreda/strong-types';
 
-export class BrowserRequestOptionsLog extends ArmorKeyStore {
-	public readonly enabled: ArmorKeyBoolean;
+export class BrowserRequestOptionsLog extends StrongMap {
+	public readonly enabled: StrongBoolean;
 
 	public readonly writeToDisk: {
-		enabled: ArmorKeyBoolean;
-		atPath: ArmorKeyString;
+		enabled: StrongBoolean;
+		atPath: StrongString;
 	};
 
-	constructor() {
+	constructor(json: any = {}) {
 		super();
-		this.enabled = new ArmorKeyBoolean(false);
+		this.enabled = makeBoolean(null, false);
 		this.writeToDisk = {
-			enabled: new ArmorKeyBoolean(false),
-			atPath: new ArmorKeyString()
+			enabled: makeBoolean(null, false),
+			atPath: makeString(null, '')
 		};
+
+		this.parse(json);
 	}
 }

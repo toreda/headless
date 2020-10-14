@@ -1,21 +1,21 @@
-export class BrowserResponseElement {
+export class BrowserResponseNode {
 	public readonly document: HTMLDocument;
 	public readonly element: HTMLElement;
 
 	constructor(document: any, element: HTMLElement) {
 		if (!document) {
-			throw new Error('BrowserResponseElement init failed - must provide document argument.');
+			throw new Error('BrowserResponseNode init failed - must provide document argument.');
 		}
 
 		if (!element) {
-			throw new Error('BrowserResponseElement init failed - must provide element argument.');
+			throw new Error('BrowserResponseNode init failed - must provide element argument.');
 		}
 
 		this.document = document;
 		this.element = element;
 	}
 
-	public child(selector: string): BrowserResponseElement | null {
+	public child(selector: string): BrowserResponseNode | null {
 		let result: HTMLElement | null;
 
 		try {
@@ -28,7 +28,7 @@ export class BrowserResponseElement {
 			return null;
 		}
 
-		return new BrowserResponseElement(this.document, result);
+		return new BrowserResponseNode(this.document, result);
 	}
 
 	public childCount(): number {

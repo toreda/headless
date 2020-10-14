@@ -1,7 +1,6 @@
-import {ArmorKeyString} from '@armorjs/key-store';
 import {BrowserRequestOptions} from '../../src/browser/request/options';
 import {BrowserResponse} from '../../src/browser/response';
-import {BrowserResponseElement} from '../../src/browser/response/element';
+import {BrowserResponseNode} from '../../src/browser/response/node';
 import {BrowserResponseWindow} from '../../src/browser/response/window';
 import {EventEmitter} from 'events';
 
@@ -35,7 +34,7 @@ describe('BrowserResponse', () => {
 
 			it('should throw when load fails', () => {
 				expect(() => {
-					new BrowserResponse(events, null, options);
+					new BrowserResponse(events, undefined as any, options);
 				}).toThrow(/BrowserResponse init failed - BrowserResponse/);
 			});
 
@@ -64,14 +63,14 @@ describe('BrowserResponse', () => {
 
 	describe('Implementation', () => {
 		describe('createUrl', () => {
-			it('should return a ArmorKeyString holding res data', () => {
-				const expectedV = 'test create url stirng';
+			it('should return a StrongString holding res data', () => {
+				const expectedV = 'test create url string';
 				const result = instance.createUrl({config: {url: expectedV}});
-				expect(result).toBeInstanceOf(ArmorKeyString);
-				expect(result.get('')).toBe(expectedV);
+				expect(result.typeId).toBe('StrongType');
+				expect(result()).toBe(expectedV);
 			});
 
-			it('should return default ArmorKeyString if res is not the right format', () => {
+			it('should return default StrongString if res is not the right format', () => {
 				const expectedV = 'fallback';
 				expect(instance.createUrl('not valid format').get(expectedV)).toBe(expectedV);
 				expect(instance.createUrl({config: 'not valid format'}).get(expectedV)).toBe(expectedV);
@@ -94,7 +93,7 @@ describe('BrowserResponse', () => {
 			it('should throw when createAndLoadWindow throws', () => {
 				let spy = jest.spyOn(BrowserResponse.prototype, 'createAndLoadWindow');
 				spy.mockReturnValueOnce({} as any);
-				const custom = new BrowserResponse(events, null, options);
+				const custom = new BrowserResponse(events, undefined as any, options);
 				spy.mockRestore();
 
 				expect(custom.loaded).toBe(false);
@@ -115,7 +114,7 @@ describe('BrowserResponse', () => {
 			it('should throw when window init throws', () => {
 				let spy = jest.spyOn(BrowserResponse.prototype, 'createAndLoadWindow');
 				spy.mockReturnValueOnce({} as any);
-				const custom = new BrowserResponse(events, null, options);
+				const custom = new BrowserResponse(events, undefined as any, options);
 				spy.mockRestore();
 
 				expect(() => {
@@ -138,8 +137,8 @@ describe('BrowserResponse', () => {
 				parent.appendChild(body.element);
 			});
 
-			it('should return BrowserResponseElement of document body', () => {
-				expect(instance.getBody()).toBeInstanceOf(BrowserResponseElement);
+			it('should return BrowserResponseNode of document body', () => {
+				expect(instance.getBody()).toBeInstanceOf(BrowserResponseNode);
 			});
 		});
 
@@ -172,7 +171,7 @@ describe('BrowserResponse', () => {
 
 				expect.assertions(3);
 
-				expect(instance.getElement(goodSelector)).toBeInstanceOf(BrowserResponseElement);
+				expect(instance.getElement(goodSelector)).toBeInstanceOf(BrowserResponseNode);
 			});
 		});
 

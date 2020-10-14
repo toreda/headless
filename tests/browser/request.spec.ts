@@ -16,7 +16,7 @@ describe('BrowserRequest', () => {
 	beforeAll(() => {
 		events = new EventEmitter();
 		options = new BrowserRequestOptions();
-		options.adapter.id.update('mock');
+		options.adapter.id('mock');
 		instance = new BrowserRequest(events, MOCK_URL, options);
 	});
 

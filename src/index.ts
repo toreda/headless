@@ -22,6 +22,6 @@ export * from './browser/request/options/window';
 
 // BrowserResponse
 export * from './browser/response';
-export * from './browser/response/element';
+export * from './browser/response/node';
 export * from './browser/response/status';
 export * from './browser/response/window';
