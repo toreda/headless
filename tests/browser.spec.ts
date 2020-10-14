@@ -3,7 +3,7 @@ import {BrowserRequest} from '../src/browser/request';
 import {BrowserRequestOptions} from '../src/browser/request/options';
 import {EventEmitter} from 'events';
 
-const htmltests = !false;
+const htmltests = false;
 
 describe('Browser', () => {
 	let instance: Browser;
