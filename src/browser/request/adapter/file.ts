@@ -24,7 +24,7 @@ export class BrowserRequestAdapterFile implements BrowserRequestAdapter {
 			stream.on('close', () => {
 				return resolve({
 					data: data,
-					url: path.replace(/\//g, '\\')
+					url: path
 				});
 			});
 
