@@ -15,6 +15,7 @@ export class BrowserRequestOptions extends StrongMap {
 
 	constructor(json: any = {}) {
 		super();
+
 		this.adapter = new BrowserRequestOptionsAdapter();
 		this.headers = new BrowserRequestOptionsHeaders();
 		this.log = new BrowserRequestOptionsLog();
