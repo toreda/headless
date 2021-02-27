@@ -1,6 +1,7 @@
-import {BrowserRequestAdapter} from '../adapter';
-import {BrowserRequestHeaders} from '../headers';
 import axios from 'axios';
+import {Any} from 'src/aliases';
+import {BrowserRequestAdapter} from '../adapter';
+import {BrowserRequestHeaders as Headers} from '../headers';
 
 export class BrowserRequestAdapterHttp implements BrowserRequestAdapter {
 	public readonly id: string;
@@ -9,7 +10,7 @@ export class BrowserRequestAdapterHttp implements BrowserRequestAdapter {
 		this.id = 'http';
 	}
 
-	public get(url: string | null, headers: BrowserRequestHeaders): Promise<any> {
+	public get(url: string | null, headers: Headers): Promise<Any> {
 		return new Promise((resolve, reject) => {
 			headers.method = 'GET';
 
@@ -28,7 +29,7 @@ export class BrowserRequestAdapterHttp implements BrowserRequestAdapter {
 		});
 	}
 
-	public post(url: string | null, headers: BrowserRequestHeaders, payload: any): Promise<any> {
+	public post(url: string | null, headers: Headers, payload: Any): Promise<Any> {
 		return new Promise((resolve, reject) => {
 			headers.method = 'POST';
 

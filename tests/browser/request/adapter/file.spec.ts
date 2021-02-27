@@ -1,5 +1,5 @@
-import {BrowserRequestAdapterFile} from '../../../../src/browser/request/adapter/file';
 import Path from 'path';
+import {BrowserRequestAdapterFile} from 'src/browser/request/adapter/file';
 
 describe('BrowserRequestAdapterFile', () => {
 	let instance: BrowserRequestAdapterFile;
@@ -41,7 +41,7 @@ describe('BrowserRequestAdapterFile', () => {
 				const spy = jest.spyOn(instance, 'getFile').mockImplementationOnce((): any => {});
 
 				const expectedV = 'testpathnamepost';
-				instance.get(expectedV, {} as any);
+				instance.get(expectedV);
 
 				expect(spy).toBeCalledWith(expectedV);
 			});
@@ -52,7 +52,7 @@ describe('BrowserRequestAdapterFile', () => {
 				const spy = jest.spyOn(instance, 'getFile').mockImplementationOnce((): any => {});
 
 				const expectedV = 'testpathnamepost';
-				instance.post(expectedV, {} as any, {} as any);
+				instance.post(expectedV);
 
 				expect(spy).toBeCalledWith(expectedV);
 			});

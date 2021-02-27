@@ -1,37 +1,32 @@
-import {BrowserConfig} from './browser/config';
-import {BrowserRequest} from './browser/request';
-import {BrowserRequestOptions} from './browser/request/options';
-import {BrowserResponse} from './browser/response';
 import {EventEmitter} from 'events';
+import {Any} from './aliases';
+import {BrowserRequest as Request} from './browser/request';
+import {BrowserRequestState as State} from './browser/request/state';
+import {BrowserResponse as Response} from './browser/response';
 
 export class Browser {
 	public readonly events: EventEmitter;
-	public readonly config: BrowserConfig;
 
-	constructor(options?: any) {
-		this.events = options && options.events ? options.events : new EventEmitter();
-		this.config = new BrowserConfig();
-		this.config.parse(options || {});
+	constructor(events?: EventEmitter) {
+		this.events = events ?? new EventEmitter();
 	}
 
-	public async load(
-		url: string,
-		method: 'GET' | 'POST',
-		payload: any = {},
-		options?: BrowserRequestOptions
-	): Promise<BrowserResponse> {
-		const requestOptions = options ? options : new BrowserRequestOptions();
-		requestOptions.method(method);
+	public async load(url: string, method: methods, payload: Any = {}, state?: State): Promise<Response> {
+		const requestState = state ?? new State();
+		requestState.method(method);
 
-		const request = new BrowserRequest(this.events, url, requestOptions);
+		const request = new Request(this.events, url, requestState);
+
 		return await request.execute(method, payload);
 	}
 
-	public async get(url: string, payload?: any, options?: BrowserRequestOptions): Promise<BrowserResponse> {
-		return await this.load(url, 'GET', payload, options);
+	public async get(url: string, payload?: Any, state?: State): Promise<Response> {
+		return await this.load(url, 'GET', payload, state);
 	}
 
-	public async post(url: string, payload: any, options?: BrowserRequestOptions): Promise<BrowserResponse> {
-		return await this.load(url, 'POST', payload, options);
+	public async post(url: string, payload: Any, state?: State): Promise<Response> {
+		return await this.load(url, 'POST', payload, state);
 	}
 }
+
+type methods = 'GET' | 'POST';

@@ -2,7 +2,7 @@ export class BrowserResponseNode {
 	public readonly document: HTMLDocument;
 	public readonly element: HTMLElement;
 
-	constructor(document: any, element: HTMLElement) {
+	constructor(document: HTMLDocument, element: HTMLElement) {
 		if (!document) {
 			throw new Error('BrowserResponseNode init failed - must provide document argument.');
 		}
@@ -44,7 +44,7 @@ export class BrowserResponseNode {
 	}
 
 	public text(): string | null {
-		let text = this.element.textContent;
+		const text = this.element.textContent;
 
 		if (!text) {
 			return '';

@@ -1,31 +1,33 @@
-import {JSDOM, ResourceLoader, VirtualConsole} from 'jsdom';
-
-import {BrowserRequestOptionsWindow} from '../request/options/window';
-import {BrowserResponseNode} from './node';
 import {EventEmitter} from 'events';
+import {JSDOM, ResourceLoader, VirtualConsole} from 'jsdom';
+import {Any} from 'src/aliases';
+import {BrowserRequestStateWindow as RequestStateWindow} from '../request/state/window';
+import {BrowserResponseNode} from './node';
 
 export class BrowserResponseWindow {
 	public readonly events: EventEmitter;
-	public loaded: Boolean;
-	public dom: JSDOM;
-	public doc: Document;
-	public options: BrowserRequestOptionsWindow;
+	public loaded: boolean;
+	public dom: JSDOM | null;
+	public doc: Document | null;
+	public state: RequestStateWindow;
 
-	constructor(events: EventEmitter, res: any, options: BrowserRequestOptionsWindow) {
+	constructor(events: EventEmitter, res: Any, state: RequestStateWindow) {
 		if (!events) {
 			throw new Error('BrowserResponseWindow init failed - events argument missing.');
 		}
 
 		if (!(events instanceof EventEmitter)) {
-			throw new Error('BrowserResponseWindow init failed - events argument not an EventEmitter instance.');
+			throw new Error(
+				'BrowserResponseWindow init failed - events argument not an EventEmitter instance.'
+			);
 		}
 
-		this.options = options;
+		this.state = state;
 		this.events = events;
 		this.loaded = false;
 
-		this.doc = undefined!;
-		this.dom = undefined!;
+		this.doc = null;
+		this.dom = null;
 
 		try {
 			this.load(res);
@@ -55,16 +57,19 @@ export class BrowserResponseWindow {
 	}
 
 	public elements(selector: string): BrowserResponseNode[] {
-		let results: BrowserResponseNode[] = [];
-		if (!this.doc) {
+		const results: BrowserResponseNode[] = [];
+
+		if (this.doc == null) {
 			return results;
 		}
 
-		let matches;
+		const doc = this.doc;
+
+		let matches: NodeListOf<HTMLElement>;
 		try {
-			matches = this.doc.querySelectorAll(selector);
+			matches = doc.querySelectorAll(selector);
 			matches.forEach((match) => {
-				const element = new BrowserResponseNode(this.doc, match);
+				const element = new BrowserResponseNode(doc, match);
 				results.push(element);
 			});
 		} catch (e) {
@@ -75,14 +80,14 @@ export class BrowserResponseWindow {
 	}
 
 	public title(): string | null {
-		if (!this.doc) {
+		if (this.doc == null) {
 			return null;
 		}
 
 		return this.doc.title;
 	}
 
-	public load(res: any): JSDOM {
+	public load(res: Any): JSDOM | null {
 		if (this.loaded) {
 			return this.dom;
 		}
@@ -91,19 +96,19 @@ export class BrowserResponseWindow {
 			throw Error('BrowserResponseWindow load failed - no res given.');
 		}
 
-		const runScripts = this.options.executeJavascript() ? 'dangerously' : undefined;
+		const runScripts = this.state.executeJavascript() ? 'dangerously' : undefined;
 
 		const virtualConsole = new VirtualConsole();
 
-		virtualConsole.on('error', (...data: any[]) => {
+		virtualConsole.on('error', (...data: Any[]) => {
 			console.error(`VC ERROR: ${data}`);
 		});
 
-		virtualConsole.on('log', (...data: any[]) => {
+		virtualConsole.on('log', (...data: Any[]) => {
 			console.log(`VC LOG: ${data}`);
 		});
 
-		virtualConsole.on('trace', (...data: any[]) => {
+		virtualConsole.on('trace', (...data: Any[]) => {
 			console.trace(`VC TRACE: ${data}`);
 		});
 

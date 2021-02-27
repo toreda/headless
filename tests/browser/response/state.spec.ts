@@ -1,27 +1,21 @@
-import {BrowserResponseStatus} from '../../../src/browser/response/status';
+import {BrowserResponseState} from 'src/browser/response/state';
 
-describe('BrowserResponseStatus', () => {
-	let instance: BrowserResponseStatus;
-
-	beforeAll(() => {
-		instance = new BrowserResponseStatus({});
-	});
-
+describe('BrowserResponseState', () => {
 	describe('Constructors', () => {
 		describe('constructor', () => {
 			it('should not throw', () => {
 				expect(() => {
-					new BrowserResponseStatus();
+					new BrowserResponseState();
 				}).not.toThrow();
 			});
 
 			it('should set props using res', () => {
-				let expectedV = {
+				const expectedV = {
 					status: 1,
 					statusText: 'okay'
 				};
 
-				let result = new BrowserResponseStatus(expectedV);
+				const result = new BrowserResponseState(expectedV);
 
 				expect(result.status()).toBe(expectedV.status);
 				expect(result.statusText()).toBe(expectedV.statusText);

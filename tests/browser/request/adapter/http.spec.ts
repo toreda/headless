@@ -1,5 +1,5 @@
-import {BrowserRequestAdapterHttp} from '../../../../src/browser/request/adapter/http';
 import axios from 'axios';
+import {BrowserRequestAdapterHttp} from 'src/browser/request/adapter/http';
 import {mocked} from 'ts-jest/utils';
 
 jest.mock('axios');

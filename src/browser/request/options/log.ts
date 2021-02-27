@@ -1,21 +1,8 @@
-import {StrongBoolean, StrongMap, StrongString, makeBoolean, makeString} from '@toreda/strong-types';
+export interface BrowserRequestOptionsLog {
+	enabled?: boolean;
 
-export class BrowserRequestOptionsLog extends StrongMap {
-	public readonly enabled: StrongBoolean;
-
-	public readonly writeToDisk: {
-		enabled: StrongBoolean;
-		atPath: StrongString;
+	writeToDisk?: {
+		atPath?: string;
+		enabled?: boolean;
 	};
-
-	constructor(json: any = {}) {
-		super();
-		this.enabled = makeBoolean(null, false);
-		this.writeToDisk = {
-			enabled: makeBoolean(null, false),
-			atPath: makeString(null, '')
-		};
-
-		this.parse(json);
-	}
 }

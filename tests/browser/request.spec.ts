@@ -1,43 +1,43 @@
-import {BrowserRequest} from '../../src/browser/request';
-import {BrowserRequestAdapterFile} from '../../src/browser/request/adapter/file';
-import {BrowserRequestAdapterHttp} from '../../src/browser/request/adapter/http';
-import {BrowserRequestAdapterMock} from '../../src/browser/request/adapter/mock';
-import {BrowserRequestOptions} from '../../src/browser/request/options';
-import {BrowserResponse} from '../../src/browser/response';
 import {EventEmitter} from 'events';
+import {BrowserRequest} from 'src/browser/request';
+import {BrowserRequestAdapterFile} from 'src/browser/request/adapter/file';
+import {BrowserRequestAdapterHttp} from 'src/browser/request/adapter/http';
+import {BrowserRequestAdapterMock} from 'src/browser/request/adapter/mock';
+import {BrowserRequestState as State} from 'src/browser/request/state';
+import {BrowserResponse} from 'src/browser/response';
 
 const MOCK_URL = 'https://www.w3schools.com/howto/tryhow_make_a_website_ifr.htm';
 
 describe('BrowserRequest', () => {
 	let instance: BrowserRequest;
 	let events: EventEmitter;
-	let options: BrowserRequestOptions;
+	let state: State;
 
 	beforeAll(() => {
 		events = new EventEmitter();
-		options = new BrowserRequestOptions();
-		options.adapter.id('mock');
-		instance = new BrowserRequest(events, MOCK_URL, options);
+		state = new State();
+		state.adapter.id('mock');
+		instance = new BrowserRequest(events, MOCK_URL, state);
 	});
 
 	describe('Constructors', () => {
 		describe('constructor', () => {
 			it('should throw when events argument is missing', () => {
 				expect(() => {
-					new BrowserRequest(undefined as any, '', options);
+					new BrowserRequest(undefined as any, '', state);
 				}).toThrow('BrowserRequest init failed - events argument missing.');
 			});
 
 			it('should throw when events argument is not an EventEmitter instance', () => {
 				expect(() => {
-					new BrowserRequest({} as any, '', options);
+					new BrowserRequest({} as any, '', state);
 				}).toThrow('BrowserRequest init failed - events argument is not an EventEmitter instance.');
 			});
 
 			it('should throw when events argument is not an EventEmitter instance', () => {
 				expect(() => {
 					new BrowserRequest(events, '', null!);
-				}).toThrow('BrowserRequest init failed - options argument missing.');
+				}).toThrow('BrowserRequest init failed - state argument missing.');
 			});
 		});
 	});
@@ -74,7 +74,7 @@ describe('BrowserRequest', () => {
 				expect(result instanceof BrowserRequestAdapterHttp).toBe(true);
 			});
 
-			it('should return a http adapter instance when adapterId argument is not a supported adapterId', () => {
+			it('should return a http adapter instance when adapterId argument is not supported', () => {
 				const result = instance.createAdapter('@@@@@@');
 				expect(result instanceof BrowserRequestAdapterHttp).toBe(true);
 			});

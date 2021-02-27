@@ -1,18 +1,19 @@
+import {EventEmitter} from 'events';
+import {Any} from 'src/aliases';
 import {BrowserRequestAdapter} from './request/adapter';
 import {BrowserRequestAdapterFile} from './request/adapter/file';
 import {BrowserRequestAdapterHttp} from './request/adapter/http';
 import {BrowserRequestAdapterMock} from './request/adapter/mock';
-import {BrowserRequestOptions} from './request/options';
+import {BrowserRequestState as State} from './request/state';
 import {BrowserResponse} from './response';
-import {EventEmitter} from 'events';
 
 export class BrowserRequest {
 	public readonly url: string | null;
 	public readonly events: EventEmitter;
-	public readonly options: BrowserRequestOptions;
+	public readonly state: State;
 	public readonly adapter: BrowserRequestAdapter;
 
-	constructor(events: EventEmitter, url: string | null, options: BrowserRequestOptions) {
+	constructor(events: EventEmitter, url: string | null, state: State) {
 		if (!events) {
 			throw new Error('BrowserRequest init failed - events argument missing.');
 		}
@@ -21,15 +22,15 @@ export class BrowserRequest {
 			throw new Error('BrowserRequest init failed - events argument is not an EventEmitter instance.');
 		}
 
-		if (!options) {
-			throw new Error('BrowserRequest init failed - options argument missing.');
+		if (!state) {
+			throw new Error('BrowserRequest init failed - state argument missing.');
 		}
 
 		this.url = url;
 
-		this.adapter = this.createAdapter(options.adapter.id());
+		this.adapter = this.createAdapter(state.adapter.id());
 		this.events = events;
-		this.options = options;
+		this.state = state;
 	}
 
 	public createAdapter(adapterId: string): BrowserRequestAdapter {
@@ -47,10 +48,11 @@ export class BrowserRequest {
 		}
 	}
 
-	public async execute(method: 'GET' | 'POST' = 'GET', payload?: any): Promise<BrowserResponse> {
-		const headers = this.options.headers.getAsObject();
+	public async execute(method: 'GET' | 'POST' = 'GET', payload?: Any): Promise<BrowserResponse> {
+		const headers = this.state.headers.getAsObject();
 
-		let result: any = null;
+		let result: Any = null;
+
 		switch (method) {
 			case 'POST':
 				result = await this.adapter.post(this.url, headers, payload);
@@ -66,7 +68,7 @@ export class BrowserRequest {
 		return this.createResponse(this.events, result);
 	}
 
-	public createResponse(events: EventEmitter, res: any): BrowserResponse {
-		return new BrowserResponse(events, res, this.options);
+	public createResponse(events: EventEmitter, res: Any): BrowserResponse {
+		return new BrowserResponse(events, res, this.state);
 	}
 }

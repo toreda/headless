@@ -1,22 +1,22 @@
 export interface BrowserRequestHeaders {
-	Origin: string;
-	Host: string;
-	'User-Agent': string;
-	'X-Requested-With': string;
-	'X-MicrosoftAjax': string;
+	'Accept-Encoding': string;
+	'Accept-Language': string;
+	Accept: string;
 	AcceptsCookies: string;
-	Pragma: string;
 	'Cache-Control': string;
+	'Content-Type'?: string;
+	Cookie?: string;
+	DNT: number;
+	Host: string;
+	method?: string;
+	Origin: string;
+	Pragma: string;
+	Referer?: string;
 	'Sec-Fetch-Mode': string;
 	'Sec-Fetch-Site': string;
-	DNT: number;
-	Accept: string;
-	'Accept-Language': string;
-	'Accept-Encoding': string;
-	'Content-Type'?: string;
-	Referer?: string;
-	Cookie?: string;
 	'Sec-Fetch-User'?: string;
-	method?: string;
 	'Upgrade-Insecure-Requests'?: string;
+	'User-Agent': string;
+	'X-MicrosoftAjax': string;
+	'X-Requested-With': string;
 }

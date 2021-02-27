@@ -1,5 +1,5 @@
+import {Any} from 'src/aliases';
 import {BrowserRequestAdapter} from '../adapter';
-import {BrowserRequestHeaders} from '../headers';
 
 export class BrowserRequestAdapterMock implements BrowserRequestAdapter {
 	public readonly id: string;
@@ -8,14 +8,14 @@ export class BrowserRequestAdapterMock implements BrowserRequestAdapter {
 		this.id = 'mock';
 	}
 
-	public get(url: string | null, headers: BrowserRequestHeaders): Promise<any> {
-		return new Promise((resolve, reject) => {
+	public get(): Promise<Any> {
+		return new Promise((resolve) => {
 			return resolve({});
 		});
 	}
 
-	public post(url: string | null, headers: BrowserRequestHeaders, payload: any): Promise<any> {
-		return new Promise((resolve, reject) => {
+	public post(): Promise<Any> {
+		return new Promise((resolve) => {
 			return resolve({});
 		});
 	}

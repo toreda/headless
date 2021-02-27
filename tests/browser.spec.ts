@@ -1,8 +1,8 @@
-import {Browser} from '../src/browser';
-import {BrowserRequest} from '../src/browser/request';
-import {BrowserRequestOptions} from '../src/browser/request/options';
 import {EventEmitter} from 'events';
 import Path from 'path';
+import {Browser} from 'src/browser';
+import {BrowserRequest} from 'src/browser/request';
+import {BrowserRequestState as State} from 'src/browser/request/state';
 
 const htmltests = false;
 
@@ -12,7 +12,7 @@ describe('Browser', () => {
 
 	beforeAll(() => {
 		events = new EventEmitter();
-		instance = new Browser({events: events});
+		instance = new Browser(events);
 	});
 
 	describe('Constructors', () => {
@@ -29,7 +29,7 @@ describe('Browser', () => {
 			});
 
 			it('should use options.events when given', () => {
-				const custom = new Browser({events: events});
+				const custom = new Browser(events);
 				expect(custom.events).toBe(events);
 			});
 		});
@@ -37,8 +37,8 @@ describe('Browser', () => {
 
 	describe('Implementation', () => {
 		let spy: jest.SpyInstance;
-		let url = 'testurl';
-		let options = {test: 'options'};
+		const url = 'testurl';
+		const options = {test: 'options'};
 
 		beforeAll(() => {
 			spy = jest.spyOn(instance, 'load');
@@ -89,29 +89,34 @@ describe('Browser', () => {
 			});
 
 			it('should create a Browserrequest and execute if options is given', () => {
-				const result = instance.load(url, 'GET', {}, new BrowserRequestOptions());
+				const result = instance.load(url, 'GET', {}, new State());
 				return expect(result).resolves.toBe('execute ran');
 			});
 
 			it('should always return BrowserResponse', () => {
-				const result = instance.load(undefined as any, undefined as any, undefined as any, undefined as any);
+				const result = instance.load(
+					undefined as any,
+					undefined as any,
+					undefined as any,
+					undefined as any
+				);
 				return expect(result).resolves.toBe('execute ran');
 			});
 		});
 	});
 
 	describe('Overall API Usage', () => {
-		let requestOptions: BrowserRequestOptions;
+		let state: State;
 
 		beforeAll(() => {
-			requestOptions = new BrowserRequestOptions();
-			requestOptions.adapter.id('file');
+			state = new State();
+			state.adapter.id('file');
 		});
 
 		it('Interact With Relative Anchor Links', () => {
 			const path = Path.resolve('sample-data/anchor-link.html');
 			return new Browser()
-				.get(path, null, requestOptions)
+				.get(path, null, state)
 				.then((rsp) => {
 					return rsp.followLink('#linkRel');
 				})
@@ -128,7 +133,7 @@ describe('Browser', () => {
 			it('Interact With Absolute Anchor Links', () => {
 				const path = Path.resolve('sample-data/anchor-link.html');
 				return new Browser()
-					.get(path, null, requestOptions)
+					.get(path, null, state)
 					.then((rsp) => {
 						return rsp.followLink('#linkAbs');
 					})
@@ -192,7 +197,9 @@ describe('Browser', () => {
 					})
 					.then((rsp) => {
 						const result = rsp.getElement('h2 + div');
-						expect(result!.text()).toContain('uname=CustomUserName&psw=CustomPassWord&remember=on');
+						expect(result!.text()).toContain(
+							'uname=CustomUserName&psw=CustomPassWord&remember=on'
+						);
 					})
 					.catch((err) => {
 						console.error(`Error: ${err}`);

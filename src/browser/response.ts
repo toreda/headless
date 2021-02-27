@@ -1,39 +1,41 @@
-import {StrongString, makeString} from '@toreda/strong-types';
-
-import {Browser} from '../browser';
-import {BrowserRequestOptions} from './request/options';
-import {BrowserRequestOptionsWindow} from './request/options/window';
-import {BrowserResponseNode} from './response/node';
-import {BrowserResponseStatus} from './response/status';
-import {BrowserResponseWindow} from './response/window';
 import {EventEmitter} from 'events';
 import Path from 'path';
+import {Any} from 'src/aliases';
+import {StrongString, makeString} from '@toreda/strong-types';
+import {Browser} from '../browser';
+import {BrowserRequestState as RequestState} from './request/state';
+import {BrowserRequestStateWindow as RequestStateWindow} from './request/state/window';
+import {BrowserResponseNode as ResponseNode} from './response/node';
+import {BrowserResponseState as State} from './response/state';
+import {BrowserResponseWindow as ResponseWindow} from './response/window';
 
 export class BrowserResponse {
 	public readonly events: EventEmitter;
-	public readonly res: any;
-	public readonly status: BrowserResponseStatus;
+	public readonly res: Any;
+	public readonly state: State;
 	public readonly url: StrongString;
 	public readonly origin: StrongString;
-	public readonly options: BrowserRequestOptions;
-	public win: BrowserResponseWindow;
+	public readonly request: RequestState;
+	public win: ResponseWindow;
 	public loaded: boolean;
 
-	constructor(events: EventEmitter, res: any, options: BrowserRequestOptions) {
+	constructor(events: EventEmitter, res: Any, request: RequestState) {
 		if (!events) {
 			throw new Error('BrowserResponse init failed - request.events property missing.');
 		}
 
 		if (!(events instanceof EventEmitter)) {
-			throw new Error('BrowserResponse init failed - request.event property is not an EventEmitter instance.');
+			throw new Error(
+				'BrowserResponse init failed - request.event property is not an EventEmitter instance.'
+			);
 		}
 
 		this.loaded = false;
-		this.options = options;
+		this.request = request;
 		this.res = res ? res : null;
 		this.url = this.createUrl(res);
 		this.origin = this.createOrigin(this.url());
-		this.status = new BrowserResponseStatus(res);
+		this.state = new State(res);
 		this.events = events;
 
 		try {
@@ -43,10 +45,10 @@ export class BrowserResponse {
 		}
 	}
 
-	public createUrl(res: any): StrongString {
+	public createUrl(res: Any): StrongString {
 		const url = makeString(null, '');
 
-		if (this.options.adapter.id() === 'file') {
+		if (this.request.adapter.id() === 'file') {
 			url(Path.resolve(res.url));
 			return url;
 		}
@@ -61,7 +63,7 @@ export class BrowserResponse {
 	public createOrigin(url: string): StrongString {
 		const origin = makeString(null, '');
 
-		if (this.options.adapter.id() === 'file') {
+		if (this.request.adapter.id() === 'file') {
 			origin(url.replace(this.res.url, ''));
 			return origin;
 		}
@@ -73,19 +75,19 @@ export class BrowserResponse {
 		return origin;
 	}
 
-	public load(): BrowserResponseWindow {
+	public load(): ResponseWindow {
 		if (this.loaded) {
 			return this.win;
 		}
 
-		return this.createAndLoadWindow(this.options.window);
+		return this.createAndLoadWindow(this.request.window);
 	}
 
-	public createAndLoadWindow(options?: BrowserRequestOptionsWindow): BrowserResponseWindow {
-		let win: BrowserResponseWindow;
+	public createAndLoadWindow(request?: RequestStateWindow): ResponseWindow {
+		let win: ResponseWindow;
 
 		try {
-			win = new BrowserResponseWindow(this.events, this.res, options || this.options.window);
+			win = new ResponseWindow(this.events, this.res, request || this.request.window);
 		} catch (error) {
 			throw Error(`BrowserResponse createAndLoadWindow failed - ${error.message}`);
 		}
@@ -95,7 +97,7 @@ export class BrowserResponse {
 		return win;
 	}
 
-	public handleFormElement(element: any): string {
+	public handleFormElement(element: Any): string {
 		if (!element?.name) {
 			return '';
 		}
@@ -119,7 +121,7 @@ export class BrowserResponse {
 		return element.value || '';
 	}
 
-	public getBody(): BrowserResponseNode {
+	public getBody(): ResponseNode {
 		const element = this.win.element('body');
 
 		if (!element) {
@@ -129,7 +131,7 @@ export class BrowserResponse {
 		return element;
 	}
 
-	public getElement(selector: string): BrowserResponseNode | null {
+	public getElement(selector: string): ResponseNode | null {
 		if (!this.loaded) {
 			return null;
 		}
@@ -183,14 +185,14 @@ export class BrowserResponse {
 
 		if (hrefLiteral === hrefResolve) {
 			url = hrefLiteral;
-			let protocol = hrefLiteral.split(':')[0];
-			this.options.adapter.id(protocol);
+			const protocol = hrefLiteral.split(':')[0];
+			this.request.adapter.id(protocol);
 		} else {
 			url = origin + hrefLiteral;
 		}
 
-		const browser = new Browser({events: this.events});
-		return browser.get(url, null, this.options);
+		const browser = new Browser(this.events);
+		return browser.get(url, null, this.request);
 	}
 
 	public async submitForm(selector: string): Promise<BrowserResponse> {
@@ -203,7 +205,7 @@ export class BrowserResponse {
 		const submit: HTMLInputElement = node.element as HTMLInputElement;
 		const form = submit.form;
 
-		if (!form) {
+		if (form == null) {
 			throw Error('BrowserResponse submitForm failed - no form found.');
 		}
 
@@ -212,11 +214,13 @@ export class BrowserResponse {
 		const origin = this.origin();
 		let url = origin + action;
 
-		let search = [].filter
-			.call(form.elements, (elm: any) => {
-				return !!elm.name;
+		const formItems: HTMLFormElement[] = [].slice.call(form.elements);
+
+		const search = formItems
+			.filter((elm) => {
+				return elm.name != '';
 			})
-			.map((elm: any) => {
+			.map((elm) => {
 				return `${elm.name}=${this.handleFormElement(elm)}`;
 			})
 			.join('&');
@@ -225,8 +229,8 @@ export class BrowserResponse {
 			url += `?${search}`;
 		}
 
-		const browser = new Browser({events: this.events});
+		const browser = new Browser(this.events);
 
-		return browser.load(url, method === 'post' ? 'POST' : 'GET', search, this.options);
+		return browser.load(url, method === 'post' ? 'POST' : 'GET', search, this.request);
 	}
 }

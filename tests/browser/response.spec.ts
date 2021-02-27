@@ -1,20 +1,20 @@
-import {BrowserRequestOptions} from '../../src/browser/request/options';
-import {BrowserResponse} from '../../src/browser/response';
-import {BrowserResponseNode} from '../../src/browser/response/node';
-import {BrowserResponseWindow} from '../../src/browser/response/window';
 import {EventEmitter} from 'events';
+import {BrowserRequestState as State} from 'src/browser/request/state';
+import {BrowserResponse} from 'src/browser/response';
+import {BrowserResponseNode} from 'src/browser/response/node';
+import {BrowserResponseWindow} from 'src/browser/response/window';
 
 describe('BrowserResponse', () => {
 	let instance: BrowserResponse;
 	let events: EventEmitter;
 	let emptyRes: any;
-	let options: BrowserRequestOptions;
+	let state: State;
 
 	beforeAll(() => {
 		events = new EventEmitter();
 		emptyRes = {};
-		options = new BrowserRequestOptions();
-		instance = new BrowserResponse(events, emptyRes, options);
+		state = new State();
+		instance = new BrowserResponse(events, emptyRes, state);
 		instance.load();
 	});
 
@@ -22,25 +22,27 @@ describe('BrowserResponse', () => {
 		describe('constructor', () => {
 			it('should throw when events argument is missing', () => {
 				expect(() => {
-					new BrowserResponse(undefined as any, emptyRes, options);
+					new BrowserResponse(undefined as any, emptyRes, state);
 				}).toThrow('BrowserResponse init failed - request.events property missing.');
 			});
 
 			it('should throw when events argument is not an EventEmitter instance', () => {
 				expect(() => {
-					new BrowserResponse({} as any, emptyRes, options);
-				}).toThrow('BrowserResponse init failed - request.event property is not an EventEmitter instance.');
+					new BrowserResponse({} as any, emptyRes, state);
+				}).toThrow(
+					'BrowserResponse init failed - request.event property is not an EventEmitter instance.'
+				);
 			});
 
 			it('should throw when load fails', () => {
 				expect(() => {
-					new BrowserResponse(events, undefined as any, options);
+					new BrowserResponse(events, undefined as any, state);
 				}).toThrow(/BrowserResponse init failed - BrowserResponse/);
 			});
 
 			it('should initialize events property from the events argument', () => {
 				const events12 = new EventEmitter();
-				const custom = new BrowserResponse(events12, emptyRes, options);
+				const custom = new BrowserResponse(events12, emptyRes, state);
 				expect(custom.events).toBe(events12);
 				expect(custom.events).not.toBe(events);
 			});
@@ -50,12 +52,12 @@ describe('BrowserResponse', () => {
 					one: '14414141',
 					two: '44091091'
 				} as any;
-				const custom = new BrowserResponse(events, res, options);
+				const custom = new BrowserResponse(events, res, state);
 				expect(custom.res).toEqual(res);
 			});
 
 			it('should initialize win property', () => {
-				const custom = new BrowserResponse(events, emptyRes, options);
+				const custom = new BrowserResponse(events, emptyRes, state);
 				expect(custom.win).not.toBeUndefined();
 			});
 		});
@@ -85,15 +87,15 @@ describe('BrowserResponse', () => {
 			});
 
 			it('should return window object', () => {
-				const custom = new BrowserResponse(events, emptyRes, options);
+				const custom = new BrowserResponse(events, emptyRes, state);
 				custom.loaded = false;
 				expect(custom.load()).toBeInstanceOf(BrowserResponseWindow);
 			});
 
 			it('should throw when createAndLoadWindow throws', () => {
-				let spy = jest.spyOn(BrowserResponse.prototype, 'createAndLoadWindow');
+				const spy = jest.spyOn(BrowserResponse.prototype, 'createAndLoadWindow');
 				spy.mockReturnValueOnce({} as any);
-				const custom = new BrowserResponse(events, undefined as any, options);
+				const custom = new BrowserResponse(events, undefined as any, state);
 				spy.mockRestore();
 
 				expect(custom.loaded).toBe(false);
@@ -112,9 +114,9 @@ describe('BrowserResponse', () => {
 			});
 
 			it('should throw when window init throws', () => {
-				let spy = jest.spyOn(BrowserResponse.prototype, 'createAndLoadWindow');
+				const spy = jest.spyOn(BrowserResponse.prototype, 'createAndLoadWindow');
 				spy.mockReturnValueOnce({} as any);
-				const custom = new BrowserResponse(events, undefined as any, options);
+				const custom = new BrowserResponse(events, undefined as any, state);
 				spy.mockRestore();
 
 				expect(() => {
@@ -143,19 +145,19 @@ describe('BrowserResponse', () => {
 		});
 
 		describe('getElement', () => {
-			let badSelector = 'something';
-			let goodSelector = '*';
+			const badSelector = 'something';
+			const goodSelector = '*';
 
 			it('should return null if not finished loading', () => {
-				const custom = new BrowserResponse(events, emptyRes, options);
+				const custom = new BrowserResponse(events, emptyRes, state);
 				custom.loaded = false;
 				expect(custom.getElement(badSelector)).toBeNull();
 			});
 
 			it('should return null if win does not exist', () => {
-				const custom = new BrowserResponse(events, emptyRes, options);
+				const custom = new BrowserResponse(events, emptyRes, state);
 				expect(custom.loaded).toBe(true);
-				delete custom.win;
+				custom.win = null!;
 				expect(custom.getElement(badSelector)).toBeNull();
 			});
 
@@ -176,19 +178,19 @@ describe('BrowserResponse', () => {
 		});
 
 		describe('click', () => {
-			let badSelector = 'something';
-			let goodSelector = '*';
+			const badSelector = 'something';
+			const goodSelector = '*';
 
 			it('should return error if not finished loading', () => {
-				const custom = new BrowserResponse(events, emptyRes, options);
+				const custom = new BrowserResponse(events, emptyRes, state);
 				custom.loaded = false;
 				expect(custom.click(goodSelector)).toBe(false);
 			});
 
 			it('should return error if win does not exist', () => {
-				const custom = new BrowserResponse(events, emptyRes, options);
+				const custom = new BrowserResponse(events, emptyRes, state);
 				expect(custom.loaded).toBe(true);
-				delete custom.win;
+				custom.win = null!;
 				expect(custom.click(goodSelector)).toBe(false);
 			});
 
@@ -221,7 +223,7 @@ describe('BrowserResponse', () => {
 			});
 
 			it('should throw if the submit does not have a form', () => {
-				const custom = new BrowserResponse(events, {data: `<input type='submit'/>`}, options);
+				const custom = new BrowserResponse(events, {data: `<input type='submit'/>`}, state);
 
 				return expect(custom.submitForm('*[type=submit]')).rejects.toThrow(
 					/BrowserResponse submitForm failed - no form found/
@@ -231,12 +233,17 @@ describe('BrowserResponse', () => {
 
 		describe('handleFormElement', () => {
 			it('should return an empty string when element has no name', () => {
-				expect(instance.handleFormElement(null)).toBe('');
-				expect(instance.handleFormElement(instance.getBody())).toBe('');
+				expect(instance.handleFormElement(null!)).toBe('');
+				expect(instance.handleFormElement(instance.getBody() as any)).toBe('');
 			});
 
 			it('should return the textContent of a textarea', () => {
 				let expectedV = '';
+
+				if (instance.win.doc == null) {
+					fail();
+				}
+
 				const formData = instance.win.doc.createElement('textarea');
 				formData.name = 'testForm';
 				expect(instance.handleFormElement(formData)).toBe(expectedV);
@@ -248,6 +255,11 @@ describe('BrowserResponse', () => {
 
 			it('should return the value of a select', () => {
 				let expectedV = '';
+
+				if (instance.win.doc == null) {
+					fail();
+				}
+
 				const formData = instance.win.doc.createElement('select');
 				const option = formData.appendChild(instance.win.doc.createElement('option'));
 				formData.name = 'testForm';
@@ -261,6 +273,11 @@ describe('BrowserResponse', () => {
 
 			it('should return the value of an input', () => {
 				let expectedV = '';
+
+				if (instance.win.doc == null) {
+					fail();
+				}
+
 				const formData = instance.win.doc.createElement('input');
 				formData.name = 'testForm';
 				expect(instance.handleFormElement(formData)).toBe(expectedV);
@@ -272,6 +289,11 @@ describe('BrowserResponse', () => {
 
 			it('should return the value of a checkbox', () => {
 				let expectedV = '';
+
+				if (instance.win.doc == null) {
+					fail();
+				}
+
 				const formData = instance.win.doc.createElement('input');
 				formData.type = 'checkbox';
 				formData.name = 'testForm';
@@ -288,7 +310,12 @@ describe('BrowserResponse', () => {
 			});
 
 			it('should return an empty string if it is not a form element', () => {
-				let expectedV = '';
+				const expectedV = '';
+
+				if (instance.win.doc == null) {
+					fail();
+				}
+
 				const formData = instance.win.doc.createElement('div') as any;
 				formData.name = 'testForm';
 				formData.textContent = 'testing value 635';

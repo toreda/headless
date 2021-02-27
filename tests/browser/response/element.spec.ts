@@ -1,5 +1,5 @@
-import {BrowserResponseNode} from '../../../src/browser/response/node';
 import {JSDOM} from 'jsdom';
+import {BrowserResponseNode} from '../../../src/browser/response/node';
 
 describe('BrowserResponseNode', () => {
 	const DOC = new JSDOM().window.document;
