@@ -27,8 +27,8 @@
   "homepage": "https://github.com/armorjs/headless#readme",
   "dependencies": {
     "@armorjs/key-store": "^0.0.4",
-    "axios": "^0.19.2",
-    "jsdom": "^16.2.2",
+    "axios": "^1.13.5",
+    "jsdom": "^16.6.0",
     "vm2": "^3.9.2"
   },
   "devDependencies": {
